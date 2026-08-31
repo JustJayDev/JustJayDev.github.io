@@ -3,11 +3,335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JustJayDev</title>
+<title>📔 Life Journal — JustJayDev</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+header{background:linear-gradient(135deg,#1e293b,#0f172a);padding:18px 20px;border-bottom:1px solid #334155;position:sticky;top:0;z-index:50}
+header h1{font-size:22px;font-weight:700}
+header p{font-size:12px;color:#94a3b8}
+.nav{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;background:#1e293b;border-bottom:1px solid #334155}
+.nav button{flex:0 0 auto;background:#334155;border:none;color:#e2e8f0;padding:9px 14px;border-radius:999px;font-size:13px;cursor:pointer;font-weight:600;transition:.15s}
+.nav button.active{background:#6366f1;color:#fff}
+.nav button:hover{background:#475569}
+main{padding:18px 16px 90px;max-width:760px;margin:0 auto}
+.card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:18px;margin-bottom:16px}
+.card h2{font-size:17px;margin-bottom:12px;color:#a5b4fc}
+label{display:block;font-size:13px;color:#94a3b8;margin:10px 0 5px}
+input[type=text],input[type=date],input[type=number],textarea,select{width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;padding:11px 13px;border-radius:10px;font-size:14px;font-family:inherit}
+textarea{min-height:90px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:2px solid #6366f1;border-color:#6366f1}
+.btn{background:#6366f1;border:none;color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-top:12px;transition:.15s}
+.btn:hover{background:#4f46e5}
+.btn.green{background:#22c55e}.btn.green:hover{background:#16a34a}
+.btn.red{background:#ef4444}.btn.red:hover{background:#dc2626}
+.btn.small{padding:6px 12px;font-size:12px;margin-top:0}
+.entry{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:14px;margin-bottom:10px}
+.entry .date{font-size:12px;color:#818cf8;font-weight:600}
+.entry .mood{font-size:12px;color:#fbbf24}
+.entry p{font-size:14px;margin-top:6px;white-space:pre-wrap}
+.mood-row{display:flex;gap:8px;flex-wrap:wrap}
+.mood-btn{font-size:22px;background:#0f172a;border:1px solid #334155;border-radius:10px;padding:8px 12px;cursor:pointer}
+.mood-btn.sel{border-color:#fbbf24;background:#422006}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:12px;text-align:center}
+.stat .num{font-size:26px;font-weight:800;color:#a5b4fc}
+.stat .lbl{font-size:12px;color:#94a3b8}
+.habit-row{display:flex;align-items:center;gap:10px;padding:10px;background:#0f172a;border:1px solid #334155;border-radius:10px;margin-bottom:8px}
+.habit-row span{flex:1;font-size:14px}
+.habit-row .ck{width:34px;height:34px;border-radius:8px;background:#1e293b;border:1px solid #334155;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px}
+.habit-row .ck.done{background:#22c55e;border-color:#22c55e}
+.tag{display:inline-block;background:#334155;border-radius:999px;padding:3px 10px;font-size:11px;margin:2px}
+.goal{display:flex;align-items:center;gap:10px;padding:10px;background:#0f172a;border:1px solid #334155;border-radius:10px;margin-bottom:8px}
+.goal input[type=checkbox]{width:20px;height:20px;accent-color:#22c55e}
+.goal .txt{flex:1;font-size:14px}
+.goal.done .txt{text-decoration:line-through;color:#64748b}
+footer{padding:14px;text-align:center;font-size:12px;color:#64748b}
+.hidden{display:none}
+.empty{text-align:center;color:#64748b;padding:30px 10px;font-size:14px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#22c55e;color:#052e16;padding:12px 20px;border-radius:10px;font-weight:600;font-size:14px;opacity:0;transition:.3s;z-index:99}
+.toast.show{opacity:1}
+@media(max-width:480px){.grid2{grid-template-columns:1fr}}
+</style>
 </head>
-<body style="font-family:system-ui;text-align:center;padding-top:60px;background:#0f172a;color:#e2e8f0">
-<h1>🚀 Hi, I'm Jay</h1>
-<p style="font-size:20px">Welcome to <b>justjaydev.github.io</b></p>
-<p style="color:#94a3b8">Made with ❤️ by JustJayDev</p>
+<body>
+<header>
+<h1>📔 Life Journal</h1>
+<p>by JustJayDev</p>
+</header>
+<div class="nav" id="nav">
+<button class="active" data-tab="daily">📝 Daily</button>
+<button data-tab="habits">✅ Habits</button>
+<button data-tab="goals">🎯 Goals</button>
+<button data-tab="mood">😊 Mood</button>
+<button data-tab="gratitude">🙏 Gratitude</button>
+<button data-tab="notes">📓 Notes</button>
+<button data-tab="trading">📊 Trading</button>
+<button data-tab="fitness">💪 Fitness</button>
+<button data-tab="books">📚 Books</button>
+<button data-tab="tags">🏷️ Tags</button>
+<button data-tab="stats">📈 Stats</button>
+</div>
+<main id="app"></main>
+<footer>© JustJayDev — All data saved in your browser</footer>
+<div id="toast" class="toast"></div>
+<script>
+const $ = id => document.getElementById(id);
+const q = s => document.querySelector(s);
+const qa = s => [...document.querySelectorAll(s)];
+let data = JSON.parse(localStorage.getItem('lj_data') || '{}');
+if(!data.daily) data.daily=[];
+if(!data.habits) data.habits=[{id:1,n:'Wake 4am'},{id:2,n:'Run 2km'},{id:3,n:'Physical Training'},{id:4,n:'Football Practice'},{id:5,n:'Trading Study'},{id:6,n:'Market Analysis'},{id:7,n:'App/Coding'},{id:8,n:'Reading & Writing'},{id:9,n:'Manhua 3+ Ch'},{id:10,n:'Gaming ≤1.5h'},{id:11,n:'Daily Journal'}];
+if(!data.habitLog) data.habitLog={};
+if(!data.goals) data.goals=[];
+if(!data.mood) data.mood=[];
+if(!data.gratitude) data.gratitude=[];
+if(!data.notes) data.notes=[];
+if(!data.trades) data.trades=[];
+if(!data.workouts) data.workouts=[];
+if(!data.books) data.books=[];
+if(!data.tags) data.tags=['life','coding','trading','fitness','gaming','manga','habits','winterarc'];
+if(!data.entryTags) data.entryTags={};
+function save(){localStorage.setItem('lj_data',JSON.stringify(data));}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+function today(){return new Date().toISOString().split('T')[0];}
+function now(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+function tab(){return q('.nav .active')?.dataset?.tab||'daily';}
+// ===== RENDERERS =====
+function renderDaily(){
+const app=$('app');
+app.innerHTML=`
+<div class="card">
+<h2>📝 Daily Journal Entry</h2>
+<label>Date</label><input type="date" id="d_date" value="${today()}">
+<label>Mood (1-10)</label><input type="number" id="d_mood" min="1" max="10" placeholder="5">
+<label>What happened today?</label><textarea id="d_text" placeholder="Write about your day..."></textarea>
+<label>Tags (comma separated)</label><input type="text" id="d_tags" placeholder="winterarc, trading, gym">
+<button class="btn" onclick="addDaily()">💾 Save Entry</button>
+</div>
+<div class="card"><h2>📖 Past Entries</h2><div id="d_list">${listDaily()}</div></div>`;
+}
+function listDaily(){
+if(!data.daily.length) return '<div class="empty">No entries yet — write your first one above ✍️</div>';
+return data.daily.slice().reverse().map(e=>`
+<div class="entry">
+<div class="date">📅 ${e.d} · ${e.t} ${e.m?`<span class="mood">· Mood ${e.m}/10</span>`:''}</div>
+${(data.entryTags[e.id]||[]).map(t=>`<span class="tag">${t}</span>`).join('')}
+<p>${e.x.replace(/</g,'&lt;')}</p>
+<button class="btn red small" onclick="delDaily('${e.id}')">🗑️</button>
+</div>`).join('');
+}
+function addDaily(){
+const d=$('d_date').value||today(), m=$('d_mood').value, x=$('d_text').value.trim();
+if(!x){toast('Write something first ✍️');return;}
+const id='d'+Date.now();
+data.daily.push({id,d,t:now(),m,x});
+const tg=$('d_tags').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+if(tg.length) data.entryTags[id]=tg;
+save();toast('Entry saved ✅');render();
+}
+function delDaily(id){data.daily=data.daily.filter(e=>e.id!==id);delete data.entryTags[id];save();render();}
+
+function renderHabits(){
+const app=$('app');
+const t=today();
+const done=(data.habitLog[t]||[]);
+const pct=data.habits.length?Math.round(done.length/data.habits.length*100):0;
+let chain=0;
+let d=new Date();
+while(true){const k=d.toISOString().split('T')[0];const arr=data.habitLog[k]||[];if(arr.length===data.habits.length){chain++;d.setDate(d.getDate()-1);}else break;}
+app.innerHTML=`
+<div class="card"><h2>✅ Daily Habits — ${t}</h2>
+<div class="grid2"><div class="stat"><div class="num">${done.length}/${data.habits.length}</div><div class="lbl">Today done</div></div>
+<div class="stat"><div class="num">${chain} 🔥</div><div class="lbl">Day streak</div></div></div>
+<div style="height:8px;background:#0f172a;border-radius:99px;margin:12px 0;overflow:hidden"><div style="height:100%;width:${pct}%;background:#22c55e"></div></div>
+${data.habits.map(h=>{
+const isDone=done.includes(h.id);
+return `<div class="habit-row"><span>${h.n}</span><div class="ck ${isDone?'done':''}" onclick="toggleHabit(${h.id})">${isDone?'✔':''}</div></div>`;}).join('')}
+<button class="btn small" onclick="addHabitPrompt()">+ Add habit</button>
+</div>`;
+}
+function toggleHabit(id){const t=today();if(!data.habitLog[t])data.habitLog[t]=[];const a=data.habitLog[t];const i=a.indexOf(id);if(i>-1)a.splice(i,1);else a.push(id);save();render();}
+function addHabitPrompt(){const n=prompt('Habit name:');if(!n||!n.trim())return;data.habits.push({id:Date.now(),n:n.trim()});save();render();}
+
+function renderGoals(){
+const app=$('app');
+app.innerHTML=`
+<div class="card"><h2>🎯 Add a Goal</h2>
+<label>Goal</label><input type="text" id="g_text" placeholder="Ship my first app">
+<label>Deadline</label><input type="date" id="g_date">
+<button class="btn" onclick="addGoal()">+ Add Goal</button></div>
+<div class="card"><h2>📋 My Goals</h2><div id="g_list">${listGoals()}</div></div>`;
+}
+function listGoals(){
+if(!data.goals.length) return '<div class="empty">No goals yet — dream big 🎯</div>';
+return data.goals.map((g,i)=>`
+<div class="goal ${g.done?'done':''}">
+<input type="checkbox" ${g.done?'checked':''} onchange="toggleGoal(${i})">
+<span class="txt">${g.x} ${g.dd?`<small style="color:#64748b">· due ${g.dd}</small>`:''}</span>
+<button class="btn red small" onclick="delGoal(${i})">🗑️</button>
+</div>`).join('');
+}
+function addGoal(){const x=$('g_text').value.trim();if(!x){toast('Enter a goal 🎯');return;}data.goals.push({x,dd:$('g_date').value||null,done:false});save();render();}
+function toggleGoal(i){data.goals[i].done=!data.goals[i].done;save();render();}
+function delGoal(i){data.goals.splice(i,1);save();render();}
+
+function renderMood(){
+const app=$('app');
+const faces=['😞','😕','😐','🙂','😄'];
+app.innerHTML=`
+<div class="card"><h2>😊 How are you feeling?</h2>
+<div class="mood-row">${faces.map((f,i)=>`<button class="mood-btn" onclick="logMood(${i+1},'${f}')">${f}</button>`).join('')}</div>
+<label>Note (optional)</label><input type="text" id="m_note" placeholder="Why do you feel this way?">
+</div>
+<div class="card"><h2>📈 Mood History</h2><div>${listMood()}</div></div>`;
+}
+function logMood(v,f){const n=$('m_note').value.trim();data.mood.push({d:today(),v,f,n});save();toast('Mood logged 😊');render();}
+function listMood(){
+if(!data.mood.length) return '<div class="empty">No moods logged yet</div>';
+return data.mood.slice().reverse().map(m=>`<div class="entry"><div class="date">${m.d} ${m.f}</div><p>${m.n||''}</p></div>`).join('');
+}
+function renderGratitude(){
+const app=$('app');
+app.innerHTML=`
+<div class="card"><h2>🙏 Grateful For...</h2>
+<label>What are you grateful for today?</label><textarea id="gr_text" placeholder="I'm grateful for..."></textarea>
+<button class="btn green" onclick="addGratitude()">+ Add</button></div>
+<div class="card"><h2>📖 Gratitude Log</h2><div>${listGratitude()}</div></div>`;
+}
+function addGratitude(){const x=$('gr_text').value.trim();if(!x){toast('Write something 🙏');return;}data.gratitude.push({d:today(),x});save();toast('Gratitude logged 🙏');render();}
+function listGratitude(){if(!data.gratitude.length)return'<div class="empty">No entries yet</div>';return data.gratitude.slice().reverse().map(g=>`<div class="entry"><div class="date">${g.d}</div><p>${g.x}</p></div>`).join('');}
+
+function renderNotes(){
+const app=$('app');
+app.innerHTML=`
+<div class="card"><h2>📓 Quick Note</h2>
+<label>Title</label><input type="text" id="n_title" placeholder="Note title">
+<label>Content</label><textarea id="n_text" placeholder="Write whatever..."></textarea>
+<button class="btn" onclick="addNote()">💾 Save Note</button></div>
+<div class="card"><h2>📖 All Notes</h2><div>${listNotes()}</div></div>`;
+}
+function addNote(){const t=$('n_title').value.trim()||'Untitled';const x=$('n_text').value.trim();if(!x){toast('Write something 📓');return;}data.notes.push({id:'n'+Date.now(),d:today(),t,x});save();toast('Note saved 📓');render();}
+function listNotes(){if(!data.notes.length)return'<div class="empty">No notes yet</div>';return data.notes.slice().reverse().map(n=>`<div class="entry"><div class="date">${n.d} · ${n.t}</div><p>${n.x}</p><button class="btn red small" onclick="delNote('${n.id}')">🗑️</button></div>`).join('');}
+function delNote(id){data.notes=data.notes.filter(n=>n.id!==id);save();render();}
+
+function renderTrading(){
+const app=$('app');
+const pnlDay=data.trades.filter(t=>t.d===today()).reduce((s,t)=>s+(parseFloat(t.pnl)||0),0);
+const pnlAll=data.trades.reduce((s,t)=>s+(parseFloat(t.pnl)||0),0);
+app.innerHTML=`
+<div class="card"><h2>📊 Log Trade</h2>
+<label>Date</label><input type="date" id="tr_date" value="${today()}">
+<label>Trade</label><input type="text" id="tr_name" placeholder="e.g. BANKNIFTY 10SEP">
+<label>P&L (₹)</label><input type="number" id="tr_pnl" step="0.01" placeholder="+150 or -80">
+<label>Note</label><input type="text" id="tr_note" placeholder="good setup, early exit">
+<button class="btn" onclick="addTrade()">+ Log Trade</button></div>
+<div class="card"><h2>📈 P&L Summary</h2>
+<div class="grid2"><div class="stat"><div class="num" style="color:${pnlDay>=0?'#22c55e':'#ef4444'}">₹${pnlDay}</div><div class="lbl">Today</div></div><div class="stat"><div class="num" style="color:${pnlAll>=0?'#22c55e':'#ef4444'}">₹${pnlAll}</div><div class="lbl">All Time</div></div></div>
+<h2 style="margin-top:16px;font-size:16px;color:#a5b4fc">📋 Trade History</h2><div>${listTrades()}</div></div>`;
+}
+function addTrade(){const d=$('tr_date').value||today();const n=$('tr_name').value.trim()||'Trade';const p=$('tr_pnl').value;const no=$('tr_note').value.trim();if(!p){toast('Enter P&L 📊');return;}data.trades.push({d,n,pnl:parseFloat(p),note:no});save();toast('Trade logged 📊');render();}
+function listTrades(){if(!data.trades.length)return'<div class="empty">No trades yet</div>';return data.trades.slice().reverse().map(t=>`<div class="entry"><div class="date">${t.d} · ${t.n}</div><p style="color:${t.pnl>=0?'#22c55e':'#ef4444'};font-weight:700">${t.pnl>=0?'+':''}₹${t.pnl} ${t.note?'— '+t.note:''}</p></div>`).join('');}
+function renderFitness(){
+const app=$('app');
+app.innerHTML=`
+<div class="card"><h2>💪 Log Workout</h2>
+<label>Date</label><input type="date" id="w_date" value="${today()}">
+<label>Type</label><select id="w_type"><option>Running</option><option>Gym / Strength</option><option>Football</option><option>Training</option><option>Other</option></select>
+<label>Duration (min)</label><input type="number" id="w_dur" placeholder="30">
+<label>Note</label><input type="text" id="w_note" placeholder="2km run, PB 9:20">
+<button class="btn green" onclick="addWorkout()">+ Log</button></div>
+<div class="card"><h2>📖 Workout History</h2><div>${listWorkouts()}</div></div>`;
+}
+function addWorkout(){const d=$('w_date').value||today();const ty=$('w_type').value;const du=$('w_dur').value;const no=$('w_note').value.trim();if(!du){toast('Enter duration 💪');return;}data.workouts.push({d,ty,du:parseInt(du),no});save();toast('Workout logged 💪');render();}
+function listWorkouts(){if(!data.workouts.length)return'<div class="empty">No workouts yet</div>';return data.workouts.slice().reverse().map(w=>`<div class="entry"><div class="date">${w.d} · ${w.ty} · ${w.du}min</div><p>${w.no||''}</p></div>`).join('');}
+
+function renderBooks(){
+const app=$('app');
+app.innerHTML=`
+<div class="card"><h2>📚 Track Reading</h2>
+<label>Book</label><input type="text" id="b_name" placeholder="Book title">
+<label>Status</label><select id="b_status"><option>Reading</option><option>Finished</option><option>Dropped</option><option>Want to read</option></select>
+<label>Pages / Progress</label><input type="text" id="b_pg" placeholder="e.g. p.120 or 60%">
+<button class="btn" onclick="addBook()">+ Add Book</button></div>
+<div class="card"><h2>📖 My Books</h2><div>${listBooks()}</div></div>`;
+}
+function addBook(){const n=$('b_name').value.trim();if(!n){toast('Enter book name 📚');return;}data.books.push({n,s:$('b_status').value,p:$('b_pg').value.trim()});save();toast('Book added 📚');render();}
+function listBooks(){if(!data.books.length)return'<div class="empty">No books yet</div>';return data.books.map((b,i)=>`<div class="entry"><div class="date">${b.s}</div><p>${b.n} ${b.p?`— ${b.p}`:''}</p><button class="btn red small" onclick="delBook(${i})">🗑️</button></div>`).join('');}
+function delBook(i){data.books.splice(i,1);save();render();}
+
+function renderTags(){
+const app=$('app');
+const counts={};
+Object.values(data.entryTags||{}).forEach(ts=>ts.forEach(t=>counts[t]=(counts[t]||0)+1));
+const all=[...new Set([...data.tags,...Object.keys(counts)])].sort();
+app.innerHTML=`
+<div class="card"><h2>🏷️ Manage Tags</h2>
+<label>Add a tag</label><input type="text" id="tag_new" placeholder="newtag">
+<button class="btn small" onclick="addTag()">+ Add Tag</button>
+<div style="margin-top:14px">${all.map(t=>`<span class="tag">${t} (${counts[t]||0})</span>`).join('')}</div></div>
+<div class="card"><h2>📚 Entries by Tag</h2><div>${listByTag(all)}</div></div>`;
+}
+function addTag(){const t=$('tag_new').value.trim().toLowerCase();if(!t)return;if(!data.tags.includes(t))data.tags.push(t);save();render();}
+function listByTag(all){
+if(!all.length)return'<div class="empty">No tags yet</div>';
+return all.map(t=>{
+const ids=Object.entries(data.entryTags||{}).filter(([,ts])=>ts.includes(t)).map(([id])=>id);
+const entries=data.daily.filter(e=>ids.includes(e.id));
+if(!entries.length)return'';
+return `<div class="entry"><div class="date">#${t} (${entries.length})</div>${entries.slice().reverse().map(e=>`<p>${e.d} — ${e.x.slice(0,80)}${e.x.length>80?'...':''}</p>`).join('')}</div>`;}).join('');
+}
+function renderStats(){
+const app=$('app');
+const entries=data.daily.length;
+const moods=data.mood.length;
+const notes=data.notes.length;
+const goalsDone=data.goals.filter(g=>g.done).length;
+const trades=data.trades.length;
+const workouts=data.workouts.length;
+const books=data.books.filter(b=>b.s==='Finished').length;
+const habitsTotal=Object.values(data.habitLog||{}).reduce((s,a)=>s+a.length,0);
+app.innerHTML=`
+<div class="card"><h2>📈 Your Life Stats</h2>
+<div class="grid2">
+<div class="stat"><div class="num">${entries}</div><div class="lbl">Journal Entries</div></div>
+<div class="stat"><div class="num">${moods}</div><div class="lbl">Moods Logged</div></div>
+<div class="stat"><div class="num">${habitsTotal}</div><div class="lbl">Habits Done</div></div>
+<div class="stat"><div class="num">${goalsDone}/${data.goals.length}</div><div class="lbl">Goals Done</div></div>
+<div class="stat"><div class="num">${trades}</div><div class="lbl">Trades Logged</div></div>
+<div class="stat"><div class="num">${workouts}</div><div class="lbl">Workouts</div></div>
+<div class="stat"><div class="num">${books}</div><div class="lbl">Books Finished</div></div>
+<div class="stat"><div class="num">${notes}</div><div class="lbl">Notes</div></div>
+</div></div>
+<div class="card"><h2>💾 Backup & Restore</h2>
+<p style="font-size:13px;color:#94a3b8;margin-bottom:8px">Your data is stored in this browser. Export a backup file so you never lose it — keep it in your Drive/TeraBox.</p>
+<button class="btn green" onclick="exportData()">⬇️ Export Backup (.json)</button>
+<button class="btn" onclick="document.getElementById('restoreInput').click()">⬆️ Restore from Backup</button>
+<input type="file" id="restoreInput" accept=".json" style="display:none" onchange="restoreData(event)">
+<button class="btn red" style="margin-left:8px" onclick="clearAll()">🗑️ Clear All Data</button>
+</div>`;
+}
+function exportData(){
+const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+const a=document.createElement('a');
+a.href=URL.createObjectURL(blob);a.download='life_journal_backup_'+today()+'.json';a.click();
+toast('Backup downloaded ⬇️');
+}
+function restoreData(ev){
+const f=ev.target.files[0];if(!f)return;
+const r=new FileReader();
+r.onload=()=>{try{const j=JSON.parse(r.result);data=j;save();toast('Restored ✅');render();}catch(e){toast('Invalid backup ❌');}};r.readAsText(f);
+}
+function clearAll(){if(!confirm('Delete ALL journal data? This cannot be undone.'))return;localStorage.removeItem('lj_data');location.reload();}
+
+const RENDERERS={daily:renderDaily,habits:renderHabits,goals:renderGoals,mood:renderMood,gratitude:renderGratitude,notes:renderNotes,trading:renderTrading,fitness:renderFitness,books:renderBooks,tags:renderTags,stats:renderStats};
+function render(){
+const t=tab();
+qa('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
+if(RENDERERS[t])RENDERERS[t]();
+}
+document.addEventListener('click',e=>{const b=e.target.closest('.nav button');if(b){const t=b.dataset.tab;qa('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');RENDERERS[t]&&RENDERERS[t]();}});
+render();
+</script>
 </body>
 </html>
