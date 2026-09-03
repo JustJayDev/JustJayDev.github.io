@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Arcane Forge — Spell Crafting Arena</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ==================== TITLE SCREEN ==================== -->
+    <div id="screen-title" class="screen active">
+        <div class="title-bg">
+            <div class="title-particles" id="titleParticles"></div>
+            <div class="title-content">
+                <div class="title-rune left"></div>
+                <div class="title-main">
+                    <h1 class="game-title">ARCANE</h1>
+                    <h1 class="game-title title-forge">FORGE</h1>
+                    <p class="tagline">Draw Your Destiny. Forge Your Magic.</p>
+                </div>
+                <div class="title-rune right"></div>
+            </div>
+            <div class="menu-buttons">
+                <button class="menu-btn primary" onclick="showScreen('character-create')">
+                    <span class="btn-icon">✦</span>
+                    Start Game
+                </button>
+                <button class="menu-btn secondary" onclick="showHowToPlay()">
+                    <span class="btn-icon">?</span>
+                    How to Play
+                </button>
+            </div>
+            <div class="server-info">
+                <span class="server-dot"></span>
+                Server: Runehaven (5 slots)
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== HOW TO PLAY ==================== -->
+    <div id="screen-howto" class="screen">
+        <div class="howto-container">
+            <button class="back-btn" onclick="showScreen('title')">← Back</button>
+            <h2>How to Play</h2>
+            <div class="howto-cards">
+                <div class="howto-card">
+                    <div class="howto-icon">⛏️</div>
+                    <h3>1. Mine</h3>
+                    <p>Enter the cave and mine Mana Stones from rocks. Give them to the Cave Manager to earn daily mana.</p>
+                </div>
+                <div class="howto-card">
+                    <div class="howto-icon">🔮</div>
+                    <h3>2. Forge Spells</h3>
+                    <p>Draw any pattern on the Spell Canvas. The game reads your drawing and generates a unique spell from it!</p>
+                </div>
+                <div class="howto-card">
+                    <div class="howto-icon">⚔️</div>
+                    <h3>3. Battle</h3>
+                    <p>Equip your spells and fight other mages in real-time. Draw your spells to cast them!</p>
+                </div>
+                <div class="howto-card">
+                    <div class="howto-icon">💰</div>
+                    <h3>4. Trade</h3>
+                    <p>List your spells in the Marketplace. Buy spells from other players. Build your collection.</p>
+                </div>
+                <div class="howto-card">
+                    <div class="howto-icon">📈</div>
+                    <h3>5. Progress</h3>
+                    <p>Level up your Magic Circle (1-9 stars) to increase mana and unlock more spell slots.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CHARACTER CREATE ==================== -->
+    <div id="screen-character-create" class="screen">
+        <div class="create-container">
+            <div class="create-progress">
+                <div class="progress-dot active" data-step="1"></div>
+                <div class="progress-line"></div>
+                <div class="progress-dot" data-step="2"></div>
+                <div class="progress-line"></div>
+                <div class="progress-dot" data-step="3"></div>
+            </div>
+
+            <!-- Step 1: Name -->
+            <div id="create-step-1" class="create-step active">
+                <h2>Name Your Mage</h2>
+                <p class="step-hint">Choose wisely — this name appears on the server</p>
+                <input type="text" id="player-name-input" class="name-input" placeholder="Enter your mage name..." maxlength="16">
+                <button class="next-btn" onclick="goCreateStep(2)">Next →</button>
+            </div>
+
+            <!-- Step 2: Appearance -->
+            <div id="create-step-2" class="create-step">
+                <h2>Create Your Look</h2>
+                <div class="avatar-preview">
+                    <canvas id="avatar-canvas" width="120" height="120"></canvas>
+                </div>
+                <div class="appearance-options">
+                    <div class="option-group">
+                        <label>Face</label>
+                        <div class="option-row" id="face-options"></div>
+                    </div>
+                    <div class="option-group">
+                        <label>Hair Style</label>
+                        <div class="option-row" id="hair-options"></div>
+                    </div>
+                    <div class="option-group">
+                        <label>Hair Color</label>
+                        <div class="color-row" id="hair-color-options"></div>
+                    </div>
+                    <div class="option-group">
+                        <label>Robe Color</label>
+                        <div class="color-row" id="robe-color-options"></div>
+                    </div>
+                </div>
+                <button class="next-btn" onclick="goCreateStep(3)">Next →</button>
+            </div>
+
+            <!-- Step 3: Element Reveal -->
+            <div id="create-step-3" class="create-step">
+                <h2>Your Element Awakens...</h2>
+                <div class="element-reveal" id="elementReveal">
+                    <div class="element-orb" id="elementOrb"></div>
+                    <div class="element-name" id="elementName"></div>
+                    <div class="element-desc" id="elementDesc"></div>
+                </div>
+                <button class="next-btn" onclick="finishCharacterCreate()">Begin Journey →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== WORLD HUB ==================== -->
+    <div id="screen-hub" class="screen">
+        <div class="hub-container">
+            <div class="hub-header">
+                <div class="player-info-bar">
+                    <canvas id="hub-avatar" width="40" height="40"></canvas>
+                    <div class="player-stats">
+                        <span class="player-name" id="hub-player-name"></span>
+                        <span class="player-circle" id="hub-player-circle"></span>
+                    </div>
+                    <div class="resource-bar">
+                        <div class="resource">
+                            <span class="res-icon">💎</span>
+                            <span class="res-val" id="hub-mana">100</span>
+                            <span class="res-max">/ <span id="hub-mana-max">100</span></span>
+                        </div>
+                        <div class="resource">
+                            <span class="res-icon">🪙</span>
+                            <span class="res-val" id="hub-gold">100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hub-world">
+                <div class="hub-title">Runehaven Village</div>
+                <div class="hub-map">
+                    <div class="hub-location arena" onclick="openLocation('arena')">
+                        <div class="loc-icon">⚔️</div>
+                        <span>Arena</span>
+                        <div class="loc-glow"></div>
+                    </div>
+                    <div class="hub-location cave" onclick="openLocation('cave')">
+                        <div class="loc-icon">⛏️</div>
+                        <span>Cave</span>
+                    </div>
+                    <div class="hub-location marketplace" onclick="openLocation('marketplace')">
+                        <div class="loc-icon">🏪</div>
+                        <span>Market</span>
+                    </div>
+                    <div class="hub-location grimoire" onclick="openLocation('grimoire')">
+                        <div class="loc-icon">📖</div>
+                        <span>Grimoire</span>
+                    </div>
+                    <div class="hub-location meditation" onclick="openLocation('meditation')">
+                        <div class="loc-icon">🧘</div>
+                        <span>Meditate</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hub-players">
+                <span class="players-label">Online: </span>
+                <span id="online-count">1</span>
+                <span class="players-label"> / 5</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CAVE / MINING ==================== -->
+    <div id="screen-cave" class="screen">
+        <div class="cave-container">
+            <button class="back-btn" onclick="showScreen('hub')">← Hub</button>
+            <div class="cave-header">
+                <h2>The Mana Cave</h2>
+                <div class="cave-stats">
+                    <span>Stones: <strong id="cave-stones">0</strong></span>
+                    <span>Mana: <strong id="cave-mana-earned">0</strong></span>
+                </div>
+            </div>
+
+            <div class="cave-arena">
+                <div class="cave-bg"></div>
+                <div class="rock" id="rock-1" onclick="mineRock(1)">
+                    <div class="rock-body"></div>
+                    <div class="rock-hp-bar"><div class="rock-hp-fill" id="rock1-hp-fill"></div></div>
+                    <div class="rock-particles" id="rock1-particles"></div>
+                </div>
+                <div class="rock" id="rock-2" onclick="mineRock(2)">
+                    <div class="rock-body"></div>
+                    <div class="rock-hp-bar"><div class="rock-hp-fill" id="rock2-hp-fill"></div></div>
+                    <div class="rock-particles" id="rock2-particles"></div>
+                </div>
+                <div class="rock" id="rock-3" onclick="mineRock(3)">
+                    <div class="rock-body"></div>
+                    <div class="rock-hp-bar"><div class="rock-hp-fill" id="rock3-hp-fill"></div></div>
+                    <div class="rock-particles" id="rock3-particles"></div>
+                </div>
+                <div class="cave-npc" id="caveNPC">
+                    <div class="npc-body"></div>
+                    <div class="npc-label">Cave Manager</div>
+                    <div class="npc-dialogue" id="npcDialogue"></div>
+                </div>
+            </div>
+
+            <div class="cave-inventory">
+                <div class="inventory-slot" id="inv-stones">
+                    <span class="slot-count" id="inv-stone-count">0</span>
+                    <span class="slot-label">Mana Stones</span>
+                </div>
+                <div class="inventory-slot" id="inv-crystals">
+                    <span class="slot-count" id="inv-crystal-count">0</span>
+                    <span class="slot-label">Crystals</span>
+                </div>
+                <div class="inventory-slot" id="inv-runes">
+                    <span class="slot-count" id="inv-rune-count">0</span>
+                    <span class="slot-label">Rune Shards</span>
+                </div>
+            </div>
+
+            <button class="action-btn submit-btn" id="submit-mining-btn" onclick="submitMining()" style="display:none;">
+                Submit to Cave Manager
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== MEDITATION GROVE ==================== -->
+    <div id="screen-meditation" class="screen">
+        <div class="meditation-container">
+            <button class="back-btn" onclick="showScreen('hub')">← Hub</button>
+            <div class="meditation-header">
+                <h2>Meditation Grove</h2>
+                <div class="circle-display">
+                    <canvas id="circle-canvas" width="160" height="160"></canvas>
+                    <div class="circle-info">
+                        <span id="current-circle">1-Star Circle</span>
+                        <span id="circle-mana-pool">100 MP</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <h3>Progress to Next Circle</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="circle-progress-fill"></div>
+                </div>
+                <span class="progress-text" id="circle-progress-text">0 / 500 mana earned</span>
+            </div>
+
+            <div class="meditation-options">
+                <div class="med-option" id="med-become-mage" onclick="meditate('become_mage')">
+                    <div class="med-icon">🌟</div>
+                    <div class="med-info">
+                        <h4>Become a Mage</h4>
+                        <p>Reach 1-Star Circle</p>
+                        <span class="med-cost">Cost: 300 Mana</span>
+                    </div>
+                    <div class="med-status" id="med-mage-status"></div>
+                </div>
+                <div class="med-option" onclick="meditate('expand_pool')">
+                    <div class="med-icon">💠</div>
+                    <div class="med-info">
+                        <h4>Expand Mana Pool</h4>
+                        <p>+50 permanent max mana</p>
+                        <span class="med-cost">Cost: 500 Mana</span>
+                    </div>
+                </div>
+                <div class="med-option" onclick="meditate('attune')">
+                    <div class="med-icon">🔮</div>
+                    <div class="med-info">
+                        <h4>Element Attunement</h4>
+                        <p>Chance to unlock second element</p>
+                        <span class="med-cost">Cost: 1000 Mana</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="daily-login">
+                <h3>Daily Login Bonus</h3>
+                <div class="login-streak">
+                    <span>Day <span id="login-day">1</span></span>
+                    <button class="claim-btn" id="claim-login-btn" onclick="claimDailyLogin()">Claim!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== GRIMOIRE / SPELL BOOK ==================== -->
+    <div id="screen-grimoire" class="screen">
+        <div class="grimoire-container">
+            <button class="back-btn" onclick="showScreen('hub')">← Hub</button>
+            <div class="grimoire-header">
+                <h2>Your Grimoire</h2>
+                <div class="grimoire-slots">
+                    <span>Spell Slots: <strong id="grimoire-slots">0</strong> / <strong id="grimoire-max-slots">2</strong></span>
+                </div>
+            </div>
+
+            <div class="grimoire-tabs">
+                <button class="tab-btn active" onclick="switchGrimoireTab('owned')">Owned</button>
+                <button class="tab-btn" onclick="switchGrimoireTab('equipped')">Equipped</button>
+            </div>
+
+            <div class="spells-grid" id="spells-grid"></div>
+
+            <button class="action-btn create-spell-btn" onclick="showScreen('spell-canvas')">
+                ✦ Forge New Spell
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== SPELL CANVAS / FORGE ==================== -->
+    <div id="screen-spell-canvas" class="screen">
+        <div class="canvas-container">
+            <div class="canvas-header">
+                <button class="back-btn" onclick="showScreen('grimoire')">← Grimoire</button>
+                <h2>Spell Forge</h2>
+                <div class="canvas-element-indicator">
+                    <span id="canvas-element-icon"></span>
+                    <span id="canvas-element-name"></span>
+                </div>
+            </div>
+
+            <div class="spell-preview-panel">
+                <div class="preview-stats">
+                    <h4>Spell Preview</h4>
+                    <div class="stat-row">
+                        <span>Tier:</span>
+                        <span id="preview-tier">—</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Damage:</span>
+                        <span id="preview-damage">—</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Mana Cost:</span>
+                        <span id="preview-mana">—</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Type:</span>
+                        <span id="preview-type">—</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Efficiency:</span>
+                        <span id="preview-efficiency">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="draw-area">
+                <canvas id="spell-canvas" width="320" height="280"></canvas>
+                <div class="canvas-overlay" id="canvasOverlay">
+                    <p>Draw your spell here</p>
+                    <small>Different shapes create different spell types</small>
+                </div>
+            </div>
+
+            <div class="canvas-tools">
+                <div class="tool-group">
+                    <button class="tool-btn active" id="tool-pen" onclick="setTool('pen')">✒️ Pen</button>
+                    <button class="tool-btn" id="tool-eraser" onclick="setTool('eraser')">🧹 Eraser</button>
+                    <button class="tool-btn" onclick="clearCanvas()">🗑️ Clear</button>
+                    <button class="tool-btn" onclick="undoStroke()">↩️ Undo</button>
+                </div>
+                <div class="tool-group">
+                    <div class="size-selector">
+                        <span>Size:</span>
+                        <button class="size-btn" onclick="setBrushSize(3)">S</button>
+                        <button class="size-btn active" onclick="setBrushSize(6)">M</button>
+                        <button class="size-btn" onclick="setBrushSize(12)">L</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spell-name-input">
+                <input type="text" id="spell-name" placeholder="Name your spell..." maxlength="24">
+            </div>
+
+            <div class="canvas-actions">
+                <button class="action-btn test-btn" onclick="testSpell()">🧪 Test Cast</button>
+                <button class="action-btn save-btn" onclick="saveSpell()">💾 Save Spell</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== BATTLE ARENA ==================== -->
+    <div id="screen-battle" class="screen">
+        <div class="battle-container">
+            <div class="battle-hud-top">
+                <div class="hud-player">
+                    <canvas id="battle-avatar-p1" width="30" height="30"></canvas>
+                    <span id="battle-p1-name">You</span>
+                    <div class="hp-bar-container">
+                        <div class="hp-bar-fill" id="p1-hp-fill"></div>
+                        <span id="p1-hp-text">100/100</span>
+                    </div>
+                    <div class="mp-bar-container">
+                        <div class="mp-bar-fill" id="p1-mp-fill"></div>
+                    </div>
+                </div>
+                <div class="battle-timer" id="battle-timer">60</div>
+                <div class="hud-player opponent">
+                    <span id="p2-hp-text">100/100</span>
+                    <div class="hp-bar-container">
+                        <div class="hp-bar-fill enemy" id="p2-hp-fill"></div>
+                    </div>
+                    <canvas id="battle-avatar-p2" width="30" height="30"></canvas>
+                    <span id="battle-p2-name">Opponent</span>
+                </div>
+            </div>
+
+            <div class="battle-arena">
+                <canvas id="battle-canvas" width="360" height="400"></canvas>
+                <div class="battle-spell-overlay" id="battleSpellOverlay">
+                    <canvas id="battle-draw-canvas" width="360" height="400"></canvas>
+                </div>
+            </div>
+
+            <div class="battle-controls">
+                <div class="joystick-area" id="joystick-area">
+                    <div class="joystick-base">
+                        <div class="joystick-stick" id="joystick-stick"></div>
+                    </div>
+                </div>
+                <div class="spell-bar" id="battle-spell-bar"></div>
+            </div>
+
+            <div class="battle-status" id="battle-status"></div>
+        </div>
+    </div>
+
+    <!-- ==================== BATTLE RESULT ==================== -->
+    <div id="screen-battle-result" class="screen">
+        <div class="result-container">
+            <div class="result-icon" id="result-icon"></div>
+            <h2 id="result-title">Victory!</h2>
+            <div class="result-rewards">
+                <div class="reward-item">
+                    <span class="reward-icon">🪙</span>
+                    <span id="reward-gold">+50 Gold</span>
+                </div>
+                <div class="reward-item">
+                    <span class="reward-icon">⭐</span>
+                    <span id="reward-fame">+20 Fame</span>
+                </div>
+                <div class="reward-item">
+                    <span class="reward-icon">💎</span>
+                    <span id="reward-mana">+100 Mana</span>
+                </div>
+            </div>
+            <button class="action-btn primary" onclick="showScreen('hub')">Return to Hub</button>
+            <button class="action-btn secondary" onclick="startBattle()">Rematch</button>
+        </div>
+    </div>
+
+    <!-- ==================== MARKETPLACE ==================== -->
+    <div id="screen-marketplace" class="screen">
+        <div class="marketplace-container">
+            <button class="back-btn" onclick="showScreen('hub')">← Hub</button>
+            <div class="marketplace-header">
+                <h2>Spell Marketplace</h2>
+                <div class="market-gold">
+                    <span class="res-icon">🪙</span>
+                    <span id="market-gold">100</span>
+                </div>
+            </div>
+
+            <div class="market-filters">
+                <select id="market-filter-element">
+                    <option value="all">All Elements</option>
+                    <option value="fire">Fire</option>
+                    <option value="water">Water</option>
+                    <option value="earth">Earth</option>
+                    <option value="wind">Wind</option>
+                    <option value="ice">Ice</option>
+                    <option value="lightning">Lightning</option>
+                    <option value="time">Time</option>
+                    <option value="void">Void</option>
+                </select>
+                <select id="market-sort">
+                    <option value="newest">Newest</option>
+                    <option value="cheapest">Cheapest</option>
+                    <option value="powerful">Most Powerful</option>
+                </select>
+            </div>
+
+            <div class="market-listings" id="market-listings"></div>
+        </div>
+    </div>
+
+    <!-- ==================== ARENA / BATTLE LOBBY ==================== -->
+    <div id="screen-arena" class="screen">
+        <div class="arena-container">
+            <button class="back-btn" onclick="showScreen('hub')">← Hub</button>
+            <div class="arena-header">
+                <h2>Battle Arena</h2>
+                <div class="arena-info">
+                    <span>Online: <strong id="arena-online">1</strong>/5</span>
+                </div>
+            </div>
+
+            <div class="loadout-section">
+                <h3>Select Spells to Equip</h3>
+                <div class="loadout-slots" id="loadout-slots"></div>
+                <p class="loadout-hint" id="loadout-hint">Equip at least 1 spell to battle</p>
+            </div>
+
+            <div class="arena-find">
+                <button class="battle-btn" id="find-match-btn" onclick="findMatch()">
+                    ⚔️ Find Opponent
+                </button>
+                <div class="searching" id="searching-display" style="display:none;">
+                    <div class="search-spinner"></div>
+                    <span>Searching for opponent...</span>
+                </div>
+            </div>
+
+            <div class="recent-opponents">
+                <h3>Recent Opponents</h3>
+                <div id="recent-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SHOP ==================== -->
+    <div id="screen-shop" class="screen">
+        <div class="shop-container">
+            <button class="back-btn" onclick="showScreen('hub')">← Hub</button>
+            <div class="shop-header">
+                <h2>Mage's Shop</h2>
+                <div class="shop-gold">
+                    <span class="res-icon">🪙</span>
+                    <span id="shop-gold">100</span>
+                </div>
+            </div>
+            <div class="shop-items" id="shop-items"></div>
+        </div>
+    </div>
+
+    <!-- ==================== PROFILE ==================== -->
+    <div id="screen-profile" class="screen">
+        <div class="profile-container">
+            <button class="back-btn" onclick="showScreen('hub')">← Hub</button>
+            <div class="profile-header">
+                <canvas id="profile-avatar" width="80" height="80"></canvas>
+                <div class="profile-info">
+                    <h2 id="profile-name">Mage</h2>
+                    <span class="profile-circle" id="profile-circle">1-Star Circle</span>
+                    <span class="profile-element" id="profile-element">Fire</span>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <span class="stat-val" id="stat-mana-earned">0</span>
+                    <span class="stat-label">Total Mana Earned</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val" id="stat-battles-won">0</span>
+                    <span class="stat-label">Battles Won</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val" id="stat-spells-created">0</span>
+                    <span class="stat-label">Spells Created</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-val" id="stat-fame">0</span>
+                    <span class="stat-label">Fame Points</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TEST BATTLE ARENA ==================== -->
+    <div id="screen-test-battle" class="screen">
+        <div class="test-battle-container">
+            <button class="back-btn" onclick="endTestBattle()">← Exit Test</button>
+            <div class="test-header">
+                <h2>Spell Test Arena</h2>
+                <span id="test-spell-name">Testing...</span>
+            </div>
+            <div class="test-arena">
+                <canvas id="test-battle-canvas" width="360" height="400"></canvas>
+                <div class="test-draw-area">
+                    <canvas id="test-draw-canvas" width="360" height="400"></canvas>
+                </div>
+            </div>
+            <div class="test-dummy">
+                <span>Target Dummy</span>
+                <div class="dummy-hp-bar">
+                    <div class="dummy-hp-fill" id="dummy-hp-fill"></div>
+                </div>
+                <span id="dummy-hp-text">100/100</span>
+            </div>
+            <div class="test-mana">
+                <span>Mana: <span id="test-mana">100</span>/<span id="test-mana-max">100</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SPELL DETAIL MODAL ==================== -->
+    <div id="spell-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSpellModal()">✕</button>
+            <h3 id="modal-spell-name">Spell Name</h3>
+            <div class="modal-spell-info">
+                <span id="modal-spell-tier">Tier 1</span>
+                <span id="modal-spell-element">Fire</span>
+            </div>
+            <canvas id="modal-spell-preview" width="120" height="100"></canvas>
+            <div class="modal-stats">
+                <div class="mstat"><span>Damage:</span> <strong id="mstat-damage">0</strong></div>
+                <div class="mstat"><span>Mana:</span> <strong id="mstat-mana">0</strong></div>
+                <div class="mstat"><span>Mastery:</span> <strong id="mstat-mastery">Lv.1</strong></div>
+                <div class="mstat"><span>Type:</span> <strong id="mstat-type">—</strong></div>
+            </div>
+            <div class="modal-drawing" id="modal-spell-drawing"></div>
+            <div class="modal-actions">
+                <button class="action-btn" id="modal-equip-btn" onclick="equipSpellFromModal()">⚔️ Equip</button>
+                <button class="action-btn" id="modal-sell-btn" onclick="listSpellForSale()">💰 Sell</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>
