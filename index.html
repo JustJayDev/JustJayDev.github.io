@@ -1,639 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Life Journal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
---bg:#0B0D12;--surface:#12151C;--elev:#181C24;--border:#232836;
---text:#F4F6FA;--text2:#9AA3B2;--text3:#5C6472;
---acc:#7C6CF0;--acc2:#8A7BF5;--teal:#2DD4BF;--green:#22C55E;--amber:#F5A623;--red:#EF4444;
---radius:14px;--shadow:0 6px 24px rgba(0,0,0,.35);
-}
-[data-theme=light]{
---bg:#F5F6FA;--surface:#FFFFFF;--elev:#FFFFFF;--border:#E5E7F0;
---text:#111827;--text2:#6B7280;--text3:#9CA3AF;
---shadow:0 6px 24px rgba(15,23,42,.08);
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
-/* layout */
-.app{max-width:680px;margin:0 auto;padding:16px 16px 96px}
-/* header */
-.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:-.02em}
-.logo .dot{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--acc),var(--teal));display:flex;align-items:center;justify-content:center;font-size:15px}
-.iconbtn{width:38px;height:38px;border-radius:11px;background:var(--surface);border:1px solid var(--border);color:var(--text2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:.15s}
-.iconbtn:hover{border-color:var(--acc);color:var(--acc)}
-/* nav */
-.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--border);display:flex;padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
-.bottomnav button{flex:1;background:none;border:none;color:var(--text3);padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:600;font-family:inherit;border-radius:10px;transition:.15s}
-.bottomnav button .ic{font-size:19px;line-height:1}
-.bottomnav button.active{color:var(--acc)}
-.bottomnav button.active .ic{transform:translateY(-1px)}
-.bottomnav button.active::after{content:'';width:18px;height:3px;border-radius:3px;background:var(--acc);margin-top:2px}
-/* sections */
-.sectitle{font-size:15px;font-weight:700;margin:18px 4px 10px;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
-.card h3{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin:10px 0 5px;letter-spacing:.01em}
-input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:11px 13px;border-radius:10px;font-size:14px;font-family:inherit;transition:.15s}
-textarea{min-height:110px;resize:vertical}
-input:focus,textarea:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 22%,transparent)}
-.btn{background:var(--acc);border:none;color:#fff;padding:11px 18px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;display:inline-flex;align-items:center;gap:7px;justify-content:center}
-.btn:hover{filter:brightness(1.1)}
-.btn:active{transform:scale(.97)}
-.btn.block{width:100%}
-.btn.green{background:var(--green)}.btn.amber{background:var(--amber);color:#111}.btn.red{background:var(--red)}.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text2)}.btn.small{padding:6px 11px;font-size:12px;border-radius:9px}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-/* entries, modals, toast, responsive */
-.entry{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;transition:.15s}
-.entry:hover{border-color:var(--text3)}
-.entry .hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:10px}
-.entry .hdr .dt{font-size:12px;color:var(--acc);font-weight:600}
-.entry .hdr .dt .moodi{color:var(--amber);margin-left:4px}
-.entry .bd{font-size:14px;white-space:pre-wrap;word-break:break-word;line-height:1.6}
-.entry .actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.tag{display:inline-block;background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc);border-radius:99px;padding:2px 9px;font-size:11px;font-weight:600;margin:1px 2px}
-.empty{text-align:center;padding:28px 10px;color:var(--text3);font-size:13px;line-height:1.7}
-/* toast */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;padding:11px 20px;border-radius:11px;font-weight:700;font-size:13px;opacity:0;transition:.3s;z-index:99;pointer-events:none;box-shadow:0 8px 30px rgba(0,0,0,.4)}
-.toast.show{opacity:1}
-/* modal */
-.modal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:.2s;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
-.modal.open{opacity:1;pointer-events:auto}
-.modal-inner{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:85vh;overflow-y:auto;padding:24px 20px calc(20px + env(safe-area-inset-bottom));transform:translateY(100%);transition:.25s}
-.modal.open .modal-inner{transform:translateY(0)}
-.modal-handle{width:36px;height:4px;border-radius:4px;background:var(--text3);margin:0 auto 16px}
-/* grid helpers */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.stat{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
-.stat .num{font-size:24px;font-weight:800;color:var(--acc)}
-.stat .lbl{font-size:11px;color:var(--text3);margin-top:2px;font-weight:500}
-/* habit row */
-.hrow{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:6px}
-.hrow span{flex:1;font-size:14px;font-weight:500}
-.hrow .ck{width:36px;height:36px;border-radius:9px;background:var(--surface);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:.15s;flex-shrink:0}
-.hrow .ck.done{background:var(--green);border-color:var(--green);color:#fff}
-/* goal row */
-.grow{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:6px}
-.grow .ckbx{width:20px;height:20px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
-.grow .txt{flex:1;font-size:14px;font-weight:500}
-.grow.done .txt{text-decoration:line-through;color:var(--text3)}
-/* mood row */
-.mrow{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0}
-.mbtn{font-size:24px;width:48px;height:48px;border-radius:12px;background:var(--bg);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
-.mbtn:hover{border-color:var(--acc)}
-.mbtn.sel{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 12%,transparent);box-shadow:0 0 0 2px color-mix(in srgb,var(--amber) 30%,transparent)}
-/* progress bar */
-.prog{height:8px;background:var(--bg);border-radius:99px;overflow:hidden;margin:10px 0}
-.prog .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width .4s}
-/* missing components */
-.section{margin-bottom:4px}
-.section-title{font-size:15px;font-weight:700;margin:18px 4px 10px;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
-.stat-c{text-align:center}
-.stat-n{font-size:26px;font-weight:800;color:var(--acc)}.stat-l{font-size:11px;color:var(--text3);margin-top:2px;font-weight:500}
-.entry-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;transition:.15s}
-.entry-card:hover{border-color:var(--text3)}
-.entry-date{font-size:12px;color:var(--acc);font-weight:600;margin-bottom:6px}
-.entry-text{font-size:14px;white-space:pre-wrap;word-break:break-word;line-height:1.6}
-.entry-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;align-items:center}
-.fade-in{animation:fadeIn .3s ease}@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-/* search overlay */
-.overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.6);display:flex;align-items:flex-start;justify-content:center;padding:16px;padding-top:60px}
-.overlay .sheet{background:var(--surface);border-radius:16px;width:100%;max-width:500px;padding:16px;border:1px solid var(--border)}
-.search-results{max-height:60vh;overflow-y:auto;margin-top:10px}
-.search-results .item{padding:10px;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px}
-.search-results .item:last-child{border:none}
-.search-results .item:hover{background:var(--bg)}
-/* responsive */
-@media(max-width:480px){
-  .grid2{grid-template-columns:1fr}
-  .tb-actions{gap:4px}
-}
-/* light theme overrides */
-[data-theme=light] .bottomnav{background:rgba(255,255,255,.95)}
-[data-theme=light] .topbar{background:rgba(255,255,255,.85)}
-[data-theme=light] .overlay{background:rgba(0,0,0,.3)}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JustJayDev — Under Development</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-</style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0B0D12;
+      color: #F4F6FA;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #7C6CF0, #2DD4BF);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 32px rgba(124, 108, 240, 0.35);
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(124, 108, 240, 0.15);
+      color: #7C6CF0;
+      border: 1px solid rgba(124, 108, 240, 0.3);
+      border-radius: 99px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #9AA3B2;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 360px;
+      margin-bottom: 36px;
+    }
+
+    .divider {
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, #7C6CF0, #2DD4BF);
+      border-radius: 99px;
+      margin: 0 auto 36px;
+    }
+
+    .made-by {
+      color: #5C6472;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .made-by span {
+      color: #7C6CF0;
+      font-weight: 600;
+    }
+
+    .instagram-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #7C6CF0, #2DD4BF);
+      color: #fff;
+      text-decoration: none;
+      padding: 13px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 20px rgba(124, 108, 240, 0.4);
+    }
+
+    .instagram-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(124, 108, 240, 0.5);
+    }
+
+    .instagram-btn:active {
+      transform: scale(0.97);
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 48px;
+    }
+
+    .dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #5C6472;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    .dots span:nth-child(2) { animation-delay: 0.2s; }
+    .dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 24px; }
+      p { font-size: 14px; }
+    }
+  </style>
 </head>
 <body>
-<div class="app" id="app">
-  <header class="topbar">
-    <div class="tb-inner">
-      <div class="logo"><span class="logo-dot"></span><h1>Life Journal</h1></div>
-      <div class="tb-actions">
-        <button class="icon-btn" id="btnSearch" title="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></button>
-        <button class="icon-btn" id="btnTheme" title="Toggle theme"><svg id="themeIcon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg></button>
-      </div>
-    </div>
-  </header>
-  <div class="overlay" id="searchOverlay" hidden>
-    <div class="sheet">
-      <input type="search" id="searchInput" class="input" placeholder="Search entries, trades, habits..." autocomplete="off">
-      <div id="searchResults" class="search-results"></div>
-    </div>
+
+  <div class="logo">JJ</div>
+
+  <div class="badge">🚀 Coming Soon</div>
+
+  <h1>JustJayDev</h1>
+
+  <p>Something awesome is in the works. This site is currently under development. Stay tuned!</p>
+
+  <div class="divider"></div>
+
+  <p class="made-by">Made with ❤️ by <span>Jay Kumar</span></p>
+
+  <a class="instagram-btn" href="https://www.instagram.com/jaykumar152010?igsi=MXF6eWd2bWg3am1rMA==" target="_blank" rel="noopener">
+  Follow on Instagram
+  </a>
+
+  <div class="dots">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-  <main id="views"></main>
-</div>
-<nav class="bottomnav" id="bottomNav">
-  <button data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21h-6v-6h-6v6H3z"/></svg><span>Home</span></button>
-  <button data-tab="journal"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Journal</span></button>
-  <button data-tab="progress"><svg viewBox="0 0 24 24"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></svg><span>Progress</span></button>
-  <button data-tab="insights"><svg viewBox="0 0 24 24"><path d="M4 19V5m16 14H2"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Insights</span></button>
-  <button data-tab="more"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg><span>More</span></button>
-</nav>
-<div class="modal" id="modal" hidden><div class="modal-box" id="modalBox"></div></div>
-<div class="toast" id="toast"></div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script>
 
-/* ============= STATE ============= */
-let S = {entries:[], habits:[], goals:[], trades:[], mood:'', theme:'dark', pin:''};
-let nav = 'home';
-let charts = {};
-
-const DBVER = 3;
-const LSKEY = 'lj_data';
-
-function loadState(){
-  try{
-    const raw = localStorage.getItem(LSKEY);
-    if(raw){ 
-      const d = JSON.parse(raw);
-      if(d.ver && d.ver >= DBVER){ S = {...S, ...d.data}; }
-      else { migrateData(d); }
-    }
-  }catch(e){console.warn('Load err',e)}
-  applyTheme(S.theme||'dark');
-}
-
-function saveState(){
-  try{ localStorage.setItem(LSKEY, JSON.stringify({ver:DBVER, data:S})); }catch(e){}
-}
-
-function migrateData(old){ /* merge old format */
-  if(old.entries) S.entries = old.entries;
-  if(old.habits) S.habits = old.habits;
-  if(old.goals) S.goals = old.goals;
-  if(old.trades) S.trades = old.trades;
-  saveState();
-}
-
-/* ============= THEME ============= */
-function applyTheme(t){
-  document.documentElement.setAttribute('data-theme', t);
-  S.theme = t;
-  const icon = document.getElementById('themeIcon');
-  if(icon) icon.innerHTML = t==='dark' ? '<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>' : '<circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4 4l1.5 1.5M18.5 18.5L20 20M2 12h2M20 12h2M4 20l1.5-1.5M18.5 5.5L20 4"/>';
-}
-
-function toggleTheme(){ applyTheme(S.theme==='dark'?'light':'dark'); saveState(); }
-
-/* ============= TOAST ============= */
-function toast(msg, dur=2500){
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(el._t);
-  el._t = setTimeout(()=>el.classList.remove('show'), dur);
-}
-
-/* ============= MODAL ============= */
-function showModal(html){
-  document.getElementById('modalBox').innerHTML = html;
-  document.getElementById('modal').hidden = false;
-}
-function closeModal(){ document.getElementById('modal').hidden = true; }
-
-/* ============= NAVIGATION ============= */
-function switchTab(tab){
-  nav = tab;
-  document.querySelectorAll('.bottomnav button').forEach(b => {
-    b.classList.toggle('active', b.dataset.tab === tab);
-  });
-  render();
-}
-
-/* ============= DATE HELPERS ============= */
-function today(){ return new Date().toISOString().slice(0,10); }
-function now(){ return new Date().toISOString(); }
-
-/* ============= INIT ============= */
-document.addEventListener('DOMContentLoaded', () => {
-  loadState();
-  document.getElementById('btnTheme').onclick = toggleTheme;
-  document.getElementById('btnSearch').onclick = () => {
-    document.getElementById('searchOverlay').hidden = false;
-    document.getElementById('searchInput').focus();
-  };
-  document.getElementById('searchOverlay').onclick = (e) => {
-    if(e.target.id === 'searchOverlay') document.getElementById('searchOverlay').hidden = true;
-  };
-  document.getElementById('searchInput').oninput = handleSearch;
-  document.querySelectorAll('.bottomnav button').forEach(b => {
-    b.onclick = () => switchTab(b.dataset.tab);
-  });
-  document.getElementById('modal').onclick = (e) => { if(e.target.id === 'modal') closeModal(); };
-  switchTab('home');
-});
-/* ============= HOME VIEW ============= */
-function renderHome(){
-  let h = `<div class="section fade-in">
-    <div class="section-title">At a Glance</div>
-    <div class="grid2">
-      <div class="card"><div class="stat-c"><span class="stat-n">${S.entries.length}<\/span><span class="stat-l">Entries<\/span><\/div><\/div>
-      <div class="card"><div class="stat-c"><span class="stat-n">${S.habits.length}<\/span><span class="stat-l">Habits<\/span><\/div><\/div>
-      <div class="card"><div class="stat-c"><span class="stat-n">${S.trades.length}<\/span><span class="stat-l">Trades<\/span><\/div><\/div>
-      <div class="card"><div class="stat-c"><span class="stat-n">${S.goals.length}<\/span><span class="stat-l">Goals<\/span><\/div><\/div>
-    <\/div>
-  <\/div>`;
-  
-  if(S.entries.length > 0){
-    const last = S.entries[S.entries.length-1];
-    h += `<div class="section fade-in">
-      <div class="section-title">Latest Entry<\/div>
-      <div class="card">
-        <div class="entry-date">${last.date}<\/div>
-        <div class="entry-text">${sanitize(last.text.slice(0,200))}${last.text.length>200?'...':''}<\/div>
-        ${last.mood ? `<span class="tag">${last.mood}<\/span>` : ''}
-      <\/div>
-    <\/div>`;
-  } else {
-    h += `<div class="section fade-in">
-      <div class="section-title">Quick Entry<\/div>
-      <div class="card empty-state">Tap Journal to write your first entry<\/div>
-    <\/div>`;
-  }
-  
-  h += `<div class="section fade-in">
-    <div class="section-title">Today's Mood<\/div>
-    <div class="card">
-      <div class="mrow">
-        ${['😊','😐','😢','😡','😴','🔥'].map(e => `<button class="mbtn${S.mood===e?' sel':''}" data-mood="${e}">${e}<\/button>`).join('')}
-      <\/div>
-    <\/div>
-  <\/div>
-  <div class="section fade-in">
-    <div class="section-title">Quick Actions<\/div>
-    <div class="grid2">
-      <button class="btn btn-green" onclick="switchTab('journal')">+ Journal<\/button>
-      <button class="btn btn-amber" onclick="switchTab('progress')">+ Habit<\/button>
-    <\/div>
-  <\/div>`;
-  return h;
-}
-
-/* ============= JOURNAL VIEW ============= */
-function renderJournal(){
-  let h = `<div class="section fade-in">
-    <div class="section-title">New Entry<\/div>
-    <div class="card">
-      <textarea class="input ta" id="entryText" rows="4" placeholder="What's on your mind?\/\/"><\/textarea>
-      <div class="mrow" style="margin:8px 0">
-        ${['😊','😐','😢','😡','😴','🔥'].map(e => `<button class="mbtn" data-mentry="${e}">${e}<\/button>`).join('')}
-      <\/div>
-      <button class="btn btn-green block" id="saveEntry">Save Entry<\/button>
-    <\/div>
-  <\/div>`;
-  
-  if(S.entries.length === 0){
-    h += `<div class="section fade-in"><div class="card empty-state">No entries yet. Write your first one!<\/div><\/div>`;
-  } else {
-    h += `<div class="section-title">All Entries (${S.entries.length})<\/div>`;
-    [...S.entries].reverse().forEach((e,i) => {
-      h += `<div class="entry-card fade-in">
-        <div class="entry-date">${e.date}<\/div>
-        <div class="entry-text">${sanitize(e.text)}<\/div>
-        <div class="entry-actions">
-          ${e.mood ? `<span class="tag">${e.mood}<\/span>` : ''}
-          <button class="btn btn-ghost btn-small" onclick="editEntry(${S.entries.length-1-i})">Edit<\/button>
-          <button class="btn btn-red btn-small" onclick="deleteEntry(${S.entries.length-1-i})">Del<\/button>
-        <\/div>
-      <\/div>`;
-    });
-  }
-  return h;
-}
-
-function sanitize(s){
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
-
-/* ============= RENDER DISPATCHER ============= */
-function render(){
-  const v = document.getElementById('views');
-  if(nav==='home') v.innerHTML = renderHome();
-  else if(nav==='journal') v.innerHTML = renderJournal();
-  else if(nav==='progress') v.innerHTML = renderProgress();
-  else if(nav==='insights') v.innerHTML = renderInsights();
-  else if(nav==='more') v.innerHTML = renderMore();
-  wireEvents();
-}
-
-/* ============= PROGRESS VIEW ============= */
-function renderProgress(){
-  let h = `<div class="section fade-in">
-    <div class="section-title">Habits</div>
-    <div class="card">
-      <div style="display:flex;gap:8px">
-        <input id="habitName" placeholder="New habit (e.g. Run 2km)" class="input">
-        <button class="btn btn-green" id="addHabit" style="flex-shrink:0">Add</button>
-      </div>
-      <div id="habitList" style="margin-top:12px">`;
-  if(S.habits.length===0){
-    h += `<div class="empty">No habits yet. Add your first one!</div>`;
-  } else {
-    S.habits.forEach((hb,i) => {
-      const done = hb.dates && hb.dates.includes(today());
-      h += `<div class="hrow">
-        <button class="ck ${done?'done':''}" onclick="toggleHabit(${i})">${done?'✓':''}</button>
-        <span>${sanitize(hb.name)}</span>
-        <span class="tag">${hb.dates?hb.dates.length:0}d</span>
-        <button class="btn btn-red btn-small" onclick="delHabit(${i})">✕</button>
-      </div>`;
-    });
-  }
-  h += `</div>
-    </div>
-  </div>
-  <div class="section fade-in">
-    <div class="section-title">Goals</div>
-    <div class="card">
-      <div style="display:flex;gap:8px">
-        <input id="goalName" placeholder="New goal" class="input">
-        <button class="btn btn-amber" id="addGoal" style="flex-shrink:0">Add</button>
-      </div>
-      <div id="goalList" style="margin-top:12px">`;
-  if(S.goals.length===0){
-    h += `<div class="empty">No goals yet.</div>`;
-  } else {
-    S.goals.forEach((g,i) => {
-      h += `<div class="grow ${g.done?'done':''}">
-        <input type="checkbox" class="ckbx" ${g.done?'checked':''} onchange="toggleGoal(${i})">
-        <span class="txt">${sanitize(g.name)}</span>
-        <button class="btn btn-red btn-small" onclick="delGoal(${i})">✕</button>
-      </div>`;
-    });
-  }
-  h += `</div>
-    </div>
-  </div>`;
-  return h;
-}
-
-/* ============= INSIGHTS VIEW ============= */
-function renderInsights(){
-  let h = `<div class="section fade-in">
-    <div class="section-title">Journal Stats</div>
-    <div class="grid2">
-      <div class="card"><div class="stat-c"><span class="stat-n">${S.entries.length}</span><span class="stat-l">Total Entries</span></div></div>
-      <div class="card"><div class="stat-c"><span class="stat-n">${S.trades.length}</span><span class="stat-l">Trades</span></div></div>
-    </div>
-  </div>`;
-  
-  if(S.entries.length > 0){
-    const moods = S.entries.filter(e=>e.mood).reduce((acc,e)=>{acc[e.mood]=(acc[e.mood]||0)+1;return acc;},{});
-    const topMood = Object.entries(moods).sort((a,b)=>b[1]-a[1])[0];
-    if(topMood) h += `<div class="card fade-in">Most common mood: ${topMood[0]} (${topMood[1]}x)</div>`;
-  }
-  
-  if(S.trades.length > 0){
-    const wins = S.trades.filter(t=>t.result==='win').length;
-    const total = S.trades.length;
-    const wr = total ? Math.round(wins/total*100) : 0;
-    h += `<div class="section fade-in">
-      <div class="section-title">Trading</div>
-      <div class="grid2">
-        <div class="card"><div class="stat-c"><span class="stat-n">${wr}%</span><span class="stat-l">Win Rate</span></div></div>
-        <div class="card"><div class="stat-c"><span class="stat-n">${wins}/${total}</span><span class="stat-l">W/L</span></div></div>
-      </div>
-    </div>`;
-  }
-  
-  if(S.habits.length > 0){
-    const totalDone = S.habits.reduce((sum,h)=>sum+(h.dates?h.dates.length:0),0);
-    h += `<div class="card fade-in"><div class="stat-c"><span class="stat-n">${totalDone}</span><span class="stat-l">Habit check-ins total</span></div></div>`;
-  }
-  
-  h += `<div class="section fade-in">
-    <div class="section-title">Calendar</div>
-    <div class="card" id="calendarView">${renderCalendar()}</div>
-  </div>`;
-  return h;
-}
-
-function renderCalendar(){
-  const now = new Date();
-  const y = now.getFullYear(), m = now.getMonth();
-  const first = new Date(y,m,1).getDay();
-  const days = new Date(y,m+1,0).getDate();
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  let h = `<div style="font-weight:700;font-size:15px;margin-bottom:10px">${months[m]} ${y}</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center">`;
-  ['S','M','T','W','T','F','S'].forEach(d => { h += `<div style="font-size:10px;color:var(--text3);padding:4px 0">${d}</div>`; });
-  for(let i=0;i<first;i++) h += `<div></div>`;
-  for(let d=1;d<=days;d++){
-    const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const hasEntry = S.entries.some(e => e.date === dateStr);
-    const hasMood = S.entries.find(e => e.date === dateStr && e.mood);
-    h += `<div style="padding:6px 0;border-radius:8px;background:${hasEntry?'var(--acc)':''};color:${hasEntry?'#fff':'var(--text2)'};font-size:13px;font-weight:${hasEntry?'700':'400'};position:relative">${d}${hasMood?`<span style="font-size:8px;position:absolute;bottom:1px;left:50%;transform:translateX(-50%)">${hasMood.mood}</span>`:''}</div>`;
-  }
-  h += `</div>`;
-  return h;
-}
-
-/* ============= MORE VIEW ============= */
-function renderMore(){
-  return `<div class="section fade-in">
-    <div class="section-title">Settings</div>
-    <div class="card">
-      <button class="btn btn-block btn-ghost" onclick="exportData()" style="margin-bottom:8px">📤 Export Data</button>
-      <button class="btn btn-block btn-ghost" onclick="document.getElementById('importFile').click()" style="margin-bottom:8px">📥 Import Data</button>
-      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
-      <button class="btn btn-block btn-red" onclick="if(confirm('Clear all data?')){localStorage.removeItem('lj_data');location.reload()}">🗑 Reset App</button>
-    </div>
-    <div class="section-title">About</div>
-    <div class="card">
-      <p style="font-size:13px;color:var(--text2)">Life Journal v3 — by <a href="https://justjaydev.github.io" style="color:var(--acc)" target="_blank">JustJayDev</a></p>
-      <p style="font-size:12px;color:var(--text3);margin-top:6px">All data stored locally. No server.</p>
-    </div>
-  </div>`;
-}
-
-/* ============= EVENT WIRING ============= */
-function wireEvents(){
-  // Mood on home
-  document.querySelectorAll('[data-mood]').forEach(b => {
-    b.onclick = () => {
-      S.mood = b.dataset.mood;
-      saveState();
-      render();
-    };
-  });
-  
-  // Entry mood
-  document.querySelectorAll('[data-mentry]').forEach(b => {
-    b.onclick = () => {
-      document.querySelectorAll('[data-mentry]').forEach(x => x.classList.remove('sel'));
-      b.classList.add('sel');
-    };
-  });
-  
-  // Save entry
-  const saveBtn = document.getElementById('saveEntry');
-  if(saveBtn){
-    saveBtn.onclick = () => {
-      const txt = document.getElementById('entryText');
-      if(!txt || !txt.value.trim()) return toast('Write something first!');
-      const sel = document.querySelector('[data-mentry].sel');
-      S.entries.push({
-        text: txt.value.trim(),
-        date: today(),
-        mood: sel ? sel.dataset.mentry : '',
-        createdAt: now()
-      });
-      saveState();
-      toast('Entry saved!');
-      render();
-    };
-  }
-  
-  // Add habit
-  const addHb = document.getElementById('addHabit');
-  if(addHb) addHb.onclick = () => {
-    const inp = document.getElementById('habitName');
-    if(!inp || !inp.value.trim()) return toast('Enter a habit name');
-    S.habits.push({name: inp.value.trim(), dates: []});
-    saveState();
-    toast('Habit added!');
-    render();
-  };
-  
-  // Add goal
-  const addGl = document.getElementById('addGoal');
-  if(addGl) addGl.onclick = () => {
-    const inp = document.getElementById('goalName');
-    if(!inp || !inp.value.trim()) return toast('Enter a goal');
-    S.goals.push({name: inp.value.trim(), done: false});
-    saveState();
-    toast('Goal added!');
-    render();
-  };
-}
-
-/* ============= ACTIONS ============= */
-function toggleHabit(i){
-  const hb = S.habits[i];
-  if(!hb.dates) hb.dates = [];
-  const idx = hb.dates.indexOf(today());
-  if(idx > -1) hb.dates.splice(idx,1);
-  else hb.dates.push(today());
-  saveState();
-  render();
-}
-
-function delHabit(i){
-  S.habits.splice(i,1);
-  saveState();
-  render();
-}
-
-function toggleGoal(i){
-  S.goals[i].done = !S.goals[i].done;
-  saveState();
-  render();
-}
-
-function delGoal(i){
-  S.goals.splice(i,1);
-  saveState();
-  render();
-}
-
-function editEntry(i){
-  const e = S.entries[i];
-  const newText = prompt('Edit entry:', e.text);
-  if(newText !== null && newText.trim()){
-    S.entries[i].text = newText.trim();
-    saveState();
-    toast('Entry updated!');
-    render();
-  }
-}
-
-function deleteEntry(i){
-  if(confirm('Delete this entry?')){
-    S.entries.splice(i,1);
-    saveState();
-    toast('Entry deleted');
-    render();
-  }
-}
-
-/* ============= SEARCH ============= */
-function handleSearch(){
-  const q = document.getElementById('searchInput').value.toLowerCase().trim();
-  const res = document.getElementById('searchResults');
-  if(!q){ res.innerHTML = ''; return; }
-  let results = [];
-  S.entries.forEach(e => {
-    if(e.text.toLowerCase().includes(q) || (e.date && e.date.includes(q))){
-      results.push({type:'entry', text: e.text.slice(0,80), date: e.date});
-    }
-  });
-  S.habits.forEach(h => {
-    if(h.name.toLowerCase().includes(q)) results.push({type:'habit', text: h.name, date: (h.dates?h.dates.length+' check-ins':'')});
-  });
-  S.trades.forEach(t => {
-    if(t.pair && t.pair.toLowerCase().includes(q)) results.push({type:'trade', text: t.pair, date: t.date});
-  });
-  res.innerHTML = results.length ? results.map(r => `<div class="item"><strong>${r.type}</strong> ${sanitize(r.text)} <span style="color:var(--text3)">${r.date}</span></div>`).join('') : '<div class="empty">No results</div>';
-}
-
-/* ============= EXPORT / IMPORT ============= */
-function exportData(){
-  const blob = new Blob([JSON.stringify({ver:DBVER, data:S, exportedAt: now()}, null, 2)], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `life-journal-backup-${today()}.json`;
-  a.click();
-  toast('Data exported!');
-}
-
-function importData(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try{
-      const d = JSON.parse(ev.target.result);
-      if(d.data && (d.data.entries || d.data.habits)){
-        S = {...S, ...d.data};
-        saveState();
-        toast('Data imported! Refreshing...');
-        setTimeout(() => location.reload(), 500);
-      } else {
-        toast('Invalid backup file');
-      }
-    } catch(err){
-      toast('Error importing data');
-    }
-  };
-  reader.readAsText(file);
-}
-
-/* ============= FIX: close stray braces ============= */
-// (the extra } from sanitize is already handled)
-
-</script>
 </body>
 </html>
