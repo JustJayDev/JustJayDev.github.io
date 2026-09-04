@@ -8,15 +8,387 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>JustJayDev</title>
 <style>
-/* Full CSS loaded in next chunk */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0B0D12;--surface:#12151C;--elev:#181C24;--border:#232836;--text:#F4F6FA;--text2:#9AA3B2;--text3:#5C6472;--acc:#7C6CF0;--acc2:#8A7BF5;--teal:#2DD4BF;--green:#22C55E;--red:#EF4444;--amber:#F5A623;--radius:16px;--rs:10px;--rx:8px}
+:root,[data-theme=light]{--bg:#F5F6FA;--surface:#FFFFFF;--elev:#F0F1F5;--border:#E2E4EA;--text:#0F1117;--text2:#6B7280;--text3:#9CA3AF}
+[data-theme=light]::-webkit-scrollbar{background:#E2E4EA}
+html{scroll-behavior:smooth;min-height:100%}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--acc);border-radius:99px}
+::selection{background:var(--acc);color:#fff}
+
+/* BG ORBS */
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orbs .orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.15;animation:float 8s ease-in-out infinite}
+.bg-orbs .orb:nth-child(1){width:400px;height:400px;background:var(--acc);top:-100px;left:-100px;animation-delay:0s}
+.bg-orbs .orb:nth-child(2){width:350px;height:350px;background:var(--teal);bottom:-80px;right:-80px;animation-delay:-3s}
+.bg-orbs .orb:nth-child(3){width:250px;height:250px;background:var(--amber);top:50%;left:60%;animation-delay:-5s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-20px) scale(1.05)}}
+
+/* PUBLIC PAGE */
+.public-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;position:relative;z-index:1}
+.loader-dots{display:flex;gap:7px;margin-bottom:48px}
+.loader-dots span{width:7px;height:7px;border-radius:50%;background:var(--text3);animation:blink 1.4s ease-in-out infinite}
+.loader-dots span:nth-child(2){animation-delay:.2s}
+.loader-dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+.made-by-line{color:var(--text3);font-size:14px;text-align:center;position:relative}
+.made-by-line .clickable-name{color:var(--acc);font-weight:700;cursor:pointer;user-select:none;transition:color .2s;display:inline-block}
+.made-by-line .clickable-name:hover{color:var(--acc2)}
+.click-hint{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);color:var(--text3);font-size:11px;opacity:0;transition:opacity .3s;pointer-events:none}
+.public-page:hover .click-hint{opacity:.6}
+
+/* THEME TOGGLE */
+.theme-toggle{position:fixed;top:16px;right:16px;z-index:999;width:38px;height:38px;border-radius:var(--rs);background:var(--surface);border:1px solid var(--border);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:border-color .2s,color .2s}
+.theme-toggle:hover{border-color:var(--acc);color:var(--acc)}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:flex-end;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .3s;padding:0}
+.modal-bg.active{opacity:1;pointer-events:all}
+.modal-card{background:var(--surface);border:1px solid var(--border);border-radius:24px 24px 0 0;padding:36px 28px;width:100%;max-width:500px;text-align:center;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.modal-bg.active .modal-card{transform:translateY(0)}
+.modal-icon{font-size:40px;margin-bottom:12px}
+.modal-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px}
+.modal-subtitle{font-size:13px;color:var(--text3);margin-bottom:24px;line-height:1.5}
+.modal-subtitle .fc{color:var(--red);font-weight:700}
+.pass-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--rs);color:var(--text);padding:14px 16px;font-size:18px;font-family:inherit;text-align:center;letter-spacing:6px;outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:14px}
+.pass-input:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(124,108,240,.2)}
+.pass-input.shake{border-color:var(--red);animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.btn-p{width:100%;background:linear-gradient(135deg,var(--acc),var(--teal));border:none;border-radius:var(--rs);color:#fff;padding:14px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .2s,transform .15s;margin-bottom:10px}
+.btn-p:hover{opacity:.9}
+.btn-p:active{transform:scale(.97)}
+.btn-p:disabled{opacity:.35;cursor:not-allowed}
+.btn-g{background:none;border:none;color:var(--text3);font-size:13px;font-family:inherit;cursor:pointer;padding:8px;transition:color .2s}
+.btn-g:hover{color:var(--text2)}
+.modal-error{color:var(--red);font-size:12px;font-weight:600;margin-top:6px;min-height:20px}
+
+/* FULL PAGE */
+.full-page{display:none}
+.full-page.show{display:block}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,13,18,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.topbar-l{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-.02em}
+.topbar-r{background:rgba(124,108,240,.12);border:1px solid rgba(124,108,240,.25);border-radius:99px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.05em;text-transform:uppercase}
+
+/* SCROLL PROGRESS */
+.scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--teal));z-index:999;transition:width .1s;width:0%}
+
+/* CONTAINER */
+.container{max-width:680px;margin:0 auto;padding:0 16px 100px}
+
+/* HERO */
+.hero{text-align:center;padding:48px 0 32px}
+.hero-pw{width:120px;height:120px;border-radius:50%;margin:0 auto 20px;border:3px solid var(--acc);overflow:hidden;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative;box-shadow:0 0 30px rgba(124,108,240,.3)}
+.hero-pw img{width:100%;height:100%;object-fit:cover}
+.hero-pw .ph{font-size:10px;color:var(--text3);text-align:center;line-height:1.4;padding:8px}
+.hero-pw .cam{position:absolute;bottom:4px;right:4px;background:var(--acc);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;transition:transform .15s}
+.hero-pw .cam:hover{transform:scale(1.1)}
+.hero-name{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-.03em;margin-bottom:4px}
+.hero-handle{font-size:14px;font-weight:600;color:var(--acc);margin-bottom:6px}
+.hero-bio{font-size:14px;color:var(--text2);max-width:320px;margin:0 auto;line-height:1.6}
+.hero-stats{display:flex;gap:16px;justify-content:center;margin-top:16px}
+.hero-stat{text-align:center}
+.hero-stat .n{font-size:18px;font-weight:800;color:var(--acc)}
+.hero-stat .l{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* SECTION */
+.section{margin-bottom:8px}
+.section-h{display:flex;align-items:center;gap:8px;padding:20px 0 12px}
+.section-i{font-size:18px}
+.section-t{font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:box-shadow .2s}
+.card:hover{box-shadow:0 4px 20px rgba(0,0,0,.15)}
+
+/* ID ROW */
+.id-item{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);gap:14px}
+.id-item:last-child{border-bottom:none}
+.id-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.id-icon.ff{background:rgba(255,136,0,.12)}
+.id-icon.fc{background:rgba(0,100,200,.12)}
+.id-icon.game{background:rgba(124,108,240,.12)}
+.id-info{flex:1;min-width:0}
+.id-platform{font-size:12px;color:var(--text3);margin-bottom:1px}
+.id-name{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.id-name.ph{color:var(--text3);font-weight:500;font-size:13px}
+.id-copy{background:rgba(124,108,240,.1);border:1px solid rgba(124,108,240,.2);border-radius:var(--rs);padding:5px 10px;font-size:11px;font-weight:600;color:var(--acc);cursor:pointer;transition:background .2s;flex-shrink:0}
+.id-copy:hover{background:rgba(124,108,240,.2)}
+.id-copy.copied{color:var(--green);border-color:rgba(34,197,94,.3)}
+
+/* SOCIAL */
+.social-item{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);gap:14px;text-decoration:none;color:var(--text);transition:background .15s;cursor:pointer}
+.social-item:last-child{border-bottom:none}
+.social-item:hover{background:rgba(255,255,255,.02)}
+.social-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.social-icon.ig{background:rgba(224,36,94,.12)}
+.social-icon.yt{background:rgba(255,0,0,.1)}
+.social-icon.dc{background:rgba(88,101,242,.12)}
+.social-icon.gh{background:rgba(124,108,240,.12)}
+.social-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:1px}
+.social-handle{font-size:12px;color:var(--text3)}
+.social-arrow{margin-left:auto;color:var(--text3);font-size:20px;flex-shrink:0}
+.social-ph .social-name{color:var(--text3);font-weight:500}
+
+/* UPI */
+.upi-inner{padding:28px 20px;text-align:center}
+.upi-qr{width:160px;height:160px;border-radius:16px;background:var(--bg);border:2px dashed var(--border);margin:0 auto 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;color:var(--text3);line-height:1.4;cursor:pointer;transition:border-color .2s}
+.upi-qr:hover{border-color:var(--acc)}
+.upi-qr img{width:100%;height:100%;object-fit:cover;border-radius:14px}
+.upi-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+.upi-note{font-size:12px;color:var(--text3)}
+
+/* PLACEHOLDER */
+.ph-card{padding:32px 20px;text-align:center}
+.ph-card .phi{font-size:36px;margin-bottom:12px}
+.ph-card .pht{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
+.ph-card .phd{font-size:13px;color:var(--text3);line-height:1.5}
+
+/* ABOUT */
+.about-content{padding:18px;font-size:14px;color:var(--text2);line-height:1.7}
+.ph-text{color:var(--text3);font-style:italic}
+
+/* SHARE */
+.share-row{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px}
+.share-btn{flex:1;min-width:100px;padding:10px 14px;border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--text2);display:flex;align-items:center;justify-content:center;gap:6px;transition:border-color .2s,color .2s}
+.share-btn:hover{border-color:var(--acc);color:var(--acc)}
+.share-btn.whatsapp:hover{border-color:#25D366;color:#25D366}
+.share-btn.twitter:hover{border-color:#1DA1F2;color:#1DA1F2}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--acc);color:#fff;padding:11px 22px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* CONFETTI */
+.confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;overflow:hidden}
+.confetti-piece{position:absolute;width:8px;height:8px;top:-10px;animation:confettiFall 3s linear forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+/* MODAL BG */
+.modal-bg .modal-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent)}
+
+/* INSTALL BANNER */
+.install-banner{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;z-index:80;transform:translateY(100%);transition:transform .3s}
+.install-banner.show{transform:translateY(0)}
+.install-banner span{font-size:14px;font-weight:600;color:var(--text)}
+.install-banner button{background:var(--acc);border:none;border-radius:var(--rs);color:#fff;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer}
+.install-banner .dismiss{background:none;border:1px solid var(--border);color:var(--text3);margin-right:8px}
+
+/* SECTION ANIMATIONS */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* BADGE DOTS NAV */
+.dot-nav{position:fixed;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:40}
+.dot-nav .dot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .2s,transform .2s}
+.dot-nav .dot.active{background:var(--acc);transform:scale(1.4)}
+
+/* MISC */
+[data-theme=light] .topbar{background:rgba(245,246,250,.88)}
+[data-theme=light] .public-page{background:var(--bg)}
 </style>
 </head>
 <body>
-<div id="app"></div>
-<script src="app.js?ver=2"></script>
+
+<!-- BG ORBS -->
+<div class="bg-orbs"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="themeToggle" title="Toggle theme">&#9788;</button>
+
+<!-- PUBLIC PAGE -->
+<div class="public-page" id="publicPage">
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+  <p class="made-by-line">Made with &#10084;&#65039; by <span class="clickable-name" id="accessTrigger">Jay Kumar</span></p>
+  <div class="click-hint">Tap my name 3 times to unlock</div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal-card">
+    <div class="modal-icon">&#128274;</div>
+    <div class="modal-title">Enter Access Code</div>
+    <div class="modal-subtitle" id="modalSub">3 clicks detected. Enter the code to continue.</div>
+    <input type="password" class="pass-input" id="passInput" maxlength="10" placeholder="&#8226;&#8226;&#8226;&#8226;" autocomplete="off" />
+    <button class="btn-p" id="unlockBtn">Unlock</button>
+    <button class="btn-g" id="cancelBtn">Cancel</button>
+    <div class="modal-error" id="modalErr"></div>
+  </div>
+</div>
+
+<!-- FULL HIDDEN PAGE -->
+<div class="full-page" id="fullPage">
+  <div class="topbar">
+    <div class="topbar-l">JustJayDev</div>
+    <div class="topbar-r">&#128274; Private</div>
+  </div>
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero reveal" id="hero">
+      <div class="hero-pw">
+        <img id="heroImg" style="display:none" />
+        <div id="heroPh"><div style="font-size:32px;margin-bottom:4px">&#128100;</div><div class="ph">YOUR PHOTO<br>HERE</div></div>
+        <div class="cam" title="Set as wallpaper" id="wallpaperBtn">&#128247;</div>
+      </div>
+      <div class="hero-name">Jay Kumar</div>
+      <div class="hero-handle">@JustJayDev</div>
+      <div class="hero-bio"><span class="ph-text">Your bio goes here. Edit app.js to customize.</span></div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="n" id="viewCount">0</div><div class="l">Views</div></div>
+        <div class="hero-stat"><div class="n" id="visitTime">--</div><div class="l">Last Visit</div></div>
+      </div>
+    </div>
+
+    <!-- GAMES -->
+    <div class="section reveal">
+      <div class="section-h"><span class="section-i">&#127918;</span><span class="section-t">My Games</span></div>
+      <div class="card">
+        <div class="ph-card">
+          <div class="phi">&#127918;</div>
+          <div class="pht">Game Coming Soon</div>
+          <div class="phd">Add your game screenshots and descriptions here.<br>Edit app.js to showcase your games.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAMING IDs -->
+    <div class="section reveal">
+      <div class="section-h"><span class="section-i">&#127918;</span><span class="section-t">Gaming IDs</span></div>
+      <div class="card">
+        <div class="id-item">
+          <div class="id-icon ff">&#128293;</div>
+          <div class="id-info"><div class="id-platform">Free Fire</div><div class="id-name ph" id="ffId">Your FF Name & ID</div></div>
+          <div class="id-copy" id="copyFf" onclick="cpD('ffId','copyFf')">Copy</div>
+        </div>
+        <div class="id-item">
+          <div class="id-icon fc">&#9917;</div>
+          <div class="id-info"><div class="id-platform">FC Mobile</div><div class="id-name ph" id="fcId">Your FC Name & ID</div></div>
+          <div class="id-copy" id="copyFc" onclick="cpD('fcId','copyFc')">Copy</div>
+        </div>
+        <div class="id-item">
+          <div class="id-icon game">&#127918;</div>
+          <div class="id-info"><div class="id-platform">Other Game</div><div class="id-name ph" id="gameId">Your Game Name & ID</div></div>
+          <div class="id-copy" id="copyGame" onclick="cpD('gameId','copyGame')">Copy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIALS -->
+    <div class="section reveal">
+      <div class="section-h"><span class="section-i">&#128279;</span><span class="section-t">Connect With Me</span></div>
+      <div class="card">
+        <a class="social-item" href="#" onclick="return false;">
+          <div class="social-icon ig">&#128247;</div>
+          <div><div class="social-name">Instagram</div><div class="social-handle ph-text">@your_username</div></div>
+          <div class="social-arrow">&#8250;</div>
+        </a>
+        <div class="social-item social-ph">
+          <div class="social-icon yt">&#9654;&#65039;</div>
+          <div><div class="social-name">YouTube</div><div class="social-handle ph-text">@your_channel</div></div>
+          <div class="social-arrow">&#8250;</div>
+        </div>
+        <div class="social-item social-ph">
+          <div class="social-icon dc">&#128172;</div>
+          <div><div class="social-name">Discord</div><div class="social-handle ph-text">your_discord#0000</div></div>
+          <div class="social-arrow">&#8250;</div>
+        </div>
+        <a class="social-item" href="https://github.com/JustJayDev" target="_blank">
+          <div class="social-icon gh">&#128187;</div>
+          <div><div class="social-name">GitHub</div><div class="social-handle">JustJayDev</div></div>
+          <div class="social-arrow">&#8250;</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- SHARE -->
+    <div class="section reveal">
+      <div class="section-h"><span class="section-i">&#128279;</span><span class="section-t">Share</span></div>
+      <div class="card">
+        <div class="share-row">
+          <button class="share-btn whatsapp" onclick="shareW()">&#128279; Copy Link</button>
+          <button class="share-btn" onclick="copyAll()">&#128203; Copy All IDs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPPORT / UPI -->
+    <div class="section reveal">
+      <div class="section-h"><span class="section-i">&#128176;</span><span class="section-t">Support Me</span></div>
+      <div class="card">
+        <div class="upi-inner">
+          <div class="upi-qr" id="upiQr">
+            <div style="font-size:36px;margin-bottom:4px">&#128247;</div>
+            <div>UPI QR Code</div>
+            <div style="font-size:10px">Replace with your QR image</div>
+          </div>
+          <div class="upi-title">Scan to Pay</div>
+          <div class="upi-note">All payments go directly to your UPI</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="section reveal">
+      <div class="section-h"><span class="section-i">&#128640;</span><span class="section-t">My Projects</span></div>
+      <div class="card">
+        <div class="ph-card">
+          <div class="phi">&#128640;</div>
+          <div class="pht">Projects Coming Soon</div>
+          <div class="phd">Add your Android apps and projects here.<br>Edit app.js to showcase your work.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="section reveal">
+      <div class="section-h"><span class="section-i">&#128100;</span><span class="section-t">About Me</span></div>
+      <div class="card">
+        <div class="about-content">
+          <p class="ph-text">Write something about yourself here. Who you are, what you do, your interests, goals, and what makes you unique...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VCARD -->
+    <div class="section reveal">
+      <div class="section-h"><span class="section-i">&#128100;</span><span class="section-t">Save Contact</span></div>
+      <div class="card">
+        <div class="share-row">
+          <button class="share-btn" onclick="dlVcard()">&#128203; Download vCard</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- container -->
+</div><!-- full-page -->
+
+<!-- DOT NAV -->
+<div class="dot-nav" id="dotNav"></div>
+
+<!-- INSTALL BANNER -->
+<div class="install-banner" id="installBanner">
+  <span>&#128187; Install as App</span>
+  <div><button class="dismiss" onclick="dismissInstall()">Later</button><button onclick="installApp()">Install</button></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CONFETTI -->
+<div class="confetti" id="confetti"></div>
+
+<script src="app.js?v=3"></script>
 </body>
 </html>
