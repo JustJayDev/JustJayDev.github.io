@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>JustJayDev — Jay Kumar</title>
+    <script>
+      // Single Page Apps for GitHub Pages (spa-github-pages pattern)
+      // Converts any deep link into a query string so index.html loads,
+      // then the receiver script restores the real URL client-side.
+      var pathSegmentsToKeep = 1; // 'just-jay-site'
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body><p>Redirecting…</p></body>
+</html>
