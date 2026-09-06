@@ -33,7 +33,9 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm run build
+        run: |
+          pnpm run build --debug 2>&1 || pnpm run build 2>&1
+          echo "EXIT_CODE=$?"
         env:
           VITE_SITE_URL: https://JustJayDev.github.io/just-jay-site/
 
