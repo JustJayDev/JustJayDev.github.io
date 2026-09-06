@@ -1,16 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Youtube, MessageSquare, Instagram, Twitter, Reddit, Github, ExternalLink } from 'lucide-react';
+import { MessageSquare, ExternalLink } from 'lucide-react';
 import { useSocialLinks } from '@/hooks/useData';
 
 const PLATFORM_CONFIG = {
-  youtube: { icon: Youtube, color: '#FF0000', label: 'YouTube' },
+  youtube: { icon: MessageSquare, color: '#FF0000', label: 'YouTube' },
   discord: { icon: MessageSquare, color: '#5865F2', label: 'Discord' },
-  instagram: { icon: Instagram, color: '#E4405F', label: 'Instagram' },
-  x: { icon: Twitter, color: '#000000', label: 'X (Twitter)' },
-  reddit: { icon: Reddit, color: '#FF4500', label: 'Reddit' },
-  github: { icon: Github, color: '#ffffff', label: 'GitHub' },
-  twitter: { icon: Twitter, color: '#000000', label: 'Twitter' },
+  instagram: { icon: MessageSquare, color: '#E4405F', label: 'Instagram' },
+  x: { icon: MessageSquare, color: '#000000', label: 'X (Twitter)' },
+  reddit: { icon: MessageSquare, color: '#FF4500', label: 'Reddit' },
+  github: { icon: MessageSquare, color: '#ffffff', label: 'GitHub' },
+  twitter: { icon: MessageSquare, color: '#000000', label: 'Twitter' },
 };
 
 const Social: React.FC = () => {
