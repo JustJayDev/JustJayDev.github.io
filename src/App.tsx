@@ -13,6 +13,7 @@ import Support from '@/pages/Support';
 import Archive from '@/pages/Archive';
 import Admin from '@/pages/Admin';
 import AdminLogin from '@/pages/AdminLogin';
+import NotFound from '@/pages/NotFound';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 const App: React.FC = () => {
@@ -30,6 +31,7 @@ const App: React.FC = () => {
             <Route path="/support" element={<Support />} />
             <Route path="/archive" element={<Archive />} />
             <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
           <Route
             path="/admin"
