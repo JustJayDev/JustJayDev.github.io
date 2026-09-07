@@ -7,31 +7,45 @@
     <language>en</language>
     <atom:link href="https://justjaydev.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Site v2 is live — and the QR works</title>
+      <title>One repo to rule them all</title>
       <link>https://justjaydev.github.io/devlog</link>
-      <guid>site-v2-live</guid>
-      <pubDate>Mon, 07 Sep 2026 00:00:00 +0530</pubDate>
-      <description>Rebuilt the whole site: PWA offline support, animated stats, glare-tilt cards, magnetic buttons, a glitch 404, and a footer with a real scannable QR code that opens this site.</description>
+      <guid>repo-restructure</guid>
+      <pubDate>Mon, 07 Sep 2026 18:00:00 +0530</pubDate>
+      <description>Deleted 4 old repos and renamed this one to JustJayDev.github.io — the site now lives at the ROOT: justjaydev.github.io. Every path config migrated in one pass, QR still works, Google Search Console verification planted.</description>
+    </item>
+    <item>
+      <title>New hero: the motto wall</title>
+      <link>https://justjaydev.github.io/devlog</link>
+      <guid>hero-photo-motto</guid>
+      <pubDate>Mon, 07 Sep 2026 17:30:00 +0530</pubDate>
+      <description>Added my motto wallpaper as the homepage hero — "A King Never Wavers", Code. Build. Improve. Repeat., Focus. Discipline. Freedom. Also the new OG share image and the PWA app icon.</description>
+    </item>
+    <item>
+      <title>Made every page load lazy</title>
+      <link>https://justjaydev.github.io/devlog</link>
+      <guid>speed-pass</guid>
+      <pubDate>Mon, 07 Sep 2026 17:00:00 +0530</pubDate>
+      <description>All 16 pages used to load in one big JavaScript bundle. Now every page is code-split with React.lazy — the browser only downloads the page you actually open. First paint feels snappier on slow data.</description>
     </item>
     <item>
       <title>New Details page — everything in one place</title>
       <link>https://justjaydev.github.io/details</link>
       <guid>details-page</guid>
-      <pubDate>Mon, 07 Sep 2026 00:00:00 +0530</pubDate>
+      <pubDate>Sun, 06 Sep 2026 12:00:00 +0530</pubDate>
       <description>Added a Details page: one page with all my info, setup, skills, projects, a timeline, and an FAQ. It runs on a single data file.</description>
     </item>
     <item>
-      <title>New: Guestbook, Quiz, Gallery and more</title>
-      <link>https://justjaydev.github.io/guestbook</link>
-      <guid>interactive-wave</guid>
-      <pubDate>Mon, 07 Sep 2026 00:00:00 +0530</pubDate>
-      <description>Added a guestbook with live messages, a visitor counter, reactions, a "how well do you know Jay" quiz, a photo gallery, an RSS feed, and a Hindi/English toggle.</description>
+      <title>Site v2 is live — and the QR works</title>
+      <link>https://justjaydev.github.io/devlog</link>
+      <guid>site-v2-live</guid>
+      <pubDate>Fri, 05 Sep 2026 12:00:00 +0530</pubDate>
+      <description>Rebuilt the whole site: PWA offline support, animated stats, glare-tilt cards, magnetic buttons, a glitch 404, and a footer with a real scannable QR code that opens this site.</description>
     </item>
     <item>
       <title>justjaydev.github.io — this site is now my main home</title>
       <link>https://justjaydev.github.io/devlog</link>
       <guid>root-promotion</guid>
-      <pubDate>Sun, 07 Sep 2026 12:00:00 +0530</pubDate>
+      <pubDate>Fri, 05 Sep 2026 09:00:00 +0530</pubDate>
       <description>Promoted this site to my main GitHub Pages home: the URL is now just justjaydev.github.io (no subfolder), old project repos are retired, and this is where everything new will ship first.</description>
     </item>
   </channel>
