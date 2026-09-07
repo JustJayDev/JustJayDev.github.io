@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/firebase/config';
+import { auth, isFirebaseConfigured } from '@/firebase/config';
 
 interface AuthContextType {
   user: User | null;
@@ -19,6 +19,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Demo mode: no Firebase instance exists, so there's nothing to listen to.
+    if (!isFirebaseConfigured || !auth) {
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
       setLoading(false);

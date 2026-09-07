@@ -12,7 +12,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from './config';
+import { requireDb, requireStorage } from './config';
 import type {
   Profile,
   Game,
@@ -35,12 +35,12 @@ const ANALYTICS_DOC = 'analytics';
 
 // --- Profile ---
 export const getProfile = async (): Promise<Profile | null> => {
-  const snap = await getDoc(doc(db, PROFILE_DOC, 'main'));
+  const snap = await getDoc(doc(requireDb(), PROFILE_DOC, 'main'));
   return snap.exists() ? (snap.data() as Profile) : null;
 };
 
 export const saveProfile = async (data: Partial<Profile>): Promise<void> => {
-  await setDoc(doc(db, PROFILE_DOC, 'main'), {
+  await setDoc(doc(requireDb(), PROFILE_DOC, 'main'), {
     ...data,
     updatedAt: serverTimestamp(),
   }, { merge: true });
@@ -48,14 +48,14 @@ export const saveProfile = async (data: Partial<Profile>): Promise<void> => {
 
 // --- Games ---
 export const getGames = async (): Promise<Game[]> => {
-  const q = query(collection(db, GAMES_COL), orderBy('order', 'asc'));
+  const q = query(collection(requireDb(), GAMES_COL), orderBy('order', 'asc'));
   const snap = await getDocs(q);
   return snap.docs.map(d => ({ id: d.id, ...d.data() } as Game));
 };
 
 export const saveGame = async (game: Partial<Game> & { id?: string }): Promise<string> => {
   const id = game.id || crypto.randomUUID();
-  await setDoc(doc(db, GAMES_COL, id), {
+  await setDoc(doc(requireDb(), GAMES_COL, id), {
     ...game,
     id,
     updatedAt: serverTimestamp(),
@@ -65,46 +65,46 @@ export const saveGame = async (game: Partial<Game> & { id?: string }): Promise<s
 };
 
 export const deleteGame = async (id: string): Promise<void> => {
-  await deleteDoc(doc(db, GAMES_COL, id));
+  await deleteDoc(doc(requireDb(), GAMES_COL, id));
 };
 
 // --- Social Links ---
 export const getSocialLinks = async (): Promise<SocialLink[]> => {
-  const q = query(collection(db, SOCIAL_COL), orderBy('order', 'asc'));
+  const q = query(collection(requireDb(), SOCIAL_COL), orderBy('order', 'asc'));
   const snap = await getDocs(q);
   return snap.docs.map(d => ({ id: d.id, ...d.data() } as SocialLink));
 };
 
 export const saveSocialLink = async (link: Partial<SocialLink> & { id?: string }): Promise<string> => {
   const id = link.id || crypto.randomUUID();
-  await setDoc(doc(db, SOCIAL_COL, id), { ...link, id }, { merge: true });
+  await setDoc(doc(requireDb(), SOCIAL_COL, id), { ...link, id }, { merge: true });
   return id;
 };
 
 export const deleteSocialLink = async (id: string): Promise<void> => {
-  await deleteDoc(doc(db, SOCIAL_COL, id));
+  await deleteDoc(doc(requireDb(), SOCIAL_COL, id));
 };
 
 // --- Esports ---
 export const getEsportsRecords = async (): Promise<EsportsRecord[]> => {
-  const q = query(collection(db, ESPORTS_COL), orderBy('date', 'desc'));
+  const q = query(collection(requireDb(), ESPORTS_COL), orderBy('date', 'desc'));
   const snap = await getDocs(q);
   return snap.docs.map(d => ({ id: d.id, ...d.data() } as EsportsRecord));
 };
 
 export const saveEsportsRecord = async (record: Partial<EsportsRecord> & { id?: string }): Promise<string> => {
   const id = record.id || crypto.randomUUID();
-  await setDoc(doc(db, ESPORTS_COL, id), { ...record, id }, { merge: true });
+  await setDoc(doc(requireDb(), ESPORTS_COL, id), { ...record, id }, { merge: true });
   return id;
 };
 
 export const deleteEsportsRecord = async (id: string): Promise<void> => {
-  await deleteDoc(doc(db, ESPORTS_COL, id));
+  await deleteDoc(doc(requireDb(), ESPORTS_COL, id));
 };
 
 // --- Support Requests ---
 export const getSupportRequests = async (): Promise<SupportRequest[]> => {
-  const q = query(collection(db, SUPPORT_COL), orderBy('createdAt', 'desc'));
+  const q = query(collection(requireDb(), SUPPORT_COL), orderBy('createdAt', 'desc'));
   const snap = await getDocs(q);
   return snap.docs.map(d => {
     const data = d.data();
@@ -117,7 +117,7 @@ export const getSupportRequests = async (): Promise<SupportRequest[]> => {
 };
 
 export const submitSupportRequest = async (data: Omit<SupportRequest, 'id' | 'status' | 'createdAt'>): Promise<void> => {
-  await setDoc(doc(db, SUPPORT_COL, crypto.randomUUID()), {
+  await setDoc(doc(requireDb(), SUPPORT_COL, crypto.randomUUID()), {
     ...data,
     status: 'pending',
     createdAt: serverTimestamp(),
@@ -128,7 +128,7 @@ export const updateSupportRequestStatus = async (
   id: string,
   status: SupportRequest['status']
 ): Promise<void> => {
-  await updateDoc(doc(db, SUPPORT_COL, id), {
+  await updateDoc(doc(requireDb(), SUPPORT_COL, id), {
     status,
     reviewedAt: serverTimestamp(),
   });
@@ -136,36 +136,36 @@ export const updateSupportRequestStatus = async (
 
 // --- Archive ---
 export const getArchiveItems = async (): Promise<ArchiveItem[]> => {
-  const q = query(collection(db, ARCHIVE_COL), orderBy('order', 'asc'));
+  const q = query(collection(requireDb(), ARCHIVE_COL), orderBy('order', 'asc'));
   const snap = await getDocs(q);
   return snap.docs.map(d => ({ id: d.id, ...d.data() } as ArchiveItem));
 };
 
 export const saveArchiveItem = async (item: Partial<ArchiveItem> & { id?: string }): Promise<string> => {
   const id = item.id || crypto.randomUUID();
-  await setDoc(doc(db, ARCHIVE_COL, id), { ...item, id }, { merge: true });
+  await setDoc(doc(requireDb(), ARCHIVE_COL, id), { ...item, id }, { merge: true });
   return id;
 };
 
 export const deleteArchiveItem = async (id: string): Promise<void> => {
-  await deleteDoc(doc(db, ARCHIVE_COL, id));
+  await deleteDoc(doc(requireDb(), ARCHIVE_COL, id));
 };
 
 // --- Settings ---
 export const getSettings = async (): Promise<SiteSettings | null> => {
-  const snap = await getDoc(doc(db, SETTINGS_DOC, 'main'));
+  const snap = await getDoc(doc(requireDb(), SETTINGS_DOC, 'main'));
   return snap.exists() ? (snap.data() as SiteSettings) : null;
 };
 
 export const saveSettings = async (data: Partial<SiteSettings>): Promise<void> => {
-  await setDoc(doc(db, SETTINGS_DOC, 'main'), data, { merge: true });
+  await setDoc(doc(requireDb(), SETTINGS_DOC, 'main'), data, { merge: true });
 };
 
 // --- Analytics ---
 export const trackVisit = async (section: string, device: string, referrer: string): Promise<void> => {
   try {
-    const ref = doc(db, ANALYTICS_DOC, 'stats');
-    const snap = await getDoc(ref);
+    const statsRef = doc(requireDb(), ANALYTICS_DOC, 'stats');
+    const snap = await getDoc(statsRef);
     const data = snap.exists() ? (snap.data() as AnalyticsData) : getDefaultAnalytics();
     data.totalVisitors = (data.totalVisitors || 0) + 1;
     data.sectionViews = { ...data.sectionViews, [section]: (data.sectionViews[section] || 0) + 1 };
@@ -175,14 +175,14 @@ export const trackVisit = async (section: string, device: string, referrer: stri
     }
     const today = new Date().toISOString().split('T')[0];
     data.dailyVisitors = { ...data.dailyVisitors, [today]: (data.dailyVisitors[today] || 0) + 1 };
-    await setDoc(ref, data);
+    await setDoc(statsRef, data);
   } catch {
     // silently fail analytics
   }
 };
 
 export const getAnalytics = async (): Promise<AnalyticsData> => {
-  const snap = await getDoc(doc(db, ANALYTICS_DOC, 'stats'));
+  const snap = await getDoc(doc(requireDb(), ANALYTICS_DOC, 'stats'));
   return snap.exists() ? (snap.data() as AnalyticsData) : getDefaultAnalytics();
 };
 
@@ -196,7 +196,7 @@ const getDefaultAnalytics = (): AnalyticsData => ({
 
 // --- File Upload ---
 export const uploadFile = async (path: string, file: File): Promise<string> => {
-  const storageRef = ref(storage, path);
+  const storageRef = ref(requireStorage(), path);
   await uploadBytes(storageRef, file);
   return getDownloadURL(storageRef);
 };

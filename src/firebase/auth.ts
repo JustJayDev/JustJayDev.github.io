@@ -9,7 +9,7 @@ import {
   EmailAuthProvider,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, db } from './config';
+import { requireAuth, requireDb } from './config';
 
 export interface AdminUser {
   uid: string;
@@ -18,13 +18,13 @@ export interface AdminUser {
 }
 
 export const registerAdmin = async (email: string, password: string): Promise<AdminUser> => {
-  const credential = await createUserWithEmailAndPassword(auth, email, password);
+  const credential = await createUserWithEmailAndPassword(requireAuth(), email, password);
   const user: AdminUser = {
     uid: credential.user.uid,
     email: credential.user.email!,
     createdAt: new Date(),
   };
-  await setDoc(doc(db, 'admins', user.uid), {
+  await setDoc(doc(requireDb(), 'admins', user.uid), {
     ...user,
     createdAt: serverTimestamp(),
   });
@@ -32,8 +32,8 @@ export const registerAdmin = async (email: string, password: string): Promise<Ad
 };
 
 export const loginAdmin = async (email: string, password: string): Promise<AdminUser> => {
-  const credential = await signInWithEmailAndPassword(auth, email, password);
-  const docSnap = await getDoc(doc(db, 'admins', credential.user.uid));
+  const credential = await signInWithEmailAndPassword(requireAuth(), email, password);
+  const docSnap = await getDoc(doc(requireDb(), 'admins', credential.user.uid));
   if (!docSnap.exists()) {
     throw new Error('Not authorized as admin');
   }
@@ -44,10 +44,10 @@ export const loginAdmin = async (email: string, password: string): Promise<Admin
   };
 };
 
-export const logoutAdmin = (): Promise<void> => signOut(auth);
+export const logoutAdmin = (): Promise<void> => signOut(requireAuth());
 
 export const onAuthChange = (callback: (user: User | null) => void) =>
-  onAuthStateChanged(auth, callback);
+  onAuthStateChanged(requireAuth(), callback);
 
 export const changeAdminPassword = async (user: User, currentPassword: string, newPassword: string) => {
   const credential = EmailAuthProvider.credential(user.email!, currentPassword);
