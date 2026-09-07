@@ -1,32 +1,43 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 import Layout from '@/components/Layout';
-import Home from '@/pages/Home';
-import About from '@/pages/About';
-import Details from '@/pages/Details';
-import Devlog from '@/pages/Devlog';
-import Gaming from '@/pages/Gaming';
-import Esports from '@/pages/Esports';
-import Social from '@/pages/Social';
-import Contact from '@/pages/Contact';
-import Support from '@/pages/Support';
-import Archive from '@/pages/Archive';
-import Quiz from '@/pages/Quiz';
-import Photos from '@/pages/Photos';
-import Guestbook from '@/pages/Guestbook';
-import Admin from '@/pages/Admin';
-import AdminLogin from '@/pages/AdminLogin';
-import NotFound from '@/pages/NotFound';
 import ProtectedRoute from '@/components/ProtectedRoute';
+
+const Home = lazy(() => import('@/pages/Home'));
+const About = lazy(() => import('@/pages/About'));
+const Details = lazy(() => import('@/pages/Details'));
+const Devlog = lazy(() => import('@/pages/Devlog'));
+const Gaming = lazy(() => import('@/pages/Gaming'));
+const Esports = lazy(() => import('@/pages/Esports'));
+const Social = lazy(() => import('@/pages/Social'));
+const Contact = lazy(() => import('@/pages/Contact'));
+const Support = lazy(() => import('@/pages/Support'));
+const Archive = lazy(() => import('@/pages/Archive'));
+const Quiz = lazy(() => import('@/pages/Quiz'));
+const Photos = lazy(() => import('@/pages/Photos'));
+const Guestbook = lazy(() => import('@/pages/Guestbook'));
+const Admin = lazy(() => import('@/pages/Admin'));
+const AdminLogin = lazy(() => import('@/pages/AdminLogin'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
+
+const PageLoader: React.FC = () => (
+  <div className="min-h-[50vh] flex items-center justify-center">
+    <div
+      className="w-8 h-8 rounded-full border-2 animate-spin"
+      style={{ borderColor: 'var(--color-border)', borderTopColor: 'var(--color-accent)' }}
+    />
+  </div>
+);
 
 const App: React.FC = () => {
   return (
     <LanguageProvider>
       <ThemeProvider>
-        <AuthProvider>
+          <AuthProvider>
+          <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
@@ -54,6 +65,7 @@ const App: React.FC = () => {
             }
           />
         </Routes>
+          </Suspense>
         </AuthProvider>
       </ThemeProvider>
     </LanguageProvider>
