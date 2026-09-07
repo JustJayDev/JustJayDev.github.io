@@ -8,8 +8,8 @@ export interface Photo {
 }
 
 export const PHOTOS: Photo[] = [
-  { src: '/og-image.png', title: 'Site banner', tag: 'Site', emoji: '🌐' },
-  { src: '/qr-jay.png', title: 'Scan me', tag: 'Site', emoji: '📱' },
+  { src: '/jay-hero.jpg', title: 'The motto — Code. Build. Improve. Repeat.', tag: 'Me', emoji: '👑' },
+  { src: '/og-image.jpg', title: 'Site banner', tag: 'Site', emoji: '🌐' },
   { src: '', title: 'My gaming setup', tag: 'Setup', emoji: '🎮' },
   { src: '', title: 'FF Max squad wipe', tag: 'Gaming', emoji: '🔥' },
   { src: '', title: 'FC Mobile team', tag: 'Gaming', emoji: '⚽' },
