@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Menu, X, Moon, Sun, Monitor } from 'lucide-react';
+import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Menu, X, Moon, Sun, Monitor, Search } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import Footer from '@/components/Footer';
+import ScrollProgress from '@/components/ScrollProgress';
+import BackToTop from '@/components/BackToTop';
+import CommandPalette from '@/components/CommandPalette';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Home', icon: Home },
@@ -58,6 +62,8 @@ const Layout: React.FC = () => {
     <div className="min-h-screen" style={{ background: 'var(--color-bg)', color: 'var(--color-text)' }}>
       <div className="aurora" aria-hidden="true" />
       <div className="bg-grid" aria-hidden="true" />
+      <ScrollProgress />
+      <CommandPalette />
       <header
         className="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300"
         style={{
@@ -74,6 +80,15 @@ const Layout: React.FC = () => {
             <span className="gradient-text transition-transform duration-300 group-hover:scale-105 inline-block">JustJayDev</span>
           </button>
           <div className="flex items-center gap-2">
+            <motion.button
+              onClick={() => window.dispatchEvent(new Event('jjdev:palette'))}
+              className="p-2 rounded-xl transition-colors"
+              style={{ background: 'var(--color-surface-2)' }}
+              whileTap={{ scale: 0.85 }}
+              aria-label="Search (Ctrl+K)"
+            >
+              <Search size={18} style={{ color: 'var(--color-text-muted)' }} />
+            </motion.button>
             <motion.button
               onClick={cycleTheme}
               className="p-2 rounded-xl transition-colors"
@@ -201,6 +216,8 @@ const Layout: React.FC = () => {
           </motion.button>
         </div>
       </nav>
+      <BackToTop />
+      <Footer />
       <div className="hidden md:block fixed right-6 top-1/2 -translate-y-1/2 z-40">
         <div className="flex flex-col gap-2">
           {NAV_ITEMS.map(({ path, icon: Icon, label }) => {
