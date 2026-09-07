@@ -2,9 +2,11 @@ import React from 'react';
 import { Heart, Github, Zap, QrCode } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import qrJay from '../assets/qr-jay.png';
+import { useLang } from '@/context/LanguageContext';
 
 const Footer: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLang();
   const year = new Date().getFullYear();
   return (
     <footer
@@ -41,18 +43,18 @@ const Footer: React.FC = () => {
             style={{ color: 'var(--color-text-muted)' }}
           >
             <QrCode size={13} style={{ color: 'var(--color-accent)' }} />
-            Scan to visit my site
+            {t('scanQr')}
           </span>
         </a>
         <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
-          {['/', '/about', '/details', '/devlog', '/gaming', '/esports', '/social', '/contact'].map((p, i) => (
+          {['/', '/about', '/details', '/devlog', '/gaming', '/esports', '/quiz', '/photos', '/guestbook', '/social', '/contact'].map((p, i) => (
             <button
               key={p}
               onClick={() => navigate(p)}
               className="transition-colors hover:opacity-80"
               style={{ color: 'var(--color-text-muted)' }}
             >
-              {['Home', 'About', 'Details', 'Devlog', 'Gaming', 'Esports', 'Social', 'Contact'][i]}
+              {['Home', 'About', 'Details', 'Devlog', 'Gaming', 'Esports', 'Quiz', 'Photos', 'Guestbook', 'Social', 'Contact'][i]}
             </button>
           ))}
         </nav>

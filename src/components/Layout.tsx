@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Menu, X, Moon, Sun, Monitor, Search, BookOpen, Info } from 'lucide-react';
+import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Menu, X, Moon, Sun, Monitor, Search, BookOpen, Info, Languages, Brain, Camera, MessageSquareHeart } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import { useLang } from '@/context/LanguageContext';
 import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
 import BackToTop from '@/components/BackToTop';
@@ -15,6 +16,9 @@ const NAV_ITEMS = [
   { path: '/devlog', label: 'Devlog', icon: BookOpen },
   { path: '/gaming', label: 'Gaming', icon: Gamepad2 },
   { path: '/esports', label: 'Esports', icon: Trophy },
+  { path: '/quiz', label: 'Quiz', icon: Brain },
+  { path: '/photos', label: 'Photos', icon: Camera },
+  { path: '/guestbook', label: 'Guestbook', icon: MessageSquareHeart },
   { path: '/social', label: 'Social', icon: Users },
   { path: '/contact', label: 'Contact', icon: MessageCircle },
   { path: '/support', label: 'Support', icon: Heart },
@@ -28,6 +32,7 @@ const Layout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { resolvedTheme, setTheme, theme } = useTheme();
+  const { lang, setLang } = useLang();
   const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname === '/admin-login';
 
   useEffect(() => {
@@ -90,6 +95,16 @@ const Layout: React.FC = () => {
               aria-label="Search (Ctrl+K)"
             >
               <Search size={18} style={{ color: 'var(--color-text-muted)' }} />
+            </motion.button>
+            <motion.button
+              onClick={() => setLang(lang === 'en' ? 'hi' : 'en')}
+              className="p-2 rounded-xl transition-colors font-bold text-[11px] tracking-wide"
+              style={{ background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
+              whileTap={{ scale: 0.85 }}
+              aria-label="Switch language"
+              title="English / हिन्दी"
+            >
+              {lang === 'en' ? 'EN' : 'हिं'}
             </motion.button>
             <motion.button
               onClick={cycleTheme}

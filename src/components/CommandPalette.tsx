@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Search, CornerDownLeft, Shield, BookOpen, Info } from 'lucide-react';
+import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Search, CornerDownLeft, Shield, BookOpen, Info, Brain, Camera, MessageSquareHeart } from 'lucide-react';
 
 interface Cmd {
   path: string;
@@ -17,6 +17,9 @@ const COMMANDS: Cmd[] = [
   { path: '/devlog', label: 'Devlog', hint: 'Build log & updates', icon: BookOpen },
   { path: '/gaming', label: 'Gaming', hint: 'Game library & stats', icon: Gamepad2 },
   { path: '/esports', label: 'Esports', hint: 'Competitive achievements', icon: Trophy },
+  { path: '/quiz', label: 'Quiz', hint: 'How well do you know Jay?', icon: Brain },
+  { path: '/photos', label: 'Photos', hint: 'Gallery of moments', icon: Camera },
+  { path: '/guestbook', label: 'Guestbook', hint: 'Sign & say hi', icon: MessageSquareHeart },
   { path: '/social', label: 'Social', hint: 'Links & community', icon: Users },
   { path: '/contact', label: 'Contact', hint: 'Get in touch', icon: MessageCircle },
   { path: '/support', label: 'Support', hint: 'Support the work', icon: Heart },
