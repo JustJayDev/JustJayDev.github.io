@@ -1,36 +1,68 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { PenLine, Send, MessageSquareHeart, ShieldAlert } from 'lucide-react';
-import { useSiteData } from '@/hooks/useSiteData';
+import { MessageSquareHeart, Github, ExternalLink } from 'lucide-react';
 import VisitorBadge from '@/components/VisitorBadge';
 import { useLang } from '@/context/LanguageContext';
 
+/**
+ * Guestbook powered by giscus (GitHub Discussions).
+ * Messages are real GitHub Discussions in JustJayDev/JustJayDev.github.io —
+ * visible to everyone, shared across all devices, zero server cost.
+ */
+
+const GISCUS = {
+  repo: 'JustJayDev/JustJayDev.github.io',
+  repoId: 'R_kgDOUP-CdQ',
+  category: 'General',
+  categoryId: 'DIC_kwDOUP-Cdc4DFEHv',
+  mapping: 'specific',
+  'term': 'Guestbook',
+  'reactionsEnabled': '1',
+  'emitMetadata': '0',
+  'inputPosition': 'top',
+  'theme': 'dark',
+  'lang': 'en',
+  'loading': 'lazy',
+} as const;
+
 const Guestbook: React.FC = () => {
   const { t } = useLang();
-  const { data, loading, failed, save } = useSiteData();
-  const [name, setName] = useState('');
-  const [msg, setMsg] = useState('');
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
 
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const n = name.trim().slice(0, 24);
-    const m = msg.trim().slice(0, 240);
-    if (!n || !m || sending) return;
-    setSending(true);
-    const entry = {
-      name: n,
-      msg: m,
-      date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || el.childElementCount > 0) return;
+
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    Object.entries(GISCUS).forEach(([k, v]) => {
+      script.setAttribute(`data-${k.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)}`, v);
+    });
+
+    // giscus needs a stable element; mount once
+    const mount = document.createElement('div');
+    mount.className = 'giscus';
+    el.appendChild(mount);
+    mount.appendChild(script);
+    setReady(true);
+
+    // re-theme when site theme changes
+    const onTheme = (e: Event) => {
+      const detail = (e as CustomEvent<{ theme?: string }>).detail;
+      if (detail?.theme) {
+        const frame = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+        frame?.contentWindow?.postMessage(
+          { giscus: { setConfig: { theme: detail.theme } } },
+          'https://giscus.app'
+        );
+      }
     };
-    await save({ ...data, guestbook: [entry, ...data.guestbook].slice(0, 200) });
-    setName('');
-    setMsg('');
-    setSending(false);
-    setSent(true);
-    setTimeout(() => setSent(false), 2500);
-  };
+    window.addEventListener('giscus-theme', onTheme);
+    return () => window.removeEventListener('giscus-theme', onTheme);
+  }, []);
 
   return (
     <div className="page-container py-10 max-w-2xl mx-auto">
@@ -48,77 +80,18 @@ const Guestbook: React.FC = () => {
         <VisitorBadge />
       </div>
 
-      {/* Form */}
-      <motion.form onSubmit={submit} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.45 }} className="card p-5 mb-10">
-        <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-3 mb-3">
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            maxLength={24}
-            placeholder={t('yourName')}
-            className="rounded-xl px-4 py-3 text-sm outline-none border focus:border-[var(--color-accent)] transition-colors"
-            style={{ background: 'var(--color-surface-2)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
-          />
-          <input
-            value={msg}
-            onChange={(e) => setMsg(e.target.value)}
-            maxLength={240}
-            placeholder={t('yourMsg')}
-            className="rounded-xl px-4 py-3 text-sm outline-none border focus:border-[var(--color-accent)] transition-colors"
-            style={{ background: 'var(--color-surface-2)', borderColor: 'var(--color-border)', color: 'var(--color-text)' }}
-          />
-        </div>
-        <div className="flex items-center justify-between gap-3">
-          <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>{msg.length}/240</span>
-          <button type="submit" disabled={!name.trim() || !msg.trim() || sending} className="btn-primary inline-flex items-center gap-2 disabled:opacity-50">
-            <Send size={16} />
-            {sending ? t('signing') : sent ? t('signed') : t('sign')}
-          </button>
-        </div>
-      </motion.form>
-
-      {/* Entries */}
-      <h2 className="section-title flex items-center gap-2 mb-4">
-        <PenLine size={18} /> {t('messages')} <span className="text-sm font-normal" style={{ color: 'var(--color-text-muted)' }}>({data.guestbook.length})</span>
-      </h2>
-
-      {failed && (
-        <p className="text-xs mb-4 flex items-center gap-1.5" style={{ color: 'var(--color-text-muted)' }}>
-          <ShieldAlert size={13} /> Couldn't reach the server — messages may be out of date.
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.45 }} className="card p-4 mb-6">
+        <p className="text-xs flex items-start gap-2 leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
+          <Github size={14} className="shrink-0 mt-0.5" />
+          <span>
+            Messages live in <a href="https://github.com/JustJayDev/JustJayDev.github.io/discussions" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: 'var(--color-accent-light)' }}>GitHub Discussions</a> — sign in with GitHub once and your note shows up for every visitor, on every device. No spam, no database, no cost. <ExternalLink size={11} className="inline" />
+          </span>
         </p>
-      )}
+      </motion.div>
 
-      {loading ? (
-        <div className="card p-6 text-center text-sm" style={{ color: 'var(--color-text-muted)' }}>Loading messages…</div>
-      ) : data.guestbook.length === 0 ? (
-        <div className="card p-8 text-center">
-          <p className="text-sm font-medium mb-1">{t('noMsgs')}</p>
-          <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{t('firstSign')}</p>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {data.guestbook.map((g, i) => (
-            <motion.div
-              key={`${g.date}-${i}`}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: Math.min(i * 0.04, 0.3), duration: 0.35 }}
-              className="card p-4 flex gap-3"
-            >
-              <div className="w-10 h-10 rounded-full shrink-0 flex items-center justify-center font-bold text-sm gradient-text" style={{ background: 'var(--color-surface-2)' }}>
-                {g.name.charAt(0).toUpperCase()}
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold flex items-baseline gap-2 flex-wrap">
-                  {g.name}
-                  <span className="text-[10px] font-normal" style={{ color: 'var(--color-text-muted)' }}>{g.date}</span>
-                </p>
-                <p className="text-sm break-words" style={{ color: 'var(--color-text-muted)' }}>{g.msg}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+      <div ref={containerRef} className="giscus-wrap min-h-[320px]" />
+      {!ready && (
+        <div className="card p-6 text-center text-sm" style={{ color: 'var(--color-text-muted)' }}>Loading guestbook…</div>
       )}
     </div>
   );

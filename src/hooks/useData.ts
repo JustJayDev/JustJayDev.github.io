@@ -93,7 +93,7 @@ const DEMO_ARCHIVE: ArchiveItem[] = [
 ];
 
 const DEMO_SETTINGS: SiteSettings = {
-  canonicalUrl: 'https://JustJayDev.github.io/just-jay-site/',
+  canonicalUrl: 'https://JustJayDev.github.io/',
   esportsPasswordHash: '',
   maintenanceMode: false,
   analyticsEnabled: true,

@@ -36,6 +36,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     document.documentElement.classList.remove('dark', 'light');
     document.documentElement.classList.add(resolved);
     document.documentElement.style.colorScheme = resolved;
+    // notify embedded widgets (giscus guestbook) about the theme change
+    window.dispatchEvent(new CustomEvent('giscus-theme', { detail: { theme: resolved } }));
   }, [theme]);
 
   useEffect(() => {

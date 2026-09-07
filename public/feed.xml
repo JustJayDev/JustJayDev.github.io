@@ -2,30 +2,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JustJayDev — Devlog</title>
-    <link>https://justjaydev.github.io/just-jay-site/devlog</link>
+    <link>https://justjaydev.github.io/devlog</link>
     <description>Build log of a 16-year-old self-taught developer from India. What I am working on, what broke, what shipped.</description>
     <language>en</language>
-    <atom:link href="https://justjaydev.github.io/just-jay-site/feed.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://justjaydev.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Site v2 is live — and the QR works</title>
-      <link>https://justjaydev.github.io/just-jay-site/devlog</link>
+      <link>https://justjaydev.github.io/devlog</link>
       <guid>site-v2-live</guid>
       <pubDate>Mon, 07 Sep 2026 00:00:00 +0530</pubDate>
       <description>Rebuilt the whole site: PWA offline support, animated stats, glare-tilt cards, magnetic buttons, a glitch 404, and a footer with a real scannable QR code that opens this site.</description>
     </item>
     <item>
       <title>New Details page — everything in one place</title>
-      <link>https://justjaydev.github.io/just-jay-site/details</link>
+      <link>https://justjaydev.github.io/details</link>
       <guid>details-page</guid>
       <pubDate>Mon, 07 Sep 2026 00:00:00 +0530</pubDate>
       <description>Added a Details page: one page with all my info, setup, skills, projects, a timeline, and an FAQ. It runs on a single data file.</description>
     </item>
     <item>
       <title>New: Guestbook, Quiz, Gallery and more</title>
-      <link>https://justjaydev.github.io/just-jay-site/guestbook</link>
+      <link>https://justjaydev.github.io/guestbook</link>
       <guid>interactive-wave</guid>
       <pubDate>Mon, 07 Sep 2026 00:00:00 +0530</pubDate>
       <description>Added a guestbook with live messages, a visitor counter, reactions, a "how well do you know Jay" quiz, a photo gallery, an RSS feed, and a Hindi/English toggle.</description>
     </item>
+    <item>
+      <title>justjaydev.github.io — this site is now my main home</title>
+      <link>https://justjaydev.github.io/devlog</link>
+      <guid>root-promotion</guid>
+      <pubDate>Sun, 07 Sep 2026 12:00:00 +0530</pubDate>
+      <description>Promoted this site to my main GitHub Pages home: the URL is now just justjaydev.github.io (no subfolder), old project repos are retired, and this is where everything new will ship first.</description>
+    </item>
   </channel>
-</rss>
+  </rss>

@@ -14,7 +14,7 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename="/just-jay-site">
+    <BrowserRouter>
       <App />
       <Toaster
         position="bottom-center"
