@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Gamepad2, Users, MessageCircle, User, Heart, Archive, Share2, Copy, Check, Sparkles } from 'lucide-react';
+import { ArrowRight, Gamepad2, Users, MessageCircle, User, Heart, Archive, Share2, Copy, Check, Sparkles, BookOpen, Camera, HelpCircle } from 'lucide-react';
 import { useProfile } from '@/hooks/useData';
 import toast from 'react-hot-toast';
 
@@ -149,11 +149,42 @@ const Home: React.FC = () => {
 
   return (
     <div className="py-8 md:py-16">
+      {/* Hero banner with Jay's photo */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="relative rounded-3xl overflow-hidden mb-10 border"
+        style={{ borderColor: 'var(--color-border)' }}
+      >
+        <img
+          src="/jay-hero.jpg"
+          alt="JustJayDev — Code, Build, Improve, Repeat"
+          className="w-full object-cover"
+          style={{ maxHeight: 340, minHeight: 180 }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, rgba(2,6,23,0.05) 0%, rgba(2,6,23,0.85) 100%)' }}
+        />
+        <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 flex flex-wrap items-center gap-2">
+          {['FOCUS', 'DISCIPLINE', 'FREEDOM'].map((w) => (
+            <span
+              key={w}
+              className="text-[10px] md:text-xs font-bold tracking-widest px-3 py-1 rounded-full glass"
+              style={{ color: '#fff' }}
+            >
+              {w}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="flex flex-col items-center text-center gap-6 pt-8"
+        className="flex flex-col items-center text-center gap-6 pt-2"
       >
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
@@ -281,12 +312,15 @@ const Home: React.FC = () => {
           Everything around the digital identity, one tap away.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <TiltCard icon={<Gamepad2 size={34} />} label="Gaming" desc="Game library & setups" delay={0} onClick={() => navigate('/gaming')} />
-          <TiltCard icon={<Sparkles size={34} />} label="Esports" desc="Competitive scene" delay={0.06} onClick={() => navigate('/esports')} />
-          <TiltCard icon={<User size={34} />} label="About" desc="Who is JustJayDev" delay={0.12} onClick={() => navigate('/about')} />
-          <TiltCard icon={<Users size={34} />} label="Social" desc="Links & community" delay={0.18} onClick={() => navigate('/social')} />
-          <TiltCard icon={<MessageCircle size={34} />} label="Contact" desc="Get in touch" delay={0.24} onClick={() => navigate('/contact')} />
-          <TiltCard icon={<Archive size={34} />} label="Archive" desc="Hidden lore vault" delay={0.3} onClick={() => navigate('/archive')} />
+          <TiltCard icon={<User size={34} />} label="Details" desc="Everything about me" delay={0} onClick={() => navigate('/details')} />
+          <TiltCard icon={<Gamepad2 size={34} />} label="Gaming" desc="Game library & setups" delay={0.06} onClick={() => navigate('/gaming')} />
+          <TiltCard icon={<Sparkles size={34} />} label="Esports" desc="Competitive scene" delay={0.12} onClick={() => navigate('/esports')} />
+          <TiltCard icon={<BookOpen size={34} />} label="Devlog" desc="What I'm building" delay={0.18} onClick={() => navigate('/devlog')} />
+          <TiltCard icon={<Camera size={34} />} label="Photos" desc="Moments & memories" delay={0.24} onClick={() => navigate('/photos')} />
+          <TiltCard icon={<Users size={34} />} label="Social" desc="Links & community" delay={0.3} onClick={() => navigate('/social')} />
+          <TiltCard icon={<HelpCircle size={34} />} label="Quiz" desc="Test what you know" delay={0.36} onClick={() => navigate('/quiz')} />
+          <TiltCard icon={<MessageCircle size={34} />} label="Contact" desc="Get in touch" delay={0.42} onClick={() => navigate('/contact')} />
+          <TiltCard icon={<Archive size={34} />} label="Archive" desc="Hidden lore vault" delay={0.48} onClick={() => navigate('/archive')} />
         </div>
       </motion.section>
 
@@ -299,20 +333,20 @@ const Home: React.FC = () => {
         className="mt-16 md:mt-20"
       >
         <div className="glow-border p-6 md:p-10 text-center">
-          <h3 className="text-xl md:text-2xl font-bold">
-            Want your own site like this?
+          <h3 className="text-xl md:text-2xl font-bold gradient-text">
+            Code. Build. Improve. Repeat.
           </h3>
           <p className="text-sm mt-2" style={{ color: 'var(--color-text-muted)' }}>
-            I build apps, tools and websites. Hit me up.
+            Better than yesterday — every single day.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
-            <MagneticButton className="btn-primary" onClick={() => navigate('/contact')}>
-              <MessageCircle size={18} />
-              Contact me
+            <MagneticButton className="btn-primary" onClick={() => navigate('/details')}>
+              <User size={18} />
+              All my details
             </MagneticButton>
-            <MagneticButton className="btn-secondary" onClick={() => navigate('/support')}>
+            <MagneticButton className="btn-secondary" onClick={() => navigate('/guestbook')}>
               <Heart size={18} />
-              Support
+              Sign the guestbook
             </MagneticButton>
           </div>
         </div>
