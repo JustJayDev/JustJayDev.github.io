@@ -1,0 +1,27 @@
+{
+  "name": "JustJayDev - Jay Kumar",
+  "short_name": "JustJayDev",
+  "description": "Gamer • Creator • Builder. Personal digital identity of Jay Kumar (JustJayDev).",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "lang": "en",
+  "categories": ["personal", "portfolio"],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

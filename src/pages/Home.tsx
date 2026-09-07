@@ -1,24 +1,44 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Gamepad2, Users, MessageCircle, Heart, Share2, Copy, Check, Sparkles } from 'lucide-react';
+import { ArrowRight, Gamepad2, Users, MessageCircle, User, Heart, Archive, Share2, Copy, Check, Sparkles } from 'lucide-react';
 import { useProfile } from '@/hooks/useData';
 import toast from 'react-hot-toast';
 
 const RevealText: React.FC<{ text: string; className?: string; delay?: number }> = ({ text, className = '', delay = 0 }) => (
   <span className={className} aria-label={text}>
     {text.split('').map((ch, i) => (
-      <span
-        key={i}
-        aria-hidden="true"
-        className="text-reveal"
-        style={{ ['--i' as any]: i + delay }}
-      >
+      <span key={i} aria-hidden="true" className="text-reveal" style={{ ['--i' as any]: i + delay }}>
         {ch === ' ' ? '\u00A0' : ch}
       </span>
     ))}
   </span>
 );
+
+const CountUp: React.FC<{ to: number; suffix?: string; duration?: number }> = ({ to, suffix = '', duration = 1.6 }) => {
+  const [val, setVal] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !started.current) {
+        started.current = true;
+        const t0 = performance.now();
+        const tick = (t: number) => {
+          const p = Math.min(1, (t - t0) / (duration * 1000));
+          setVal(Math.round(to * (1 - Math.pow(1 - p, 3))));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [to, duration]);
+  return <span ref={ref}>{val.toLocaleString()}{suffix}</span>;
+};
 
 const TiltCard: React.FC<{
   icon: React.ReactNode;
@@ -28,6 +48,7 @@ const TiltCard: React.FC<{
   delay: number;
 }> = ({ icon, label, desc, onClick, delay }) => {
   const ref = useRef<HTMLButtonElement>(null);
+  const glareRef = useRef<HTMLDivElement>(null);
   const handleMove = useCallback((e: React.MouseEvent) => {
     const el = ref.current;
     if (!el) return;
@@ -35,10 +56,15 @@ const TiltCard: React.FC<{
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     el.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-3px)`;
+    if (glareRef.current) {
+      glareRef.current.style.opacity = '0.5';
+      glareRef.current.style.background = `radial-gradient(circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(255,255,255,0.22), transparent 60%)`;
+    }
   }, []);
   const handleLeave = useCallback(() => {
     const el = ref.current;
     if (el) el.style.transform = 'perspective(600px) rotateY(0) rotateX(0) translateY(0)';
+    if (glareRef.current) glareRef.current.style.opacity = '0';
   }, []);
   return (
     <motion.button
@@ -50,19 +76,42 @@ const TiltCard: React.FC<{
       onClick={onClick}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      className="card tilt-card p-5 flex flex-col items-center gap-3 text-center group"
+      className="card tilt-card p-5 flex flex-col items-center gap-3 text-center group relative overflow-hidden"
     >
-      <div
-        style={{ color: 'var(--color-accent-light)' }}
-        className="group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-300"
-      >
+      <div ref={glareRef} className="absolute inset-0 pointer-events-none transition-opacity duration-300" style={{ opacity: 0 }} />
+      <div style={{ color: 'var(--color-accent-light)' }} className="group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-300">
         {icon}
       </div>
-      <div>
+      <div className="relative">
         <p className="font-semibold text-sm">{label}</p>
         <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{desc}</p>
       </div>
     </motion.button>
+  );
+};
+
+const STATS = [
+  { value: 4, suffix: '+', label: 'Apps shipped' },
+  { value: 120, suffix: '+', label: 'Days streak' },
+  { value: 230, suffix: '+', label: 'Days tracked' },
+  { value: 100, suffix: '%', label: 'Self-taught' },
+];
+
+const MagneticButton: React.FC<{ onClick: () => void; className?: string; children: React.ReactNode }> = ({ onClick, className = '', children }) => {
+  const ref = useRef<HTMLButtonElement>(null);
+  const onMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
+  };
+  const onLeave = () => { if (ref.current) ref.current.style.transform = 'translate(0,0)'; };
+  return (
+    <button ref={ref} onClick={onClick} onMouseMove={onMove} onMouseLeave={onLeave} className={className}>
+      {children}
+    </button>
   );
 };
 
@@ -178,22 +227,47 @@ const Home: React.FC = () => {
           transition={{ delay: 0.75 }}
           className="flex flex-wrap items-center justify-center gap-3 mt-2"
         >
-          <button onClick={() => document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth' })} className="btn-primary">
+          <MagneticButton className="btn-primary" onClick={() => document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth' })}>
             Explore
             <ArrowRight size={18} />
-          </button>
-          <button onClick={handleShare} className="btn-secondary">
+          </MagneticButton>
+          <MagneticButton className="btn-secondary" onClick={handleShare}>
             <Share2 size={18} />
             Share
-          </button>
-          <button onClick={handleCopyUrl} className="btn-secondary">
+          </MagneticButton>
+          <MagneticButton className="btn-secondary" onClick={handleCopyUrl}>
             {copied ? <Check size={18} /> : <Copy size={18} />}
             {copied ? 'Copied!' : 'Copy Link'}
-          </button>
+          </MagneticButton>
         </motion.div>
       </motion.div>
 
-      {/* Explore section */}
+      /* Stats band */
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.5 }}
+        className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-3"
+      >
+        {STATS.map((s, i) => (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.07, duration: 0.45 }}
+            className="card p-4 text-center"
+          >
+            <p className="text-2xl md:text-3xl font-black gradient-text">
+              <CountUp to={s.value} suffix={s.suffix} />
+            </p>
+            <p className="text-[11px] md:text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{s.label}</p>
+          </motion.div>
+        ))}
+      </motion.section>
+
+      /* Explore grid */
       <motion.section
         id="explore"
         initial={{ opacity: 0 }}
@@ -206,35 +280,41 @@ const Home: React.FC = () => {
         <p className="text-center text-sm mb-8" style={{ color: 'var(--color-text-muted)' }}>
           Everything around the digital identity, one tap away.
         </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <TiltCard
-            icon={<Gamepad2 size={34} />}
-            label="Gaming"
-            desc="Game library & setups"
-            delay={0}
-            onClick={() => navigate('/gaming')}
-          />
-          <TiltCard
-            icon={<Sparkles size={34} />}
-            label="Esports"
-            desc="Competitive scene"
-            delay={0.08}
-            onClick={() => navigate('/esports')}
-          />
-          <TiltCard
-            icon={<Users size={34} />}
-            label="Social"
-            desc="Links & community"
-            delay={0.16}
-            onClick={() => navigate('/social')}
-          />
-          <TiltCard
-            icon={<MessageCircle size={34} />}
-            label="Contact"
-            desc="Get in touch"
-            delay={0.24}
-            onClick={() => navigate('/contact')}
-          />
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <TiltCard icon={<Gamepad2 size={34} />} label="Gaming" desc="Game library & setups" delay={0} onClick={() => navigate('/gaming')} />
+          <TiltCard icon={<Sparkles size={34} />} label="Esports" desc="Competitive scene" delay={0.06} onClick={() => navigate('/esports')} />
+          <TiltCard icon={<User size={34} />} label="About" desc="Who is JustJayDev" delay={0.12} onClick={() => navigate('/about')} />
+          <TiltCard icon={<Users size={34} />} label="Social" desc="Links & community" delay={0.18} onClick={() => navigate('/social')} />
+          <TiltCard icon={<MessageCircle size={34} />} label="Contact" desc="Get in touch" delay={0.24} onClick={() => navigate('/contact')} />
+          <TiltCard icon={<Archive size={34} />} label="Archive" desc="Hidden lore vault" delay={0.3} onClick={() => navigate('/archive')} />
+        </div>
+      </motion.section>
+
+      /* CTA band */
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 0.5 }}
+        className="mt-16 md:mt-20"
+      >
+        <div className="glow-border p-6 md:p-10 text-center">
+          <h3 className="text-xl md:text-2xl font-bold">
+            Want your own site like this?
+          </h3>
+          <p className="text-sm mt-2" style={{ color: 'var(--color-text-muted)' }}>
+            I build apps, tools and websites. Hit me up.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
+            <MagneticButton className="btn-primary" onClick={() => navigate('/contact')}>
+              <MessageCircle size={18} />
+              Contact me
+            </MagneticButton>
+            <MagneticButton className="btn-secondary" onClick={() => navigate('/support')}>
+              <Heart size={18} />
+              Support
+            </MagneticButton>
+          </div>
         </div>
       </motion.section>
     </div>
