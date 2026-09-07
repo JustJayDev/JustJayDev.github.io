@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import * as dataService from '@/firebase/dataService';
+import { isFirebaseConfigured } from '@/firebase/config';
 import type { Profile, Game, SocialLink, EsportsRecord, ArchiveItem, AnalyticsData, SiteSettings } from '@/types';
 
 // Demo data for when Firebase is not configured yet
@@ -43,8 +44,8 @@ const DEMO_GAMES: Game[] = [
     id: '2',
     name: 'BGMI',
     icon: '🎯',
-    username: '[Your BGMI username]',
-    uid: '[Your UID]',
+    username: '',
+    uid: '',
     server: 'Asia',
     currentRank: '',
     highestRank: '',
@@ -54,7 +55,8 @@ const DEMO_GAMES: Game[] = [
     achievements: [],
     team: '',
     externalUrl: '',
-    visibility: 'public',
+    // hidden from the public site until real stats are filled in via Admin
+    visibility: 'hidden',
     order: 1,
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -63,8 +65,8 @@ const DEMO_GAMES: Game[] = [
     id: '3',
     name: 'FC Mobile',
     icon: '⚽',
-    username: '[Your FC Mobile username]',
-    uid: '[Your UID]',
+    username: '',
+    uid: '',
     server: 'Global',
     currentRank: '',
     highestRank: '',
@@ -74,7 +76,8 @@ const DEMO_GAMES: Game[] = [
     achievements: [],
     team: '',
     externalUrl: '',
-    visibility: 'public',
+    // hidden from the public site until real stats are filled in via Admin
+    visibility: 'hidden',
     order: 2,
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -82,7 +85,7 @@ const DEMO_GAMES: Game[] = [
 ];
 
 const DEMO_SOCIAL: SocialLink[] = [
-  { id: '1', platform: 'discord', username: 'JustJayDev', url: '', visibility: 'public', order: 0 },
+  { id: '1', platform: 'github', username: 'JustJayDev', url: 'https://github.com/JustJayDev', visibility: 'public', order: 0 },
 ];
 
 const DEMO_ARCHIVE: ArchiveItem[] = [
@@ -97,10 +100,15 @@ const DEMO_SETTINGS: SiteSettings = {
 };
 
 const useDemoMode = () => {
-  const [isDemo, setIsDemo] = useState(false);
+  // Demo mode = Firebase keys not configured (or demo flag forced via window.__JJDEV_DEMO__).
+  // Initialize synchronously so pages render demo data instantly with zero thrown errors.
+  const [isDemo, setIsDemo] = useState(() => {
+    const forced = (window as any).__JJDEV_DEMO__;
+    return forced === true || forced === 'true' || !isFirebaseConfigured;
+  });
   useEffect(() => {
-    const config = (window as any).__JJDEV_DEMO__;
-    setIsDemo(config === true || config === 'true');
+    const forced = (window as any).__JJDEV_DEMO__;
+    setIsDemo(forced === true || forced === 'true' || !isFirebaseConfigured);
   }, []);
   return isDemo;
 };

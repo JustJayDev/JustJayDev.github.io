@@ -5,6 +5,8 @@ import { AuthProvider } from '@/context/AuthContext';
 import Layout from '@/components/Layout';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
+import Details from '@/pages/Details';
+import Devlog from '@/pages/Devlog';
 import Gaming from '@/pages/Gaming';
 import Esports from '@/pages/Esports';
 import Social from '@/pages/Social';
@@ -24,6 +26,8 @@ const App: React.FC = () => {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/details" element={<Details />} />
+            <Route path="/devlog" element={<Devlog />} />
             <Route path="/gaming" element={<Gaming />} />
             <Route path="/esports" element={<Esports />} />
             <Route path="/social" element={<Social />} />

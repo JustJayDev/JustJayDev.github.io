@@ -45,14 +45,14 @@ const Footer: React.FC = () => {
           </span>
         </a>
         <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm">
-          {['/', '/about', '/gaming', '/esports', '/social', '/contact'].map((p, i) => (
+          {['/', '/about', '/details', '/devlog', '/gaming', '/esports', '/social', '/contact'].map((p, i) => (
             <button
               key={p}
               onClick={() => navigate(p)}
               className="transition-colors hover:opacity-80"
               style={{ color: 'var(--color-text-muted)' }}
             >
-              {['Home', 'About', 'Gaming', 'Esports', 'Social', 'Contact'][i]}
+              {['Home', 'About', 'Details', 'Devlog', 'Gaming', 'Esports', 'Social', 'Contact'][i]}
             </button>
           ))}
         </nav>

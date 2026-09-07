@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Menu, X, Moon, Sun, Monitor, Search } from 'lucide-react';
+import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Menu, X, Moon, Sun, Monitor, Search, BookOpen, Info } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
@@ -11,6 +11,8 @@ import CommandPalette from '@/components/CommandPalette';
 const NAV_ITEMS = [
   { path: '/', label: 'Home', icon: Home },
   { path: '/about', label: 'About', icon: User },
+  { path: '/details', label: 'Details', icon: Info },
+  { path: '/devlog', label: 'Devlog', icon: BookOpen },
   { path: '/gaming', label: 'Gaming', icon: Gamepad2 },
   { path: '/esports', label: 'Esports', icon: Trophy },
   { path: '/social', label: 'Social', icon: Users },

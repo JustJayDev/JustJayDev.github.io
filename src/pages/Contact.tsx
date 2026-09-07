@@ -25,15 +25,15 @@ const Contact: React.FC = () => {
             <div>
               <h3 className="font-bold text-xl mb-2">Get in Touch</h3>
               <p className="mb-4" style={{ color: 'var(--color-text-muted)' }}>
-                The best way to reach me is through Discord. Join my server or send a direct message.
+                The best way to reach me is through GitHub — open an issue on any of my projects or check out my profile.
               </p>
               <a
-                href="https://discord.gg/"
+                href="https://github.com/JustJayDev"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary inline-flex"
               >
-                Open Discord
+                Open GitHub
                 <ArrowRight size={18} />
               </a>
             </div>

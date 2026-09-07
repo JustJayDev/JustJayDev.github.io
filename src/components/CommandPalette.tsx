@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Search, CornerDownLeft, Shield } from 'lucide-react';
+import { Home, User, Gamepad2, Trophy, Users, MessageCircle, Heart, Archive, Search, CornerDownLeft, Shield, BookOpen, Info } from 'lucide-react';
 
 interface Cmd {
   path: string;
@@ -13,6 +13,8 @@ interface Cmd {
 const COMMANDS: Cmd[] = [
   { path: '/', label: 'Home', hint: 'Go to homepage', icon: Home },
   { path: '/about', label: 'About', hint: 'Who is JustJayDev', icon: User },
+  { path: '/details', label: 'Details', hint: 'Everything about me, in detail', icon: Info },
+  { path: '/devlog', label: 'Devlog', hint: 'Build log & updates', icon: BookOpen },
   { path: '/gaming', label: 'Gaming', hint: 'Game library & stats', icon: Gamepad2 },
   { path: '/esports', label: 'Esports', hint: 'Competitive achievements', icon: Trophy },
   { path: '/social', label: 'Social', hint: 'Links & community', icon: Users },
