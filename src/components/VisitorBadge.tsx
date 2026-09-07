@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Eye, Flame, Heart, Sunglasses, RefreshCw } from 'lucide-react';
+import { Eye, Flame, Heart, Glasses, RefreshCw } from 'lucide-react';
 import { useSiteData, countVisitOnce } from '@/hooks/useSiteData';
 import { useLang } from '@/context/LanguageContext';
 
 const REACTIONS = [
   { key: 'fire', label: 'Fire', icon: Flame },
   { key: 'heart', label: 'Love', icon: Heart },
-  { key: 'cool', label: 'Cool', icon: Sunglasses },
+  { key: 'cool', label: 'Cool', icon: Glasses },
 ];
 
 const VisitorBadge: React.FC = () => {
