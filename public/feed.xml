@@ -7,6 +7,13 @@
     <language>en</language>
     <atom:link href="https://justjaydev.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Site v3 — the lean rebuild</title>
+      <link>https://justjaydev.github.io/devlog</link>
+      <guid>site-v3-lean</guid>
+      <pubDate>Mon, 07 Sep 2026 20:30:00 +0530</pubDate>
+      <description>Rebuilt the whole site lean: 3 focused pages (Home, Games, About), every page lazy-loaded, Firebase and 13 unused pages removed. Same URL, same QR, way faster.</description>
+    </item>
+    <item>
       <title>One repo to rule them all</title>
       <link>https://justjaydev.github.io/devlog</link>
       <guid>repo-restructure</guid>

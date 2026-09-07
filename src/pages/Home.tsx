@@ -1,356 +1,194 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Gamepad2, Users, MessageCircle, User, Heart, Archive, Share2, Copy, Check, Sparkles, BookOpen, Camera, HelpCircle } from 'lucide-react';
-import { useProfile } from '@/hooks/useData';
-import toast from 'react-hot-toast';
+import { ArrowRight, Gamepad2, User } from 'lucide-react';
+import { profile } from '@/data/profile';
+import { mainGames } from '@/data/games';
 
-const RevealText: React.FC<{ text: string; className?: string; delay?: number }> = ({ text, className = '', delay = 0 }) => (
-  <span className={className} aria-label={text}>
-    {text.split('').map((ch, i) => (
-      <span key={i} aria-hidden="true" className="text-reveal" style={{ ['--i' as any]: i + delay }}>
-        {ch === ' ' ? '\u00A0' : ch}
-      </span>
-    ))}
-  </span>
-);
-
-const CountUp: React.FC<{ to: number; suffix?: string; duration?: number }> = ({ to, suffix = '', duration = 1.6 }) => {
-  const [val, setVal] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !started.current) {
-        started.current = true;
-        const t0 = performance.now();
-        const tick = (t: number) => {
-          const p = Math.min(1, (t - t0) / (duration * 1000));
-          setVal(Math.round(to * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }
-    }, { threshold: 0.4 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [to, duration]);
-  return <span ref={ref}>{val.toLocaleString()}{suffix}</span>;
-};
-
-const TiltCard: React.FC<{
-  icon: React.ReactNode;
-  label: string;
-  desc: string;
-  onClick: () => void;
-  delay: number;
-}> = ({ icon, label, desc, onClick, delay }) => {
-  const ref = useRef<HTMLButtonElement>(null);
-  const glareRef = useRef<HTMLDivElement>(null);
-  const handleMove = useCallback((e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(600px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-3px)`;
-    if (glareRef.current) {
-      glareRef.current.style.opacity = '0.5';
-      glareRef.current.style.background = `radial-gradient(circle at ${(x + 0.5) * 100}% ${(y + 0.5) * 100}%, rgba(255,255,255,0.22), transparent 60%)`;
-    }
-  }, []);
-  const handleLeave = useCallback(() => {
-    const el = ref.current;
-    if (el) el.style.transform = 'perspective(600px) rotateY(0) rotateX(0) translateY(0)';
-    if (glareRef.current) glareRef.current.style.opacity = '0';
-  }, []);
-  return (
-    <motion.button
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ delay: 0.1 + delay, duration: 0.5, ease: 'easeOut' }}
-      onClick={onClick}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      className="card tilt-card p-5 flex flex-col items-center gap-3 text-center group relative overflow-hidden"
-    >
-      <div ref={glareRef} className="absolute inset-0 pointer-events-none transition-opacity duration-300" style={{ opacity: 0 }} />
-      <div style={{ color: 'var(--color-accent-light)' }} className="group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-300">
-        {icon}
-      </div>
-      <div className="relative">
-        <p className="font-semibold text-sm">{label}</p>
-        <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{desc}</p>
-      </div>
-    </motion.button>
-  );
-};
-
-const STATS = [
-  { value: 4, suffix: '+', label: 'Apps shipped' },
-  { value: 120, suffix: '+', label: 'Days streak' },
-  { value: 230, suffix: '+', label: 'Days tracked' },
-  { value: 100, suffix: '%', label: 'Self-taught' },
-];
-
-const MagneticButton: React.FC<{ onClick: () => void; className?: string; children: React.ReactNode }> = ({ onClick, className = '', children }) => {
-  const ref = useRef<HTMLButtonElement>(null);
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
-  };
-  const onLeave = () => { if (ref.current) ref.current.style.transform = 'translate(0,0)'; };
-  return (
-    <button ref={ref} onClick={onClick} onMouseMove={onMove} onMouseLeave={onLeave} className={className}>
-      {children}
-    </button>
-  );
-};
+const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.'];
 
 const Home: React.FC = () => {
-  const { profile, loading } = useProfile();
   const navigate = useNavigate();
-  const [copied, setCopied] = useState(false);
+  const [tagIdx, setTagIdx] = useState(0);
 
-  const handleCopyUrl = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    toast.success('URL copied!');
-    setTimeout(() => setCopied(false), 2000);
-  };
-  const handleShare = async () => {
-    if (navigator.share) {
-      await navigator.share({
-        title: 'JustJayDev',
-        text: profile?.tagline || 'Check out my digital identity!',
-        url: window.location.href,
-      });
-    } else {
-      handleCopyUrl();
-    }
-  };
+  useEffect(() => {
+    document.title = 'JustJayDev — Mobile gamer. Builder. Future trader.';
+    const id = setInterval(() => setTagIdx((i) => (i + 1) % TAGLINES.length), 2600);
+    return () => clearInterval(id);
+  }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
-        <div className="w-10 h-10 rounded-full border-2 animate-spin" style={{ borderColor: 'var(--color-border)', borderTopColor: 'var(--color-accent)' }} />
-        <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Loading your experience...</p>
-      </div>
-    );
-  }
+  const nowPlaying = mainGames.filter((g) => g.nowPlaying);
 
   return (
-    <div className="py-8 md:py-16">
-      {/* Hero banner with Jay's photo */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="relative rounded-3xl overflow-hidden mb-10 border"
-        style={{ borderColor: 'var(--color-border)' }}
-      >
-        <img
-          src="/jay-hero.jpg"
-          alt="JustJayDev — Code, Build, Improve, Repeat"
-          className="w-full object-cover"
-          style={{ maxHeight: 340, minHeight: 180 }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(180deg, rgba(2,6,23,0.05) 0%, rgba(2,6,23,0.85) 100%)' }}
-        />
-        <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 flex flex-wrap items-center gap-2">
-          {['FOCUS', 'DISCIPLINE', 'FREEDOM'].map((w) => (
-            <span
-              key={w}
-              className="text-[10px] md:text-xs font-bold tracking-widest px-3 py-1 rounded-full glass"
-              style={{ color: '#fff' }}
-            >
-              {w}
-            </span>
-          ))}
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="flex flex-col items-center text-center gap-6 pt-2"
-      >
+    <div>
+      {/* ============ HERO ============ */}
+      <section className="page-container pt-12 pb-16 md:pt-20 md:pb-24">
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.15, duration: 0.5 }}
-          className="relative"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center text-center"
         >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-            className="absolute -inset-1.5 rounded-full opacity-70"
-            style={{ background: 'conic-gradient(from 0deg, transparent 0%, #6366f1 20%, #d946ef 50%, #6366f1 80%, transparent 100%)', filter: 'blur(4px)' }}
-          />
-          <div className="relative w-28 h-28 rounded-full overflow-hidden border-2" style={{ borderColor: 'var(--color-accent)' }}>
-            {profile?.avatarUrl ? (
-              <img src={profile.avatarUrl} alt={profile.displayName} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-5xl font-bold gradient-text">
-                {profile?.displayName?.charAt(0) || 'J'}
-              </div>
-            )}
+          <div
+            className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-6"
+            style={{
+              border: '3px solid transparent',
+              background:
+                'linear-gradient(var(--color-bg), var(--color-bg)) padding-box, linear-gradient(135deg, #6366f1, #d946ef, #22d3ee) border-box',
+              boxShadow: '0 0 44px rgba(99,102,241,0.35)',
+            }}
+          >
+            <img
+              src={profile.heroImage}
+              alt="Jay Kumar"
+              className="w-full h-full object-cover"
+              loading="eager"
+            />
           </div>
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center"
-            style={{ background: 'var(--color-accent)' }}
-          >
-            <span className="text-white text-xs">⚡</span>
-          </motion.div>
-        </motion.div>
-        <div className="space-y-2">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-sm font-medium tracking-widest uppercase"
-            style={{ color: 'var(--color-accent-light)' }}
-          >
-            <Sparkles size={14} className="inline mr-1 -mt-0.5" />
-            {profile?.brandName || 'JustJayDev'}
-          </motion.p>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight">
-            <RevealText text={profile?.displayName || 'Jay Kumar'} />
+
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
+            <span className="gradient-text">JustJayDev</span>
           </h1>
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55 }}
-            className="text-base md:text-lg"
+
+          <p className="mt-3 text-xl md:text-3xl font-bold h-9 md:h-12">
+            <motion.span
+              key={tagIdx}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+              className="inline-block gradient-text"
+            >
+              {TAGLINES[tagIdx]}
+            </motion.span>
+          </p>
+
+          <p
+            className="mt-4 max-w-xl text-sm md:text-base leading-relaxed"
             style={{ color: 'var(--color-text-muted)' }}
           >
-            {profile?.tagline || 'Gamer - Creator - Builder'}
-          </motion.p>
-        </div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.65 }}
-          className="glow-border inline-flex items-center gap-2 px-4 py-2"
-        >
-          <span className="text-xs font-mono" style={{ color: 'var(--color-text-muted)' }}>ID:</span>
-          <span className="text-sm font-mono font-semibold" style={{ color: 'var(--color-accent-light)' }}>
-            {profile?.digitalId || 'JJDEV-001'}
-          </span>
-          <span className="w-2 h-2 rounded-full pulse-dot ml-1" style={{ background: 'var(--color-success)' }} />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.75 }}
-          className="flex flex-wrap items-center justify-center gap-3 mt-2"
-        >
-          <MagneticButton className="btn-primary" onClick={() => document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth' })}>
-            Explore
-            <ArrowRight size={18} />
-          </MagneticButton>
-          <MagneticButton className="btn-secondary" onClick={handleShare}>
-            <Share2 size={18} />
-            Share
-          </MagneticButton>
-          <MagneticButton className="btn-secondary" onClick={handleCopyUrl}>
-            {copied ? <Check size={18} /> : <Copy size={18} />}
-            {copied ? 'Copied!' : 'Copy Link'}
-          </MagneticButton>
-        </motion.div>
-      </motion.div>
-
-      /* Stats band */
-      <motion.section
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.5 }}
-        className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-3"
-      >
-        {STATS.map((s, i) => (
-          <motion.div
-            key={s.label}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.07, duration: 0.45 }}
-            className="card p-4 text-center"
-          >
-            <p className="text-2xl md:text-3xl font-black gradient-text">
-              <CountUp to={s.value} suffix={s.suffix} />
-            </p>
-            <p className="text-[11px] md:text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>{s.label}</p>
-          </motion.div>
-        ))}
-      </motion.section>
-
-      /* Explore grid */
-      <motion.section
-        id="explore"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6 }}
-        className="mt-16 md:mt-24 scroll-mt-20"
-      >
-        <h2 className="section-title text-center">Explore</h2>
-        <p className="text-center text-sm mb-8" style={{ color: 'var(--color-text-muted)' }}>
-          Everything around the digital identity, one tap away.
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <TiltCard icon={<User size={34} />} label="Details" desc="Everything about me" delay={0} onClick={() => navigate('/details')} />
-          <TiltCard icon={<Gamepad2 size={34} />} label="Gaming" desc="Game library & setups" delay={0.06} onClick={() => navigate('/gaming')} />
-          <TiltCard icon={<Sparkles size={34} />} label="Esports" desc="Competitive scene" delay={0.12} onClick={() => navigate('/esports')} />
-          <TiltCard icon={<BookOpen size={34} />} label="Devlog" desc="What I'm building" delay={0.18} onClick={() => navigate('/devlog')} />
-          <TiltCard icon={<Camera size={34} />} label="Photos" desc="Moments & memories" delay={0.24} onClick={() => navigate('/photos')} />
-          <TiltCard icon={<Users size={34} />} label="Social" desc="Links & community" delay={0.3} onClick={() => navigate('/social')} />
-          <TiltCard icon={<HelpCircle size={34} />} label="Quiz" desc="Test what you know" delay={0.36} onClick={() => navigate('/quiz')} />
-          <TiltCard icon={<MessageCircle size={34} />} label="Contact" desc="Get in touch" delay={0.42} onClick={() => navigate('/contact')} />
-          <TiltCard icon={<Archive size={34} />} label="Archive" desc="Hidden lore vault" delay={0.48} onClick={() => navigate('/archive')} />
-        </div>
-      </motion.section>
-
-      /* CTA band */
-      <motion.section
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.5 }}
-        className="mt-16 md:mt-20"
-      >
-        <div className="glow-border p-6 md:p-10 text-center">
-          <h3 className="text-xl md:text-2xl font-bold gradient-text">
-            Code. Build. Improve. Repeat.
-          </h3>
-          <p className="text-sm mt-2" style={{ color: 'var(--color-text-muted)' }}>
-            Better than yesterday — every single day.
+            {profile.bio}
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
-            <MagneticButton className="btn-primary" onClick={() => navigate('/details')}>
-              <User size={18} />
-              All my details
-            </MagneticButton>
-            <MagneticButton className="btn-secondary" onClick={() => navigate('/guestbook')}>
-              <Heart size={18} />
-              Sign the guestbook
-            </MagneticButton>
+
+          <div className="flex flex-wrap justify-center gap-2 mt-6">
+            {profile.chips.map((chip, i) => (
+              <motion.span
+                key={chip}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 + i * 0.06 }}
+                className="badge badge-accent"
+              >
+                {chip}
+              </motion.span>
+            ))}
           </div>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            <motion.button
+              whileTap={{ scale: 0.94 }}
+              onClick={() => navigate('/games')}
+              className="btn-primary"
+              style={{ textDecoration: 'none' }}
+            >
+              <Gamepad2 size={18} />
+              See my games
+              <ArrowRight size={16} />
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.94 }}
+              onClick={() => navigate('/about')}
+              className="btn-ghost"
+              style={{ textDecoration: 'none' }}
+            >
+              <User size={18} />
+              About me
+            </motion.button>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ============ NOW PLAYING ============ */}
+      <section className="page-container pb-16">
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="section-title text-center"
+        >
+          Now Playing
+        </motion.h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 max-w-2xl mx-auto">
+          {nowPlaying.map((g, i) => (
+            <motion.button
+              key={g.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -4 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/games')}
+              className="tilt-card p-5 rounded-2xl text-left"
+              style={{
+                background: 'var(--color-surface)',
+                border: '1px solid var(--color-border)',
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-3xl">{g.emoji}</span>
+                <span
+                  className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full"
+                  style={{
+                    background: 'rgba(239,68,68,0.12)',
+                    color: '#ef4444',
+                  }}
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full pulse-dot"
+                    style={{ background: '#ef4444' }}
+                  />
+                  Now Playing
+                </span>
+              </div>
+              <h3 className="mt-3 font-bold text-lg">{g.name}</h3>
+              <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
+                {g.badges.slice(0, 3).join(' · ')}
+              </p>
+            </motion.button>
+          ))}
         </div>
-      </motion.section>
+      </section>
+
+      {/* ============ QUICK LINKS STRIP ============ */}
+      <section className="page-container pb-20">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="rounded-2xl p-6 md:p-8 text-center"
+          style={{
+            background: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
+          }}
+        >
+          <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+            {profile.setup.phone} · {profile.setup.chipset} · {profile.setup.display}
+          </p>
+          <p className="text-xs mt-2" style={{ color: 'var(--color-text-muted)' }}>
+            {profile.setup.tuning} — {profile.setup.extra}
+          </p>
+          <a
+            href={profile.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-medium mt-4 transition-opacity hover:opacity-75"
+            style={{ color: 'var(--color-accent-light)' }}
+          >
+            github.com/JustJayDev
+            <ArrowRight size={14} />
+          </a>
+        </motion.div>
+      </section>
     </div>
   );
 };

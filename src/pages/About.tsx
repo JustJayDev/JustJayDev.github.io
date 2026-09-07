@@ -1,112 +1,173 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Target, Heart } from 'lucide-react';
-import { useProfile } from '@/hooks/useData';
+import { Gamepad2, Smartphone, Sparkles } from 'lucide-react';
+import { profile } from '@/data/profile';
+import { casualGames } from '@/data/games';
 
 const About: React.FC = () => {
-  const { profile, loading } = useProfile();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: 'var(--color-accent)', borderTopColor: 'transparent' }} />
-      </div>
-    );
-  }
-
   return (
-    <div className="page-container py-8 md:py-16">
+    <div className="page-container py-12 md:py-16">
+      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
+        className="text-center"
       >
-        <h1 className="section-title">About</h1>
-
-        {/* Intro */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="card p-6 mb-6"
-        >
-          <div className="flex items-start gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(99,102,241,0.1)' }}>
-              <Sparkles size={24} style={{ color: 'var(--color-accent-light)' }} />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-2">Introduction</h3>
-              <p style={{ color: 'var(--color-text-muted)' }}>
-                {profile?.bio || 'Personal digital identity powered by JustJayDev.'}
-              </p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Interests */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="card p-6 mb-6"
-        >
-          <div className="flex items-start gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(99,102,241,0.1)' }}>
-              <Heart size={24} style={{ color: 'var(--color-accent-light)' }} />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-3">Interests</h3>
-              <div className="flex flex-wrap gap-2">
-                {(profile?.interests || ['Gaming', 'Coding', 'Building']).map((item) => (
-                  <span key={item} className="badge badge-accent">{item}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Goals */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="card p-6 mb-6"
-        >
-          <div className="flex items-start gap-4">
-            <div className="p-3 rounded-xl" style={{ background: 'rgba(99,102,241,0.1)' }}>
-              <Target size={24} style={{ color: 'var(--color-accent-light)' }} />
-            </div>
-            <div>
-              <h3 className="font-bold text-lg mb-3">Goals</h3>
-              <ul className="space-y-2">
-                {(profile?.goals || ['Keep building', 'Keep growing']).map((goal, i) => (
-                  <li key={i} className="flex items-center gap-2" style={{ color: 'var(--color-text-muted)' }}>
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-accent)' }} />
-                    {goal}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Roles */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="card p-6"
-        >
-          <h3 className="font-bold text-lg mb-4">What I Do</h3>
-          <div className="flex flex-wrap gap-2">
-            {(profile?.roles || ['Gamer', 'Creator', 'Builder']).map((role) => (
-              <span key={role} className="px-4 py-2 rounded-xl text-sm font-medium" style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)' }}>
-                {role}
-              </span>
-            ))}
-          </div>
-        </motion.div>
+        <h1 className="text-3xl md:text-5xl font-black tracking-tight">
+          <span className="gradient-text">About me</span>
+        </h1>
+        <p className="mt-3 text-lg font-semibold">{profile.tagline}</p>
       </motion.div>
+
+      {/* Bio */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-10 max-w-2xl mx-auto rounded-2xl p-6 md:p-8"
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+      >
+        <p className="leading-relaxed" style={{ color: 'var(--color-text)' }}>
+          {profile.bio}
+        </p>
+        <div className="flex flex-wrap gap-2 mt-5">
+          {profile.chips.map((chip) => (
+            <span key={chip} className="badge badge-accent">
+              {chip}
+            </span>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* Setup */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-6 max-w-2xl mx-auto rounded-2xl p-6 md:p-8"
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+      >
+        <h2 className="section-title flex items-center gap-2 text-xl md:text-2xl">
+          <Smartphone size={22} style={{ color: 'var(--color-accent)' }} />
+          My setup
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
+          {[
+            ['Phone', profile.setup.phone],
+            ['Chipset', profile.setup.chipset],
+            ['Display', profile.setup.display],
+            ['Tuning', profile.setup.tuning],
+            ['RAM', profile.setup.ram],
+            ['Storage', profile.setup.storage],
+          ].map(([label, value], i) => (
+            <motion.div
+              key={label}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className="rounded-xl px-4 py-3"
+              style={{ background: 'var(--color-surface-2)' }}
+            >
+              <p className="text-[10px] uppercase tracking-wider font-bold" style={{ color: 'var(--color-text-muted)' }}>
+                {label}
+              </p>
+              <p className="text-sm font-semibold mt-0.5">{value}</p>
+            </motion.div>
+          ))}
+        </div>
+        <p className="text-xs mt-4" style={{ color: 'var(--color-text-muted)' }}>
+          {profile.setup.extra}
+        </p>
+      </motion.section>
+
+      {/* Footballers */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-6 max-w-2xl mx-auto rounded-2xl p-6 md:p-8"
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+      >
+        <h2 className="section-title flex items-center gap-2 text-xl md:text-2xl">
+          <Sparkles size={22} style={{ color: 'var(--color-accent)' }} />
+          Football idols
+        </h2>
+        <div className="flex flex-wrap gap-2 mt-4">
+          {profile.footballers.map((p) => (
+            <span key={p} className="badge badge-accent text-sm">
+              {p}
+            </span>
+          ))}
+        </div>
+        <p className="text-sm mt-3" style={{ color: 'var(--color-text-muted)' }}>
+          Play it and watch it — Ronaldo’s mentality is the blueprint.
+        </p>
+      </motion.section>
+
+      {/* Casual classics */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-6 max-w-2xl mx-auto rounded-2xl p-6 md:p-8"
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+      >
+        <h2 className="section-title flex items-center gap-2 text-xl md:text-2xl">
+          <Gamepad2 size={22} style={{ color: 'var(--color-accent)' }} />
+          Casual classics
+        </h2>
+        <div className="flex flex-wrap gap-2 mt-4">
+          {casualGames.map((g) => (
+            <span
+              key={g}
+              className="text-xs px-3 py-1.5 rounded-full"
+              style={{ background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
+            >
+              {g}
+            </span>
+          ))}
+        </div>
+      </motion.section>
+
+      {/* Socials */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-6 max-w-2xl mx-auto rounded-2xl p-6 md:p-8 mb-4"
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+      >
+        <h2 className="section-title text-xl md:text-2xl">Find me</h2>
+        <div className="flex flex-wrap gap-3 mt-4">
+          {profile.socials.map((s) => (
+            <a
+              key={s.label}
+              href={s.url}
+              target={s.live ? '_blank' : undefined}
+              rel={s.live ? 'noopener noreferrer' : undefined}
+              onClick={(e) => {
+                if (!s.live) e.preventDefault();
+              }}
+              className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
+              style={{
+                background: s.live ? 'var(--color-accent)' : 'var(--color-surface-2)',
+                color: s.live ? '#fff' : 'var(--color-text-muted)',
+                opacity: s.live ? 1 : 0.6,
+                border: '1px solid var(--color-border)',
+                textDecoration: 'none',
+              }}
+            >
+              {s.label}
+              {!s.live && ' · soon'}
+            </a>
+          ))}
+        </div>
+        <p className="text-xs mt-4" style={{ color: 'var(--color-text-muted)' }}>
+          {profile.email}
+        </p>
+      </motion.section>
     </div>
   );
 };

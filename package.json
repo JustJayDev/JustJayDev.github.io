@@ -10,12 +10,10 @@
     "deploy": "vite build && npx gh-pages -d dist"
   },
   "dependencies": {
-    "firebase": "^10.12.0",
     "framer-motion": "^11.3.0",
     "lucide-react": "^0.400.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.24.0"
   },
   "devDependencies": {
