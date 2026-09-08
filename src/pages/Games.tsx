@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink } from 'lucide-react';
+import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search } from 'lucide-react';
 import { mainGames, casualGames, type Game } from '@/data/games';
 
 type Filter = 'all' | 'active' | 'casual';
@@ -133,11 +133,21 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
 };
 const Games: React.FC = () => {
   const [filter, setFilter] = useState<Filter>('all');
+  const [query, setQuery] = useState('');
 
   const filtered = mainGames.filter((g) => {
     if (filter === 'active') return g.nowPlaying;
     if (filter === 'casual') return !g.nowPlaying;
     return true;
+  }).filter((g) => {
+    const q = query.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      g.name.toLowerCase().includes(q) ||
+      g.status.toLowerCase().includes(q) ||
+      g.badges.some((b) => b.toLowerCase().includes(q)) ||
+      g.details.some((d) => d.toLowerCase().includes(q))
+    );
   });
 
   return (
@@ -154,6 +164,40 @@ const Games: React.FC = () => {
         <p className="mt-3 text-sm md:text-base" style={{ color: 'var(--color-text-muted)' }}>
           18 games played · 2 grinding right now · 100% mobile, zero PC
         </p>
+      </motion.div>
+
+      {/* Search */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.05 }}
+        className="mt-6 max-w-xs mx-auto"
+      >
+        <div
+          className="flex items-center gap-2 px-4 py-2.5 rounded-2xl transition-shadow focus-within:shadow-lg"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+        >
+          <Search size={16} style={{ color: 'var(--color-text-muted)' }} />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search games, badges, achievements…"
+            aria-label="Search games"
+            className="w-full bg-transparent outline-none text-sm"
+            style={{ color: 'var(--color-text)' }}
+          />
+          {query && (
+            <button
+              onClick={() => setQuery('')}
+              aria-label="Clear search"
+              className="text-xs font-bold shrink-0"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </motion.div>
 
       {/* Filter button-group */}
@@ -206,6 +250,11 @@ const Games: React.FC = () => {
             </motion.div>
           ))}
         </AnimatePresence>
+        {filtered.length === 0 && (
+          <p className="text-center text-sm py-10" style={{ color: 'var(--color-text-muted)' }}>
+            No games match “{query}” — try another search.
+          </p>
+        )}
       </div>
       {/* Casual classics strip */}
       <motion.section

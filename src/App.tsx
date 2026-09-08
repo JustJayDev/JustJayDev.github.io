@@ -7,6 +7,7 @@ const Home = lazy(() => import('@/pages/Home'));
 const About = lazy(() => import('@/pages/About'));
 const Games = lazy(() => import('@/pages/Games'));
 const Devlog = lazy(() => import('@/pages/Devlog'));
+const NotFound = lazy(() => import('@/pages/NotFound'));
 
 const PageLoader: React.FC = () => (
   <div className="flex items-center justify-center min-h-[60vh]">
@@ -29,8 +30,19 @@ const ScrollToTop: React.FC = () => {
   return null;
 };
 
+const TITLES: Record<string, string> = {
+  '/': 'JustJayDev — Jay Kumar · Builder, Gamer, Future Trader',
+  '/about': 'About — JustJayDev',
+  '/games': 'Games — JustJayDev',
+  '/devlog': 'Devlog — JustJayDev',
+};
+
 const App: React.FC = () => {
   const location = useLocation();
+
+  React.useEffect(() => {
+    document.title = TITLES[location.pathname] || 'JustJayDev — Jay Kumar';
+  }, [location.pathname]);
 
   return (
     <ThemeProvider>
@@ -45,7 +57,7 @@ const App: React.FC = () => {
               <Route path="/about" element={<About />} />
               <Route path="/games" element={<Games />} />
               <Route path="/devlog" element={<Devlog />} />
-              <Route path="*" element={<Home />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
         </Suspense>

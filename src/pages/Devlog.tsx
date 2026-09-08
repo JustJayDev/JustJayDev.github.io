@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Rss, CalendarDays } from 'lucide-react';
+import { Rss, CalendarDays, Link2, Check } from 'lucide-react';
 
 interface DevlogEntry {
   title: string;
@@ -27,6 +27,7 @@ const Devlog: React.FC = () => {
   const [entries, setEntries] = useState<DevlogEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = 'Devlog — JustJayDev';
@@ -79,13 +80,12 @@ const Devlog: React.FC = () => {
         )}
 
         {!loading && !error && entries.map((e, i) => (
-          <motion.a
+          <motion.div
             key={e.link + i}
-            href={e.link}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: Math.min(i * 0.06, 0.3), duration: 0.45 }}
-            className="tilt-card rounded-2xl p-5 block"
+            className="tilt-card rounded-2xl p-5"
             style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
           >
             <div className="flex items-center justify-between gap-3">
@@ -100,7 +100,39 @@ const Devlog: React.FC = () => {
                 {e.excerpt}…
               </p>
             )}
-          </motion.a>
+            <div className="flex items-center gap-3 mt-3">
+              <a
+                href={e.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-semibold"
+                style={{ color: 'var(--color-accent-light)' }}
+              >
+                Read entry ↗
+              </a>
+              <button
+                onClick={() => {
+                  const url = e.link.startsWith('http') ? e.link : window.location.origin + e.link;
+                  navigator.clipboard?.writeText(url).then(
+                    () => {
+                      setCopied(e.link);
+                      setTimeout(() => setCopied(null), 1600);
+                    },
+                    () => {}
+                  );
+                }}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg transition-colors"
+                style={{
+                  background: copied === e.link ? 'rgba(34,197,94,0.12)' : 'var(--color-surface-2)',
+                  color: copied === e.link ? '#22c55e' : 'var(--color-text-muted)',
+                }}
+                aria-label="Copy link"
+              >
+                {copied === e.link ? <Check size={12} /> : <Link2 size={12} />}
+                {copied === e.link ? 'Copied' : 'Copy link'}
+              </button>
+            </div>
+          </motion.div>
         ))}
 
         {!loading && !error && entries.length === 0 && (
