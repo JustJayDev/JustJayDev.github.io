@@ -90,6 +90,14 @@ img {
   background-clip: text;
 }
 
+/* Light mode: same hue family, darker stops so gradient text passes WCAG AA on #f8fafc.
+   (Original #6366f1→#d946ef only hits ~3.0:1 in light mode — fails AA for normal text.) */
+.light .gradient-text {
+  background: linear-gradient(135deg, #4338ca 0%, #6d28d9 50%, #a21caf 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
 .glass {
   background: rgba(15, 23, 42, 0.8);
   backdrop-filter: blur(20px);

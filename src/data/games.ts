@@ -1,7 +1,12 @@
 /**
- * JustJayDev — Games data (v2 site).
+ * JustJayDev — Games data (v3).
  * 18 games: 8 main with achievements + 10 casual classics.
- * PLACEHOLDER entries (clashRoyale, brawlStars) are editable — swap stats anytime.
+ *
+ * Field notes:
+ *  - verified: false  → card shows an "unverified — update when confirmed" note.
+ *                       Flip to true once real stats are confirmed.
+ *  - proofUrl         → optional link next to the `flex` claim ("proof ↗").
+ *  - lastUpdated      → shown as "Updated <date>" on Now Playing cards.
  */
 export interface Game {
   id: string;
@@ -12,6 +17,9 @@ export interface Game {
   badges: string[];
   details: string[];
   flex?: string;
+  proofUrl?: string;
+  verified?: boolean;
+  lastUpdated?: string;
 }
 
 export const mainGames: Game[] = [
@@ -28,6 +36,8 @@ export const mainGames: Game[] = [
       'Season-by-season ranks coming soon.',
     ],
     flex: 'Defeated many YouTubers in ranked matches.',
+    verified: true,
+    lastUpdated: '2026-09-07',
   },
   {
     id: 'fc-mobile',
@@ -41,6 +51,8 @@ export const mainGames: Game[] = [
       'Best squad OVR: 126.',
       'Favourite card: TOTS Dembélé (Trickster) — best one.',
     ],
+    verified: true,
+    lastUpdated: '2026-09-07',
   },
   {
     id: 'roblox',
@@ -53,6 +65,7 @@ export const mainGames: Game[] = [
       'Blox Fruits: ALL permanent fruits except mythical, Dark Blade unlocked, race V4 max, max level.',
       '30M bounty in BOTH Marines and Pirates.',
     ],
+    verified: true,
   },
   {
     id: 'minecraft',
@@ -65,6 +78,7 @@ export const mainGames: Game[] = [
       'Playing since 2019.',
       'Loves add-ons and mods — that’s why worlds get restarted instead of always finished.',
     ],
+    verified: true,
   },
   {
     id: 'mobile-legends',
@@ -76,6 +90,7 @@ export const mainGames: Game[] = [
       'Reached above Legendary — Mythic tier.',
       'Played casually; the game got boring after a while.',
     ],
+    verified: true,
   },
   {
     id: 'clash-royale',
@@ -87,6 +102,7 @@ export const mainGames: Game[] = [
       'Best-guess stats — editable placeholder, real numbers coming.',
       'Style: fast cycle decks.',
     ],
+    verified: false,
   },
   {
     id: 'brawl-stars',
@@ -98,6 +114,7 @@ export const mainGames: Game[] = [
       'Best-guess stats — editable placeholder, real numbers coming.',
       'Mains: Edgar, Crow, Spike.',
     ],
+    verified: false,
   },
   {
     id: 'among-us',
@@ -107,6 +124,7 @@ export const mainGames: Game[] = [
     badges: ['Certified Impostor'],
     details: ['Just for fun with friends.'],
     flex: 'Certified impostor mind-gamer.',
+    verified: true,
   },
 ];
 

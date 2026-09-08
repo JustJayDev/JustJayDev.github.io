@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Home, Gamepad2, User, Moon, Sun } from 'lucide-react';
+import { Home, Gamepad2, User, BookOpen, Moon, Sun } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 const NAV = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/games', label: 'Games', icon: Gamepad2 },
+  { to: '/devlog', label: 'Devlog', icon: BookOpen },
   { to: '/about', label: 'About', icon: User },
 ];
 

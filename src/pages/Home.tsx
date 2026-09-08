@@ -154,6 +154,11 @@ const Home: React.FC = () => {
               <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
                 {g.badges.slice(0, 3).join(' · ')}
               </p>
+              {g.lastUpdated && (
+                <p className="text-[10px] uppercase tracking-wider font-semibold mt-2" style={{ color: 'var(--color-text-muted)' }}>
+                  Updated {g.lastUpdated}
+                </p>
+              )}
             </motion.button>
           ))}
         </div>

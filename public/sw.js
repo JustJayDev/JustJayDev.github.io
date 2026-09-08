@@ -1,6 +1,6 @@
 /* JustJayDev service worker — cache-first assets, network-first navigation */
-const VERSION = 'jjdev-v3';
-const CORE = ['./', './index.html', './manifest.webmanifest', './favicon.svg'];
+const VERSION = 'jjdev-v3.1';
+const CORE = ['./', './index.html', './manifest.webmanifest', './favicon.svg', './feed.xml'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(

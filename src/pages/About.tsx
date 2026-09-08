@@ -141,28 +141,24 @@ const About: React.FC = () => {
       >
         <h2 className="section-title text-xl md:text-2xl">Find me</h2>
         <div className="flex flex-wrap gap-3 mt-4">
-          {profile.socials.map((s) => (
-            <a
-              key={s.label}
-              href={s.url}
-              target={s.live ? '_blank' : undefined}
-              rel={s.live ? 'noopener noreferrer' : undefined}
-              onClick={(e) => {
-                if (!s.live) e.preventDefault();
-              }}
-              className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
-              style={{
-                background: s.live ? 'var(--color-accent)' : 'var(--color-surface-2)',
-                color: s.live ? '#fff' : 'var(--color-text-muted)',
-                opacity: s.live ? 1 : 0.6,
-                border: '1px solid var(--color-border)',
-                textDecoration: 'none',
-              }}
-            >
-              {s.label}
-              {!s.live && ' · soon'}
-            </a>
-          ))}
+          {profile.socials
+            .filter((s) => s.url && s.url !== '#')
+            .map((s) => (
+              <a
+                key={s.label}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105 active:scale-95"
+                style={{
+                  background: 'var(--color-accent)',
+                  color: '#fff',
+                  textDecoration: 'none',
+                }}
+              >
+                {s.label}
+              </a>
+            ))}
         </div>
         <p className="text-xs mt-4" style={{ color: 'var(--color-text-muted)' }}>
           {profile.email}

@@ -6,6 +6,7 @@ import Shell from '@/components/Shell';
 const Home = lazy(() => import('@/pages/Home'));
 const About = lazy(() => import('@/pages/About'));
 const Games = lazy(() => import('@/pages/Games'));
+const Devlog = lazy(() => import('@/pages/Devlog'));
 
 const PageLoader: React.FC = () => (
   <div className="flex items-center justify-center min-h-[60vh]">
@@ -43,6 +44,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/games" element={<Games />} />
+              <Route path="/devlog" element={<Devlog />} />
               <Route path="*" element={<Home />} />
             </Routes>
           </main>
