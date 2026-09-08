@@ -21,8 +21,8 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
       className="rounded-2xl overflow-hidden"
       style={{
         background: 'var(--color-surface)',
-        border: `1px solid ${game.nowPlaying ? 'rgba(99,102,241,0.55)' : 'var(--color-border)'}`,
-        boxShadow: game.nowPlaying ? '0 0 28px rgba(99,102,241,0.18)' : 'none',
+        border: `1px solid ${game.nowPlaying ? 'color-mix(in srgb, var(--color-accent) 55%, transparent)' : 'var(--color-border)'}`,
+        boxShadow: game.nowPlaying ? '0 0 28px color-mix(in srgb, var(--color-accent) 18%, transparent)' : 'none',
       }}
     >
       <button
@@ -63,7 +63,7 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
                 <span
                   key={b}
                   className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg"
-                  style={{ background: 'rgba(99,102,241,0.1)', color: 'var(--color-accent-light)' }}
+                  style={{ background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)', color: 'var(--color-accent-light)' }}
                 >
                   <Trophy size={11} />
                   {b}
@@ -224,7 +224,7 @@ const Games: React.FC = () => {
                   <motion.span
                     layoutId="filter-pill"
                     className="absolute inset-0 rounded-xl"
-                    style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
+                    style={{ background: 'linear-gradient(135deg, var(--color-accent), #8b5cf6)' }}
                     transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                   />
                 )}

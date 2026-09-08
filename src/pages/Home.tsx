@@ -48,8 +48,8 @@ const Home: React.FC = () => {
             style={{
               border: '3px solid transparent',
               background:
-                'linear-gradient(var(--color-bg), var(--color-bg)) padding-box, linear-gradient(135deg, #6366f1, #d946ef, #22d3ee) border-box',
-              boxShadow: '0 0 44px rgba(99,102,241,0.35)',
+                'linear-gradient(var(--color-bg), var(--color-bg)) padding-box, linear-gradient(135deg, var(--color-accent), #d946ef, #22d3ee) border-box',
+              boxShadow: '0 0 44px color-mix(in srgb, var(--color-accent) 35%, transparent)',
             }}
           >
             <img
@@ -225,7 +225,7 @@ const Home: React.FC = () => {
           }}
         >
           <div className="flex items-center justify-between gap-3">
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: 'rgba(99,102,241,0.12)', color: 'var(--color-accent-light)' }}>
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)', color: 'var(--color-accent-light)' }}>
               <ScrollText size={11} />
               Devlog
             </span>

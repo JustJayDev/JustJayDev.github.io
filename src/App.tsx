@@ -1,7 +1,9 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { AccentProvider } from '@/context/AccentContext';
 import Shell from '@/components/Shell';
+import AccentPicker from '@/components/AccentPicker';
 
 const Home = lazy(() => import('@/pages/Home'));
 const About = lazy(() => import('@/pages/About'));
@@ -14,8 +16,8 @@ const PageLoader: React.FC = () => (
     <div
       className="w-8 h-8 rounded-full"
       style={{
-        border: '3px solid rgba(99,102,241,0.25)',
-        borderTopColor: '#6366f1',
+        border: '3px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
+        borderTopColor: 'var(--color-accent)',
         animation: 'bootspin 0.7s linear infinite',
       }}
     />
@@ -46,22 +48,25 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <ScrollToTop />
-      <div className="aurora" />
-      <div className="bg-grid" />
-      <Shell>
-        <Suspense fallback={<PageLoader />}>
-          <main key={location.pathname} className="page-enter pb-24 md:pb-12">
-            <Routes location={location}>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/games" element={<Games />} />
-              <Route path="/devlog" element={<Devlog />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-        </Suspense>
-      </Shell>
+      <AccentProvider>
+        <ScrollToTop />
+        <div className="aurora" />
+        <div className="bg-grid" />
+        <Shell>
+          <AccentPicker />
+          <Suspense fallback={<PageLoader />}>
+            <main key={location.pathname} className="page-enter pb-24 md:pb-12">
+              <Routes location={location}>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/games" element={<Games />} />
+                <Route path="/devlog" element={<Devlog />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+          </Suspense>
+        </Shell>
+      </AccentProvider>
     </ThemeProvider>
   );
 };

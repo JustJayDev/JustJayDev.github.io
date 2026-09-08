@@ -40,7 +40,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           className="h-full origin-left transition-transform duration-150 ease-out"
           style={{
             transform: `scaleX(${progress})`,
-            background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #d946ef)',
+            background: 'linear-gradient(90deg, var(--color-accent), #8b5cf6, #d946ef)',
           }}
         />
       </div>
@@ -55,7 +55,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <NavLink to="/" className="flex items-center gap-2">
             <span
               className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-sm"
-              style={{ background: 'linear-gradient(135deg, #6366f1, #d946ef)' }}
+              style={{ background: 'linear-gradient(135deg, var(--color-accent), #d946ef)' }}
             >
               J
             </span>
@@ -173,7 +173,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <motion.span
                     layoutId="nav-pill"
                     className="absolute inset-x-3 inset-y-2 rounded-xl"
-                    style={{ background: 'rgba(99,102,241,0.12)' }}
+                    style={{ background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)' }}
                     transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                   />
                 )}

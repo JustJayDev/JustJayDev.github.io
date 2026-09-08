@@ -66,7 +66,7 @@ const Devlog: React.FC = () => {
       <div className="mt-10 max-w-2xl mx-auto flex flex-col gap-4">
         {loading && (
           <div className="flex justify-center py-16">
-            <div className="w-8 h-8 rounded-full" style={{ border: '3px solid rgba(99,102,241,0.25)', borderTopColor: '#6366f1', animation: 'bootspin 0.7s linear infinite' }} />
+            <div className="w-8 h-8 rounded-full" style={{ border: '3px solid color-mix(in srgb, var(--color-accent) 25%, transparent)', borderTopColor: 'var(--color-accent)', animation: 'bootspin 0.7s linear infinite' }} />
           </div>
         )}
 

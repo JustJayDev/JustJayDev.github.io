@@ -138,7 +138,7 @@ const About: React.FC = () => {
                 <span className="text-xl">{emoji}</span>
                 <span
                   className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
-                  style={{ background: 'rgba(99,102,241,0.12)', color: 'var(--color-accent-light)' }}
+                  style={{ background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)', color: 'var(--color-accent-light)' }}
                 >
                   {status}
                 </span>
