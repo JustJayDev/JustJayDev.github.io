@@ -82,7 +82,7 @@ const Guestbook: React.FC = () => {
         }}
       >
         <PartyPopper size={16} />
-        {cheered ? `Cheers! ${cheers ?? ''}` : 'Leave a cheer 🎉'}
+        {cheered ? `Cheers! ${cheers ?? ''}` : <span className="inline-flex items-center gap-1">Leave a cheer</span>}
       </button>
       <div className="rounded-2xl p-3 mb-5" style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)' }}>
         <input
@@ -126,7 +126,7 @@ const MsgList: React.FC<{ loading: boolean; msgs: Msg[] }> = ({ loading, msgs })
   }
   if (!msgs.length) {
     return (
-      <p className="text-sm py-6 text-center" style={{ color: 'var(--color-text-muted)' }}>No messages yet — be the first 👀</p>
+      <p className="text-sm py-6 text-center" style={{ color: 'var(--color-text-muted)' }}>No messages yet — be the first</p>
     );
   }
   return (

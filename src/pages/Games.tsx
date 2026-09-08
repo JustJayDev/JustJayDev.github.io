@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search } from 'lucide-react';
+import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search, Flame, Blocks, Pickaxe, Crown, Star, Ghost, Gamepad2 } from 'lucide-react';
 import { mainGames, casualGames, type Game } from '@/data/games';
+
+const GameIcons: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; color?: string }>> = {
+  Flame, Trophy, Blocks, Pickaxe, Swords, Crown, Star, Ghost,
+};
 
 type Filter = 'all' | 'active' | 'casual';
 
@@ -48,10 +52,13 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
             </>
           ) : (
             <div
-              className="absolute inset-0 flex items-center justify-center text-5xl"
+              className="absolute inset-0 flex items-center justify-center"
               style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent)' }}
             >
-              {game.emoji}
+              {(() => {
+                const Ico = (GameIcons as any)[game.icon] || Gamepad2;
+                return <Ico size={44} strokeWidth={1.8} color="#fff" />;
+              })()}
             </div>
           )}
           <div className="absolute bottom-2.5 left-4 right-4 flex items-center justify-between gap-2">
@@ -227,7 +234,7 @@ const Games: React.FC = () => {
               className="text-xs font-bold shrink-0"
               style={{ color: 'var(--color-text-muted)' }}
             >
-              ✕
+              <X size={12} strokeWidth={2.5} />
             </button>
           )}
         </div>

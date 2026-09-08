@@ -7,7 +7,7 @@ import { mainGames, type Game } from '@/data/games';
 import { CountUp } from '@/components/CountUp';
 
 const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.', 'AI-assisted dev.'];
-const NOW_STATUS = 'Building a secret mini-game for this site 🎮 + v3.8 app-like upgrade';
+const NOW_STATUS = 'Building a secret mini-game for this site + v3.8 app-like upgrade';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
     buzz();
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'JustJayDev', text: 'Check out my site 🔥', url: 'https://justjaydev.github.io' });
+        await navigator.share({ title: 'JustJayDev', text: 'Check out my site', url: 'https://justjaydev.github.io' });
       } else {
         await copySite();
       }
@@ -393,7 +393,7 @@ const Home: React.FC = () => {
               className="btn-secondary !min-h-0 !py-2.5 !px-4 text-xs font-semibold rounded-xl"
             >
               <Copy size={14} />
-              {copied ? 'Copied ✓' : 'Copy link'}
+              {copied ? 'Copied' : 'Copy link'}
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.92 }}

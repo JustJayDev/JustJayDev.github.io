@@ -54,12 +54,12 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       >
         <div className="page-container h-14 flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-2">
-            <span
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-sm"
-              style={{ background: 'linear-gradient(135deg, var(--color-accent), #d946ef)' }}
-            >
-              J
-            </span>
+            <img
+              src="/logo.svg"
+              alt="JustJayDev logo"
+              className="w-8 h-8 rounded-lg"
+              style={{ boxShadow: '0 2px 10px color-mix(in srgb, var(--color-accent) 40%, transparent)' }}
+            />
             <span className="font-black tracking-tight text-lg">
               Just<span className="gradient-text">JayDev</span>
             </span>
@@ -126,7 +126,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </a>
         </div>
         <p className="text-xs mt-3" style={{ color: 'var(--color-text-muted)' }}>
-          © 2026 JustJayDev · built on a phone, shipped from India 🇮🇳
+          © 2026 JustJayDev · built on a phone, shipped from India
         </p>
       </footer>
 

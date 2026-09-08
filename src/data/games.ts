@@ -11,7 +11,7 @@
 export interface Game {
   id: string;
   name: string;
-  emoji: string;
+  icon: string;
   image?: string;
   nowPlaying?: boolean;
   status: string;
@@ -27,7 +27,7 @@ export const mainGames: Game[] = [
   {
     id: 'free-fire-max',
     name: 'Free Fire Max',
-    emoji: '🔥',
+    icon: 'Flame',
     image: '/games/freefire.png',
     nowPlaying: true,
     status: 'Main game · Rusher',
@@ -44,7 +44,7 @@ export const mainGames: Game[] = [
   {
     id: 'fc-mobile',
     name: 'FC Mobile',
-    emoji: '⚽',
+    icon: 'Trophy',
     image: '/games/fcmobile.jpg',
     nowPlaying: true,
     status: 'Main game · Football',
@@ -60,7 +60,7 @@ export const mainGames: Game[] = [
   {
     id: 'roblox',
     name: 'Roblox',
-    emoji: '🧱',
+    icon: 'Blocks',
     image: '/games/roblox.png',
     status: 'Grinder',
     badges: ['30M Bounty', 'V4 Max', 'Titanic Pets'],
@@ -74,7 +74,7 @@ export const mainGames: Game[] = [
   {
     id: 'minecraft',
     name: 'Minecraft',
-    emoji: '⛏️',
+    icon: 'Pickaxe',
     image: '/games/minecraft.png',
     status: 'Since 2019',
     badges: ['Ender Dragon ×4', 'Mods & Add-ons'],
@@ -88,7 +88,7 @@ export const mainGames: Game[] = [
   {
     id: 'mobile-legends',
     name: 'Mobile Legends',
-    emoji: '🛡️',
+    icon: 'Swords',
     image: '/games/mlbb.png',
     status: 'Casual veteran',
     badges: ['Mythic tier'],
@@ -101,7 +101,7 @@ export const mainGames: Game[] = [
   {
     id: 'clash-royale',
     name: 'Clash Royale',
-    emoji: '👑',
+    icon: 'Crown',
     image: '/games/clashroyale.png',
     status: 'Stats placeholder',
     badges: ['~4500+ Trophies', 'Legendary Arena', 'Fast Cycle'],
@@ -114,7 +114,7 @@ export const mainGames: Game[] = [
   {
     id: 'brawl-stars',
     name: 'Brawl Stars',
-    emoji: '⭐',
+    icon: 'Star',
     image: '/games/brawlstars.png',
     status: 'Stats placeholder',
     badges: ['~15000+ Trophies', 'Edgar · Crow · Spike'],
@@ -127,7 +127,7 @@ export const mainGames: Game[] = [
   {
     id: 'among-us',
     name: 'Among Us',
-    emoji: '🔪',
+    icon: 'Ghost',
     image: '/games/amongus.jpg',
     status: 'For fun',
     badges: ['Certified Impostor'],

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { RotateCcw, Play } from 'lucide-react';
+import { RotateCcw, Play, Worm } from 'lucide-react';
 import { buzz, getBest, setBest } from './playUtil';
 
 const N = 15;
@@ -111,7 +111,7 @@ const SnakeGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <div className="play-stage">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-black">🐍 Snake</h2>
+        <h2 className="text-lg font-black flex items-center gap-2"><Worm size={18} style={{ color: 'var(--color-accent)' }} /> Snake</h2>
         <button className="play-back" onClick={onBack} aria-label="Back"><RotateCcw size={16} /></button>
       </div>
       <div className="play-stat"><span>Score</span><b>{score}</b></div>

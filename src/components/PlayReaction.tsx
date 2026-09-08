@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Zap, Flame } from 'lucide-react';
 import { buzz, getBest, setBest } from './playUtil';
 
 const ReactionGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
@@ -48,11 +48,11 @@ const ReactionGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <div className="play-stage">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-black">⚡ Reaction Test</h2>
+        <h2 className="text-lg font-black flex items-center gap-2"><Zap size={18} style={{ color: 'var(--color-accent)' }} /> Reaction Test</h2>
         <button className="play-back" onClick={onBack} aria-label="Back"><RotateCcw size={16} /></button>
       </div>
       <div className="play-stat"><span>Your best</span><b>{getBest('jj_best_reaction') || '—'} ms</b></div>
-      <div className="play-msg">{state === 'done' && ms < 250 ? '🔥 Insane reflexes!' : ''}</div>
+      <div className="play-msg">{state === 'done' && ms < 250 ? <span className="inline-flex items-center gap-1"><Flame size={14} style={{ color: 'var(--color-accent)' }} /> Insane reflexes!</span> : ''}</div>
       <button className="rxn-pad w-full" style={{ background: padColor, color: '#fff' }} onClick={tap}>
         {padText}
       </button>

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Grid3x3, Skull } from 'lucide-react';
 import { buzz, getBest, setBest } from './playUtil';
 
 type Grid = number[][];
@@ -61,7 +61,7 @@ const SlideGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <div className="play-stage">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-black">🔢 2048 Slide</h2>
+        <h2 className="text-lg font-black flex items-center gap-2"><Grid3x3 size={18} style={{ color: 'var(--color-accent)' }} /> 2048 Slide</h2>
         <button className="play-back" onClick={onBack} aria-label="Back"><RotateCcw size={16} /></button>
       </div>
       <div className="play-stat"><span>Score</span><b>{score}</b></div>
@@ -95,7 +95,7 @@ const SlideGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         ))}
       </div>
       <p className="text-[11px] text-center mb-2" style={{ color: 'var(--color-text-muted)' }}>Swipe on the board to slide</p>
-      {over && <div className="play-msg">💀 Board full — final score {score}</div>}
+      {over && <div className="play-msg"><span className="inline-flex items-center gap-1"><Skull size={14} style={{ color: 'var(--color-accent)' }} /> Board full — final score {score}</span></div>}
       <button className="play-btn" onClick={restart}>{over ? 'Play again' : 'Restart'}</button>
     </div>
   );

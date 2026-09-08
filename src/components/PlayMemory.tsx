@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Brain, Eye, Skull } from 'lucide-react';
 import { buzz, getBest, setBest } from './playUtil';
 
 const COLORS = ['var(--color-accent)', 'var(--color-success)', 'var(--color-warning)', 'var(--color-error)', '#8b5cf6', '#06b6d4'];
@@ -53,16 +53,16 @@ const MemoryGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <div className="play-stage">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-black">🧠 Memory Flash</h2>
+        <h2 className="text-lg font-black flex items-center gap-2"><Brain size={18} style={{ color: 'var(--color-accent)' }} /> Memory Flash</h2>
         <button className="play-back" onClick={onBack} aria-label="Back"><RotateCcw size={16} /></button>
       </div>
       <div className="play-stat"><span>Level</span><b>{level}</b></div>
       <div className="play-stat"><span>Your best</span><b>{getBest('jj_best_memory') || '—'}</b></div>
       <div className="play-msg">
         {phase === 'idle' && 'Watch the pattern, then repeat it'}
-        {phase === 'show' && '👀 Watch…'}
+        {phase === 'show' && <span className="inline-flex items-center gap-1"><Eye size={14} style={{ color: 'var(--color-accent)' }} /> Watch…</span>}
         {phase === 'input' && 'Your turn!'}
-        {phase === 'over' && `💀 Wrong cell — you reached level ${level}`}
+        {phase === 'over' && <span className="inline-flex items-center gap-1"><Skull size={14} style={{ color: 'var(--color-accent)' }} /> Wrong cell — you reached level {level}</span>}
       </div>
       {phase === 'idle' || phase === 'over' ? (
         <button className="play-btn" onClick={start}>{phase === 'over' ? 'Play again' : 'Start'}</button>

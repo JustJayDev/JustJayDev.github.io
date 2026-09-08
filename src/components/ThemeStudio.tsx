@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Palette, X } from 'lucide-react';
+import { Palette, X, Check } from 'lucide-react';
 import { ACCENTS, useAccent } from '@/context/AccentContext';
 
 const FONTS = [
@@ -90,7 +90,7 @@ const ThemeStudio: React.FC = () => {
                     outlineOffset: 2,
                   }}
                 >
-                  {accent === a.id && <span className="text-[11px] font-black text-white">✓</span>}
+                  {accent === a.id && <Check size={12} strokeWidth={3} />}
                 </button>
               ))}
             </div>
@@ -143,7 +143,7 @@ const ThemeStudio: React.FC = () => {
             </div>
 
             <p className="text-[10px] mt-3 px-1" style={{ color: 'var(--color-text-muted)' }}>
-              Saved on your device ✨
+              Saved on your device
             </p>
           </motion.div>
         )}

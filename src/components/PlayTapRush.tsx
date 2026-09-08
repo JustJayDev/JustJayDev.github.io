@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Pointer } from 'lucide-react';
 import { buzz, getBest, setBest } from './playUtil';
 
 const TapRushGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
@@ -45,7 +45,7 @@ const TapRushGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   return (
     <div className="play-stage">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-black">👆 Tap Rush</h2>
+        <h2 className="text-lg font-black flex items-center gap-2"><Pointer size={18} style={{ color: 'var(--color-accent)' }} /> Tap Rush</h2>
         <button className="play-back" onClick={onBack} aria-label="Back"><RotateCcw size={16} /></button>
       </div>
       <div className="play-stat"><span>Time left</span><b>{left.toFixed(1)}s</b></div>
