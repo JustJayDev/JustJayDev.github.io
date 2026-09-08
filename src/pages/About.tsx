@@ -106,6 +106,52 @@ const About: React.FC = () => {
         </p>
       </motion.section>
 
+      {/* What I'm working on */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="mt-6 max-w-2xl mx-auto rounded-2xl p-6 md:p-8"
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+      >
+        <h2 className="section-title flex items-center gap-2 text-xl md:text-2xl">
+          <Sparkles size={22} style={{ color: 'var(--color-accent)' }} />
+          What I'm working on
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
+          {[
+            ['📱', 'FF Sensi Analyzer', 'Android app that reads your device & recommends Free Fire sensitivity settings.', 'In progress'],
+            ['🕹️', 'Asteroids', 'A classic arcade game rebuilt in one HTML file — canvas + pure JS.', 'Building'],
+            ['📈', 'Paper trading', 'Learning chart patterns, risk management & market structure.', 'Learning'],
+            ['📚', 'Manhua shelf', 'Daily reader — always hunting underrated series before they blow up.', 'Daily'],
+          ].map(([emoji, title, desc, status], i) => (
+            <motion.div
+              key={title}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07, duration: 0.4 }}
+              className="rounded-xl p-4"
+              style={{ background: 'var(--color-surface-2)' }}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xl">{emoji}</span>
+                <span
+                  className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                  style={{ background: 'rgba(99,102,241,0.12)', color: 'var(--color-accent-light)' }}
+                >
+                  {status}
+                </span>
+              </div>
+              <p className="font-bold text-sm mt-2">{title}</p>
+              <p className="text-xs mt-1 leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
+                {desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+
       {/* Casual classics */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}

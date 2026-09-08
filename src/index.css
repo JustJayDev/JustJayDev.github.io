@@ -400,6 +400,23 @@ img {
 }
 
 /* v2 additions */
+.type-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 3px;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: caretBlink 1s step-end infinite;
+}
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .type-caret { animation: none; }
+}
+
 @keyframes floatSlow {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }

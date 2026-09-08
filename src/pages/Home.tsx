@@ -5,17 +5,31 @@ import { ArrowRight, Gamepad2, User } from 'lucide-react';
 import { profile } from '@/data/profile';
 import { mainGames } from '@/data/games';
 
-const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.'];
+const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.', 'AI-assisted dev.'];
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [tagIdx, setTagIdx] = useState(0);
+  const [typed, setTyped] = useState('');
 
   useEffect(() => {
     document.title = 'JustJayDev — Mobile gamer. Builder. Future trader.';
-    const id = setInterval(() => setTagIdx((i) => (i + 1) % TAGLINES.length), 2600);
+    const id = setInterval(() => setTagIdx((i) => (i + 1) % TAGLINES.length), 3200);
     return () => clearInterval(id);
   }, []);
+
+  // typewriter effect for the rotating tagline
+  useEffect(() => {
+    const full = TAGLINES[tagIdx];
+    setTyped('');
+    let i = 0;
+    const tick = setInterval(() => {
+      i += 1;
+      setTyped(full.slice(0, i));
+      if (i >= full.length) clearInterval(tick);
+    }, 55);
+    return () => clearInterval(tick);
+  }, [tagIdx]);
 
   const nowPlaying = mainGames.filter((g) => g.nowPlaying);
 
@@ -51,15 +65,10 @@ const Home: React.FC = () => {
           </h1>
 
           <p className="mt-3 text-xl md:text-3xl font-bold h-9 md:h-12">
-            <motion.span
-              key={tagIdx}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
-              className="inline-block gradient-text"
-            >
-              {TAGLINES[tagIdx]}
-            </motion.span>
+            <span className="gradient-text">
+              {typed}
+              <span className="type-caret" aria-hidden="true" />
+            </span>
           </p>
 
           <p
@@ -104,6 +113,39 @@ const Home: React.FC = () => {
               About me
             </motion.button>
           </div>
+        </motion.div>
+      </section>
+
+      {/* ============ STATS STRIP ============ */}
+      <section className="page-container pb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto"
+        >
+          {[
+            ['18+', 'games played'],
+            ['2', 'grinding now'],
+            ['100%', 'mobile-only'],
+            ['6+', 'apps & sites built'],
+          ].map(([num, label], i) => (
+            <motion.div
+              key={label}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07, duration: 0.4 }}
+              className="tilt-card rounded-2xl p-4 text-center"
+              style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+            >
+              <p className="text-2xl md:text-3xl font-black gradient-text">{num}</p>
+              <p className="text-[11px] mt-1 font-medium" style={{ color: 'var(--color-text-muted)' }}>
+                {label}
+              </p>
+            </motion.div>
+          ))}
         </motion.div>
       </section>
 

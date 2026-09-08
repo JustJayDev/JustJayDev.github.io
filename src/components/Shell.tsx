@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Home, Gamepad2, User, BookOpen, Moon, Sun } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 const NAV = [
@@ -10,14 +10,19 @@ const NAV = [
   { to: '/devlog', label: 'Devlog', icon: BookOpen },
   { to: '/about', label: 'About', icon: User },
 ];
-
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { resolvedTheme, setTheme } = useTheme();
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+    };
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -26,6 +31,20 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* ============ SCROLL PROGRESS ============ */}
+      <div
+        className="fixed top-0 left-0 right-0 z-[60] h-[3px] pointer-events-none"
+        aria-hidden="true"
+      >
+        <div
+          className="h-full origin-left transition-transform duration-150 ease-out"
+          style={{
+            transform: `scaleX(${progress})`,
+            background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #d946ef)',
+          }}
+        />
+      </div>
+
       {/* ============ TOP BAR ============ */}
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -84,10 +103,55 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
       {/* ============ FOOTER (desktop) ============ */}
       <footer className="hidden md:block page-container py-8 text-center">
-        <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
+        <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs" style={{ color: 'var(--color-text-muted)' }}>
+          {NAV.map(({ to, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/'}
+              className="transition-colors hover:opacity-70 px-1.5"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              {label}
+            </NavLink>
+          ))}
+          <a
+            href="/feed.xml"
+            className="inline-flex items-center gap-1 transition-colors hover:opacity-70 px-1.5"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            <Rss size={11} />
+            RSS
+          </a>
+        </div>
+        <p className="text-xs mt-3" style={{ color: 'var(--color-text-muted)' }}>
           © 2026 JustJayDev · built on a phone, shipped from India 🇮🇳
         </p>
       </footer>
+
+      {/* ============ BACK TO TOP ============ */}
+      <AnimatePresence>
+        {progress > 0.25 && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.6, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.6, y: 12 }}
+            whileTap={{ scale: 0.88 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Back to top"
+            className="md:hidden fixed right-4 z-40 w-11 h-11 rounded-full flex items-center justify-center"
+            style={{
+              bottom: 'calc(4.5rem + env(safe-area-inset-bottom))',
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+              color: 'var(--color-text)',
+            }}
+          >
+            <ArrowUp size={18} />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* ============ BOTTOM NAV (mobile) ============ */}
       <nav
