@@ -67,7 +67,7 @@ const SlideGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       <div className="play-stat"><span>Score</span><b>{score}</b></div>
       <div className="play-stat"><span>Your best</span><b>{getBest('jj_best_slide') || '—'}</b></div>
       <div
-        className="mem-grid my-2"
+        className="mem-grid my-2 no-swipe"
         style={{ gridTemplateColumns: 'repeat(4,1fr)', padding: 6, borderRadius: 'var(--radius-md)', background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', touchAction: 'none' }}
         onTouchStart={(e) => { touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
         onTouchEnd={(e) => {

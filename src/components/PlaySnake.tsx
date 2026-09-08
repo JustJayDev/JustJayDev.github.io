@@ -120,7 +120,7 @@ const SnakeGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         ref={canvas}
         width={330}
         height={330}
-        className="play-canvas my-2"
+        className="play-canvas my-2 no-swipe"
         style={{ aspectRatio: '1', margin: '8px auto' }}
         onTouchStart={(e) => onTouch(e, true)}
         onTouchEnd={onTouchEnd}

@@ -1,13 +1,20 @@
 /* JustJayDev service worker — cache-first assets, network-first navigation */
-const VERSION = 'v3.6-mobile';
-const CORE = ['./', './index.html', './manifest.webmanifest', './favicon.svg', './feed.xml'];
-
+const VERSION = 'v4.2-audit';
+const CORE = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './favicon.svg',
+  './logo.svg',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './feed.xml',
+];
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(VERSION).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())
   );
 });
-
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys()
@@ -15,13 +22,11 @@ self.addEventListener('activate', (e) => {
       .then(() => self.clients.claim())
   );
 });
-
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
-
   // Pages: network first, cache fallback (keeps content fresh, works offline)
   if (req.mode === 'navigate') {
     e.respondWith(
@@ -35,7 +40,6 @@ self.addEventListener('fetch', (e) => {
     );
     return;
   }
-
   // Hashed assets: cache first, refresh in background
   e.respondWith(
     caches.match(req).then((cached) => {
