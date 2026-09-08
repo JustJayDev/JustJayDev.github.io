@@ -7,8 +7,6 @@ import { mainGames, type Game } from '@/data/games';
 import { CountUp } from '@/components/CountUp';
 
 const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.', 'AI-assisted dev.'];
-const NOW_STATUS = 'Building a secret mini-game for this site + v3.8 app-like upgrade';
-
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [tagIdx, setTagIdx] = useState(0);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Gamepad2, Zap, Brain, Pointer, Grid3x3, Worm } from 'lucide-react';
+import { Gamepad2, Zap, Brain, Pointer, Grid3x3, Worm } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import ReactionGame from '@/components/PlayReaction';
 import MemoryGame from '@/components/PlayMemory';
