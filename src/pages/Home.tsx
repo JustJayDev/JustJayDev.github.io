@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Gamepad2, User } from 'lucide-react';
+import { ArrowRight, Gamepad2, User, ScrollText } from 'lucide-react';
 import { profile } from '@/data/profile';
 import { mainGames } from '@/data/games';
 
@@ -204,6 +204,38 @@ const Home: React.FC = () => {
             </motion.button>
           ))}
         </div>
+      </section>
+
+      {/* ============ DEVLOG TEASER ============ */}
+      <section className="page-container pb-16">
+        <motion.button
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          whileHover={{ y: -3 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => navigate('/devlog')}
+          className="w-full max-w-2xl mx-auto block rounded-2xl p-5 md:p-6 text-left"
+          style={{
+            background: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
+            boxShadow: '0 0 0 rgba(99,102,241,0)',
+            transition: 'box-shadow 0.3s ease, border-color 0.3s ease',
+          }}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: 'rgba(99,102,241,0.12)', color: 'var(--color-accent-light)' }}>
+              <ScrollText size={11} />
+              Devlog
+            </span>
+            <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>Sep 2026</span>
+          </div>
+          <h3 className="font-bold text-base md:text-lg mt-2.5">v3.3 shipped — search, custom 404 & copy-links</h3>
+          <p className="text-sm mt-1 leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
+            Games page got live search, every devlog entry is copy-linkable, and dead URLs now hit a proper 404. Full notes inside →
+          </p>
+        </motion.button>
       </section>
 
       {/* ============ QUICK LINKS STRIP ============ */}

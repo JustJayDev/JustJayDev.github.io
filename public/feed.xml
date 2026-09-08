@@ -7,6 +7,13 @@
     <language>en</language>
     <atom:link href="https://justjaydev.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>v3.1 → v3.3 — the overnight polish sprint</title>
+      <link>https://justjaydev.github.io/devlog</link>
+      <guid>polish-sprint-v33</guid>
+      <pubDate>Tue, 08 Sep 2026 03:15:00 +0530</pubDate>
+      <description>Big polish pass: scroll progress bar, back-to-top button, typewriter taglines, a stats strip, live search on the Games page, copy-link buttons on every devlog entry, per-page titles, a custom 404 page, and a keyboard focus ring. Three builds, one night.</description>
+    </item>
+    <item>
       <title>Site v3 — the lean rebuild</title>
       <link>https://justjaydev.github.io/devlog</link>
       <guid>site-v3-lean</guid>

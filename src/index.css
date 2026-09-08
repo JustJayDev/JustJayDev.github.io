@@ -399,8 +399,14 @@ img {
   }
 }
 
-/* v2 additions */
-.type-caret {
+/* v3.3 a11y — visible focus ring for keyboard users */
+:focus-visible {
+  outline: 2px solid #818cf8;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* v2 additions */ .type-caret {
   display: inline-block;
   width: 2px;
   height: 1em;
