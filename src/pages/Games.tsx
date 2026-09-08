@@ -124,7 +124,7 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
           </motion.span>
         </div>
       </button>
-      {game.id === 'dragon-city' && (
+      {game.profile && (
         <div className="px-4 pb-3 -mt-1">
           <button
             onClick={(e) => { e.stopPropagation(); sfx.tick(); buzz(8); navigate(`/games/${game.id}`); }}
@@ -133,7 +133,6 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
           >
             <ExternalLink size={15} /> View profile &amp; UID
           </button>
-          <div className="h-1" />
         </div>
       )}
       <AnimatePresence initial={false}>

@@ -21,6 +21,7 @@ export interface Game {
   proofUrl?: string;
   verified?: boolean;
   lastUpdated?: string;
+  profile?: boolean;
 }
 
 export const mainGames: Game[] = [
@@ -75,6 +76,7 @@ export const mainGames: Game[] = [
     flex: '161 unique dragons — including High-tier and Zodiac legendaries most players never hatch.',
     verified: true,
     lastUpdated: '2026-09-08',
+    profile: true,
   },
   {
     id: 'roblox',

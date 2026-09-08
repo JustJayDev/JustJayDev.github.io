@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Copy, Check, User, Hash, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowLeft, Copy, Check, User, Hash, Zap, Swords, Gamepad2 } from 'lucide-react';
 import sfx, { buzz } from '@/lib/sound';
 
 interface ProfileRow { label: string; value: string; icon: 'user' | 'hash'; }
@@ -16,6 +16,7 @@ interface GameProfileData {
   flex?: string;
   verified?: boolean;
   updated?: string;
+  chips?: string[];
 }
 
 const PROFILES: Record<string, GameProfileData> = {
@@ -33,6 +34,7 @@ const PROFILES: Record<string, GameProfileData> = {
       { label: 'Dragonbook', value: '163 / 2217' },
       { label: 'Unique Dragons', value: '161' },
     ],
+    chips: ['High Famine 45', 'High Reborn 40', 'Terra Titan 40', 'Skullface 40', 'Pixel 40', 'High Zephyr 40'],
     source: 'Screenshot of in-game profile (Settings → Account).',
     flex: '161 unique dragons — including High-tier and Zodiac legendaries most players never hatch.',
     verified: true,
@@ -100,6 +102,7 @@ const CopyRow: React.FC<{ row: ProfileRow }> = ({ row }) => {
 const GameProfilePage: React.FC = () => {
   const { gameId = '' } = useParams();
   const navigate = useNavigate();
+  const [bothCopied, setBothCopied] = useState(false);
   const p = PROFILES[gameId];
 
   if (!p) {
@@ -144,7 +147,7 @@ const GameProfilePage: React.FC = () => {
                   className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
                   style={{ background: 'rgba(34,197,94,0.9)', color: '#fff' }}
                 >
-                  <ShieldCheck size={11} /> Verified
+                  <Gamepad2 size={11} /> Verified
                 </span>
               )}
             </div>
@@ -160,6 +163,24 @@ const GameProfilePage: React.FC = () => {
         <div className="space-y-2.5">
           {p.rows.map((r) => <CopyRow key={r.label} row={r} />)}
         </div>
+        <button
+          onClick={async () => {
+            const text = p.rows.map((r) => `${r.label}: ${r.value}`).join('\n');
+            try { await navigator.clipboard.writeText(text); } catch { /* ignore */ }
+            setBothCopied(true);
+            sfx.fanfare();
+            buzz([15, 40, 15, 40, 15]);
+            setTimeout(() => setBothCopied(false), 2000);
+          }}
+          className="mt-3 w-full inline-flex items-center justify-center gap-2 text-sm font-bold px-4 py-2.5 rounded-xl active:scale-[0.98] transition-transform"
+          style={{
+            background: bothCopied ? 'rgba(34,197,94,0.14)' : 'color-mix(in srgb, var(--color-accent) 16%, transparent)',
+            color: bothCopied ? '#22c55e' : 'var(--color-accent-light)',
+          }}
+        >
+          {bothCopied ? <Check size={15} /> : <Copy size={15} />}
+          {bothCopied ? 'Both copied!' : 'Copy name + ID together'}
+        </button>
 
         <h2 className="mt-8 mb-3 text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
           Quick stats
@@ -179,6 +200,26 @@ const GameProfilePage: React.FC = () => {
           ))}
         </div>
 
+        {p.chips && p.chips.length > 0 && (
+          <>
+            <h2 className="mt-8 mb-3 text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--color-text-muted)' }}>
+              Best dragons
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {p.chips.map((c) => (
+                <span
+                  key={c}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg"
+                  style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
+                >
+                  <Swords size={12} style={{ color: 'var(--color-accent)' }} />
+                  {c}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
+
         {p.flex && (
           <div className="mt-6 rounded-xl px-4 py-3 flex items-start gap-2" style={{ background: 'rgba(217,70,239,0.08)' }}>
             <Zap size={15} className="mt-0.5 shrink-0" style={{ color: '#d946ef' }} />
@@ -188,6 +229,9 @@ const GameProfilePage: React.FC = () => {
 
         <p className="mt-6 text-[11px]" style={{ color: 'var(--color-text-muted)' }}>
           Source: {p.source}
+        </p>
+        <p className="mt-3 text-[11px] italic" style={{ color: 'var(--color-text-muted)' }}>
+          Want to add me in-game? Copy the ID above and send a friend request — mention the site.
         </p>
       </motion.div>
     </div>

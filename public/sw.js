@@ -1,5 +1,5 @@
 /* JustJayDev service worker — cache-first assets, network-first navigation */
-const VERSION = 'v5-noir-sound';
+const VERSION = 'v6-game-profiles';
 const CORE = [
   './',
   './index.html',
