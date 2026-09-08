@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Gamepad2, User, ScrollText } from 'lucide-react';
+import { ArrowRight, Gamepad2, User, ScrollText, Dices, RefreshCw } from 'lucide-react';
 import { profile } from '@/data/profile';
-import { mainGames } from '@/data/games';
+import { mainGames, type Game } from '@/data/games';
 
 const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.', 'AI-assisted dev.'];
 
@@ -11,12 +11,30 @@ const Home: React.FC = () => {
   const navigate = useNavigate();
   const [tagIdx, setTagIdx] = useState(0);
   const [typed, setTyped] = useState('');
+  const [now, setNow] = useState(() => new Date());
+  const [spotlight, setSpotlight] = useState<Game | null>(null);
 
   useEffect(() => {
     document.title = 'JustJayDev — Mobile gamer. Builder. Future trader.';
     const id = setInterval(() => setTagIdx((i) => (i + 1) % TAGLINES.length), 3200);
     return () => clearInterval(id);
   }, []);
+
+  // live IST clock
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const hour = now.getHours();
+  const greeting = hour < 4 ? 'Still awake?' : hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : hour < 21 ? 'Good evening' : 'Late night grind';
+  const istTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' });
+
+  const pickSpotlight = () => {
+    const pool = mainGames.filter((g) => !g.nowPlaying);
+    const next = pool[Math.floor(Math.random() * pool.length)];
+    setSpotlight(next || null);
+  };
 
   // typewriter effect for the rotating tagline
   useEffect(() => {
@@ -59,6 +77,13 @@ const Home: React.FC = () => {
               loading="eager"
             />
           </div>
+
+          <p
+            className="text-[11px] font-bold uppercase tracking-[0.2em] mb-3"
+            style={{ color: 'var(--color-accent-light)' }}
+          >
+            {greeting} · it's {istTime} IST
+          </p>
 
           <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
             <span className="gradient-text">JustJayDev</span>
@@ -236,6 +261,48 @@ const Home: React.FC = () => {
             Games page got live search, every devlog entry is copy-linkable, and dead URLs now hit a proper 404. Full notes inside →
           </p>
         </motion.button>
+      </section>
+
+      {/* ============ SURPRISE SPOTLIGHT ============ */}
+      <section className="page-container pb-16">
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <motion.button
+            whileTap={{ scale: 0.94 }}
+            onClick={pickSpotlight}
+            className="btn-ghost"
+            style={{ textDecoration: 'none' }}
+          >
+            <Dices size={18} />
+            Surprise me
+          </motion.button>
+        </div>
+        <AnimatePresence mode="wait">
+          {spotlight && (
+            <motion.div
+              key={spotlight.id}
+              initial={{ opacity: 0, y: 14, rotateX: -8 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0 }}
+              exit={{ opacity: 0, y: -14, rotateX: 8 }}
+              transition={{ duration: 0.35 }}
+              onClick={() => navigate('/games')}
+              className="max-w-md mx-auto rounded-2xl p-6 text-center cursor-pointer tilt-card"
+              style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+            >
+              <span className="text-5xl">{spotlight.emoji}</span>
+              <h3 className="mt-3 font-bold text-xl">{spotlight.name}</h3>
+              <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
+                {spotlight.badges.slice(0, 3).join(' · ')}
+              </p>
+              <p
+                className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider mt-4"
+                style={{ color: 'var(--color-accent-light)' }}
+              >
+                Random pick from my shelf
+                <RefreshCw size={12} />
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
       {/* ============ QUICK LINKS STRIP ============ */}

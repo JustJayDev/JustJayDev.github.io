@@ -280,3 +280,5 @@ const Games: React.FC = () => {
     </div>
   );
 };
+
+export default Games;
