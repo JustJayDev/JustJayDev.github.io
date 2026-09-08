@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Gamepad2, User, ScrollText, Dices, RefreshCw, Copy, Share2 } from 'lucide-react';
 import { profile } from '@/data/profile';
 import { mainGames, type Game } from '@/data/games';
+import { CountUp } from '@/components/CountUp';
 
 const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.', 'AI-assisted dev.'];
+const NOW_STATUS = 'Building a secret mini-game for this site 🎮 + v3.8 app-like upgrade';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -181,13 +183,13 @@ const Home: React.FC = () => {
           className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto"
         >
           {[
-            ['18+', 'games played'],
-            ['2', 'grinding now'],
-            ['100%', 'mobile-only'],
-            ['6+', 'apps & sites built'],
-          ].map(([num, label], i) => (
+            [18, '+', 'games played'],
+            [2, '', 'grinding now'],
+            [100, '%', 'mobile-only'],
+            [6, '+', 'apps & sites built'],
+          ].map(([num, suffix, label], i) => (
             <motion.div
-              key={label}
+              key={label as string}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -195,7 +197,9 @@ const Home: React.FC = () => {
               className="tilt-card rounded-2xl p-4 text-center"
               style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
             >
-              <p className="text-2xl md:text-3xl font-black gradient-text">{num}</p>
+              <p className="text-2xl md:text-3xl font-black gradient-text">
+                <CountUp to={num as number} suffix={suffix as string} />
+              </p>
               <p className="text-[11px] mt-1 font-medium" style={{ color: 'var(--color-text-muted)' }}>
                 {label}
               </p>

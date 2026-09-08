@@ -7,3 +7,5 @@ dist
 .env.*.local
 coverage
 .vite
+# local secrets - never commit
+ABACUS_ADMIN_KEYS.txt

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss } from 'lucide-react';
+import { Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss, Joystick } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 const NAV = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/games', label: 'Games', icon: Gamepad2 },
+  { to: '/play', label: 'Play', icon: Joystick },
   { to: '/devlog', label: 'Devlog', icon: BookOpen },
   { to: '/about', label: 'About', icon: User },
 ];
@@ -166,6 +167,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <NavLink
                 key={to}
                 to={to}
+                onClick={() => { if (navigator.vibrate) navigator.vibrate(8); }}
                 className="relative flex flex-col items-center justify-center w-20 h-full"
                 style={{ color: active ? 'var(--color-accent-light)' : 'var(--color-text-muted)' }}
               >

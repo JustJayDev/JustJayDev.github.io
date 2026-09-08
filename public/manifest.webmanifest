@@ -1,7 +1,7 @@
 {
   "name": "JustJayDev - Jay Kumar",
   "short_name": "JustJayDev",
-  "description": "Gamer • Creator • Builder. Personal digital identity of Jay Kumar (JustJayDev).",
+  "description": "Gamer \u2022 Creator \u2022 Builder. Personal digital identity of Jay Kumar (JustJayDev).",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -9,7 +9,10 @@
   "background_color": "#020617",
   "theme_color": "#020617",
   "lang": "en",
-  "categories": ["personal", "portfolio"],
+  "categories": [
+    "personal",
+    "portfolio"
+  ],
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -40,6 +43,38 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Games",
+      "url": "/games",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Devlog",
+      "url": "/devlog",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "About",
+      "url": "/about",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
