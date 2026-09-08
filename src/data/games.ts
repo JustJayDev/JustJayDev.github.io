@@ -12,6 +12,7 @@ export interface Game {
   id: string;
   name: string;
   emoji: string;
+  image?: string;
   nowPlaying?: boolean;
   status: string;
   badges: string[];
@@ -27,6 +28,7 @@ export const mainGames: Game[] = [
     id: 'free-fire-max',
     name: 'Free Fire Max',
     emoji: '🔥',
+    image: '/games/freefire.png',
     nowPlaying: true,
     status: 'Main game · Rusher',
     badges: ['Grandmaster BR', 'Grandmaster CS', 'Rusher'],
@@ -43,6 +45,7 @@ export const mainGames: Game[] = [
     id: 'fc-mobile',
     name: 'FC Mobile',
     emoji: '⚽',
+    image: '/games/fcmobile.jpg',
     nowPlaying: true,
     status: 'Main game · Football',
     badges: ['10★ Manager Mode', '5★ H2H', '7★ VSA', '126 OVR'],
@@ -58,6 +61,7 @@ export const mainGames: Game[] = [
     id: 'roblox',
     name: 'Roblox',
     emoji: '🧱',
+    image: '/games/roblox.png',
     status: 'Grinder',
     badges: ['30M Bounty', 'V4 Max', 'Titanic Pets'],
     details: [
@@ -71,6 +75,7 @@ export const mainGames: Game[] = [
     id: 'minecraft',
     name: 'Minecraft',
     emoji: '⛏️',
+    image: '/games/minecraft.png',
     status: 'Since 2019',
     badges: ['Ender Dragon ×4', 'Mods & Add-ons'],
     details: [
@@ -84,6 +89,7 @@ export const mainGames: Game[] = [
     id: 'mobile-legends',
     name: 'Mobile Legends',
     emoji: '🛡️',
+    image: '/games/mlbb.png',
     status: 'Casual veteran',
     badges: ['Mythic tier'],
     details: [
@@ -96,6 +102,7 @@ export const mainGames: Game[] = [
     id: 'clash-royale',
     name: 'Clash Royale',
     emoji: '👑',
+    image: '/games/clashroyale.png',
     status: 'Stats placeholder',
     badges: ['~4500+ Trophies', 'Legendary Arena', 'Fast Cycle'],
     details: [
@@ -108,6 +115,7 @@ export const mainGames: Game[] = [
     id: 'brawl-stars',
     name: 'Brawl Stars',
     emoji: '⭐',
+    image: '/games/brawlstars.png',
     status: 'Stats placeholder',
     badges: ['~15000+ Trophies', 'Edgar · Crow · Spike'],
     details: [
@@ -120,6 +128,7 @@ export const mainGames: Game[] = [
     id: 'among-us',
     name: 'Among Us',
     emoji: '🔪',
+    image: '/games/amongus.jpg',
     status: 'For fun',
     badges: ['Certified Impostor'],
     details: ['Just for fun with friends.'],

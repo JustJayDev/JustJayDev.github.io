@@ -431,3 +431,58 @@ img {
 @media (prefers-reduced-motion: reduce) {
   .float-slow { animation: none; }
 }
+
+/* ============ v3.6 mobile-first polish ============ */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* kill double-tap zoom delay + accidental zooms on all controls */
+button, a, [role='button'], input, select, textarea, summary {
+  touch-action: manipulation;
+}
+
+/* safe-area aware containers (notches / gesture bars) */
+.page-container {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+
+/* comfortable tap targets on touch screens */
+.btn-primary,
+.btn-secondary {
+  min-height: 48px;
+}
+
+@media (max-width: 767px) {
+  /* cheaper GPU work: drop heavy hover shadows & blur on phones */
+  .card:hover,
+  .tilt-card:hover {
+    box-shadow: none;
+    transform: none;
+  }
+  .glass {
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .aurora::before,
+  .aurora::after {
+    filter: blur(56px);
+    opacity: 0.1;
+  }
+  /* hide scrollbar — content edge-to-edge, native feel */
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  /* slightly larger tap chips/badges */
+  .badge {
+    padding: 8px 14px;
+  }
+}
+
+/* banner images inside game cards: crisp + no layout shift */
+img.object-cover {
+  background: var(--color-surface-2);
+}

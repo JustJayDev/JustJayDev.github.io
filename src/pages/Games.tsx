@@ -27,38 +27,71 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
     >
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full text-left p-5 flex items-start justify-between gap-3"
+        className="w-full text-left"
         aria-expanded={open}
       >
-        <div className="flex items-start gap-4">
-          <span className="text-4xl leading-none mt-0.5">{game.emoji}</span>
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h3 className="font-bold text-lg">{game.name}</h3>
+        {/* banner */}
+        <div className="relative h-28 overflow-hidden">
+          {game.image ? (
+            <>
+              <img
+                src={game.image}
+                alt={`${game.name} artwork`}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500"
+                style={{ transform: open ? 'scale(1.06)' : 'scale(1)' }}
+              />
+              <div
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, var(--color-surface) 2%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.25))' }}
+              />
+            </>
+          ) : (
+            <div
+              className="absolute inset-0 flex items-center justify-center text-5xl"
+              style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent)' }}
+            >
+              {game.emoji}
+            </div>
+          )}
+          <div className="absolute bottom-2.5 left-4 right-4 flex items-center justify-between gap-2">
+            <h3
+              className="font-bold text-lg text-white truncate"
+              style={{ textShadow: '0 1px 10px rgba(0,0,0,0.85)' }}
+            >
+              {game.name}
+            </h3>
+            <div className="flex items-center gap-1.5 shrink-0">
               {game.nowPlaying && (
                 <span
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
-                  style={{ background: 'rgba(239,68,68,0.12)', color: '#ef4444' }}
+                  style={{ background: 'rgba(239,68,68,0.9)', color: '#fff' }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: '#ef4444' }} />
+                  <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: '#fff' }} />
                   Now Playing
                 </span>
               )}
               {game.verified === false && (
                 <span
                   className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full"
-                  style={{ background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
+                  style={{ background: 'rgba(0,0,0,0.55)', color: '#e2e8f0' }}
                 >
                   <ShieldAlert size={10} />
                   Unverified
                 </span>
               )}
             </div>
-            <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>
+          </div>
+        </div>
+
+        {/* body */}
+        <div className="p-4 pt-3 flex items-start justify-between gap-3">
+          <div>
+            <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
               {game.status}
               {game.lastUpdated ? ` · Updated ${game.lastUpdated}` : ''}
             </p>
-            <div className="flex flex-wrap gap-1.5 mt-3">
+            <div className="flex flex-wrap gap-1.5 mt-2.5">
               {game.badges.map((b) => (
                 <span
                   key={b}
@@ -71,15 +104,15 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
               ))}
             </div>
           </div>
+          <motion.span
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.25 }}
+            className="shrink-0 mt-1"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            <ChevronDown size={20} />
+          </motion.span>
         </div>
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.25 }}
-          className="shrink-0 mt-1"
-          style={{ color: 'var(--color-text-muted)' }}
-        >
-          <ChevronDown size={20} />
-        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {open && (

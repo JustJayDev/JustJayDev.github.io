@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Gamepad2, User, ScrollText, Dices, RefreshCw } from 'lucide-react';
+import { ArrowRight, Gamepad2, User, ScrollText, Dices, RefreshCw, Copy, Share2 } from 'lucide-react';
 import { profile } from '@/data/profile';
 import { mainGames, type Game } from '@/data/games';
 
@@ -29,6 +29,36 @@ const Home: React.FC = () => {
   const hour = now.getHours();
   const greeting = hour < 4 ? 'Still awake?' : hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : hour < 21 ? 'Good evening' : 'Late night grind';
   const istTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' });
+
+  const [copied, setCopied] = useState(false);
+
+  const buzz = (ms = 12) => {
+    if ('vibrate' in navigator) navigator.vibrate(ms);
+  };
+
+  const copySite = async () => {
+    buzz();
+    try {
+      await navigator.clipboard.writeText('https://justjaydev.github.io');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable */
+    }
+  };
+
+  const shareSite = async () => {
+    buzz();
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'JustJayDev', text: 'Check out my site 🔥', url: 'https://justjaydev.github.io' });
+      } else {
+        await copySite();
+      }
+    } catch {
+      /* share cancelled */
+    }
+  };
 
   const pickSpotlight = () => {
     const pool = mainGames.filter((g) => !g.nowPlaying);
@@ -202,7 +232,17 @@ const Home: React.FC = () => {
               }}
             >
               <div className="flex items-center justify-between">
-                <span className="text-3xl">{g.emoji}</span>
+                {g.image ? (
+                  <img
+                    src={g.image}
+                    alt={`${g.name} artwork`}
+                    loading="lazy"
+                    className="w-14 h-14 rounded-xl object-cover"
+                    style={{ border: '1px solid var(--color-border)' }}
+                  />
+                ) : (
+                  <span className="text-3xl">{g.emoji}</span>
+                )}
                 <span
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full"
                   style={{
@@ -289,6 +329,14 @@ const Home: React.FC = () => {
               style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
             >
               <span className="text-5xl">{spotlight.emoji}</span>
+              {spotlight.image && (
+                <img
+                  src={spotlight.image}
+                  alt={`${spotlight.name} artwork`}
+                  className="w-24 h-24 rounded-2xl object-cover mx-auto mt-3"
+                  style={{ border: '1px solid var(--color-border)' }}
+                />
+              )}
               <h3 className="mt-3 font-bold text-xl">{spotlight.name}</h3>
               <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
                 {spotlight.badges.slice(0, 3).join(' · ')}
@@ -333,6 +381,25 @@ const Home: React.FC = () => {
             github.com/JustJayDev
             <ArrowRight size={14} />
           </a>
+
+          <div className="flex items-center justify-center gap-2.5 mt-5">
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              onClick={copySite}
+              className="btn-secondary !min-h-0 !py-2.5 !px-4 text-xs font-semibold rounded-xl"
+            >
+              <Copy size={14} />
+              {copied ? 'Copied ✓' : 'Copy link'}
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              onClick={shareSite}
+              className="btn-secondary !min-h-0 !py-2.5 !px-4 text-xs font-semibold rounded-xl"
+            >
+              <Share2 size={14} />
+              Share site
+            </motion.button>
+          </div>
         </motion.div>
       </section>
     </div>

@@ -1,5 +1,5 @@
 /* JustJayDev service worker — cache-first assets, network-first navigation */
-const VERSION = 'v3.5-accent';
+const VERSION = 'v3.6-mobile';
 const CORE = ['./', './index.html', './manifest.webmanifest', './favicon.svg', './feed.xml'];
 
 self.addEventListener('install', (e) => {
