@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search, Flame, Blocks, Pickaxe, Crown, Star, Ghost, Gamepad2 } from 'lucide-react';
+import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search, Flame, Blocks, Pickaxe, Crown, Star, Ghost, Gamepad2, X } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { mainGames, casualGames, type Game } from '@/data/games';
-
-const GameIcons: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number; color?: string }>> = {
+const GameIcons: Record<string, LucideIcon> = {
   Flame, Trophy, Blocks, Pickaxe, Swords, Crown, Star, Ghost,
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Gamepad2 } from 'lucide-react';
+import { ArrowLeft, Gamepad2, Zap, Brain, Pointer, Grid3x3, Worm } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import ReactionGame from '@/components/PlayReaction';
 import MemoryGame from '@/components/PlayMemory';
 import TapRushGame from '@/components/PlayTapRush';
@@ -8,7 +9,7 @@ import SnakeGame from '@/components/PlaySnake';
 
 type GameId = 'reaction' | 'memory' | 'taprush' | 'slide' | 'snake';
 
-const GAMES: { id: GameId; icon: React.ComponentType<{ size?: number; strokeWidth?: number; color?: string }>; name: string; desc: string; best: string }[] = [
+const GAMES: { id: GameId; icon: LucideIcon; name: string; desc: string; best: string }[] = [
   { id: 'reaction', icon: Zap, name: 'Reaction Test', desc: 'Tap the instant it turns green', best: 'ms' },
   { id: 'memory', icon: Brain, name: 'Memory Flash', desc: 'Repeat the growing pattern', best: 'level' },
   { id: 'taprush', icon: Pointer, name: 'Tap Rush', desc: 'Max taps in 10 seconds', best: 'taps' },

@@ -47,6 +47,8 @@ const SnakeGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     const nc = head[1] + s.dir[1];
     // wall or self collision
     if (nr < 0 || nc < 0 || nr >= N || nc >= N || s.snake.some(([r, c]) => r === nr && c === nc)) {
+      clearInterval(s.timer); // stop the loop — without this the tick kept firing after death
+      s.timer = 0;
       setRunning(false);
       setBest('jj_best_snake', s.score);
       buzz([40, 60, 40]);
@@ -90,6 +92,27 @@ const SnakeGame: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (s.dir[0] === -dr && s.dir[1] === -dc) return; // no 180°
     s.nextDir = [dr, dc];
   };
+  // Keyboard controls (desktop): Arrows/WASD to steer, Space/Enter to start
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const k = e.key.toLowerCase();
+      const map: Record<string, [number, number]> = {
+        arrowup: [-1, 0], w: [-1, 0],
+        arrowdown: [1, 0], s: [1, 0],
+        arrowleft: [0, -1], a: [0, -1],
+        arrowright: [0, 1], d: [0, 1],
+      };
+      if (map[k]) {
+        e.preventDefault();
+        setDir(map[k][0], map[k][1]);
+      } else if (k === ' ' || k === 'enter') {
+        e.preventDefault();
+        if (!running) start();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
 
   const onTouch = (e: React.TouchEvent, isStart: boolean) => {
     if (!isStart) return;

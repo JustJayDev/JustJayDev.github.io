@@ -33,7 +33,7 @@ const PullToRefresh: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const onStart = (e: React.TouchEvent) => {
     if (!armed.current || refreshing) return;
     const target = e.target as HTMLElement;
-    if (target.closest('.no-pull')) return;
+    if (target.closest('a, button, input, textarea, select, [role="button"], .no-pull, .no-swipe')) return;
     start.current = e.touches[0].clientY;
   };
 

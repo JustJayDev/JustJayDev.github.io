@@ -245,7 +245,7 @@ const Home: React.FC = () => {
                     style={{ border: '1px solid var(--color-border)' }}
                   />
                 ) : (
-                  <span className="text-3xl">{g.emoji}</span>
+                  <Gamepad2 size={28} style={{ color: 'var(--color-accent)' }} />
                 )}
                 <span
                   className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full"
@@ -332,14 +332,15 @@ const Home: React.FC = () => {
               className="max-w-md mx-auto rounded-2xl p-6 text-center cursor-pointer tilt-card"
               style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
             >
-              <span className="text-5xl">{spotlight.emoji}</span>
-              {spotlight.image && (
+              {spotlight.image ? (
                 <img
                   src={spotlight.image}
                   alt={`${spotlight.name} artwork`}
-                  className="w-24 h-24 rounded-2xl object-cover mx-auto mt-3"
+                  className="w-24 h-24 rounded-2xl object-cover mx-auto"
                   style={{ border: '1px solid var(--color-border)' }}
                 />
+              ) : (
+                <Gamepad2 size={48} className="mx-auto" style={{ color: 'var(--color-accent)' }} />
               )}
               <h3 className="mt-3 font-bold text-xl">{spotlight.name}</h3>
               <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>

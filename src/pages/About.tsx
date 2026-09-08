@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Gamepad2, Smartphone, Sparkles, TrendingUp, BookOpen } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { profile } from '@/data/profile';
 import { casualGames } from '@/data/games';
 
@@ -119,12 +120,12 @@ const About: React.FC = () => {
           What I'm working on
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
-          {[
+          {([
             [Smartphone, 'FF Sensi Analyzer', 'Android app that reads your device & recommends Free Fire sensitivity settings.', 'In progress'],
             [Gamepad2, 'Asteroids', 'A classic arcade game rebuilt in one HTML file — canvas + pure JS.', 'Building'],
             [TrendingUp, 'Paper trading', 'Learning chart patterns, risk management & market structure.', 'Learning'],
             [BookOpen, 'Manhua shelf', 'Daily reader — always hunting underrated series before they blow up.', 'Daily'],
-          ].map(([Icon, title, desc, status], i) => (
+          ] as [LucideIcon, string, string, string][]).map(([Icon, title, desc, status], i) => (
             <motion.div
               key={title}
               initial={{ opacity: 0, y: 14 }}
