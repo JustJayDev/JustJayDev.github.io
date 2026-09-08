@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search, Flame, Blocks, Pickaxe, Crown, Star, Ghost, Gamepad2, X } from 'lucide-react';
+import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search, Flame, Blocks, Pickaxe, Crown, Star, Ghost, Gamepad2, Egg, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { mainGames, casualGames, type Game } from '@/data/games';
 const GameIcons: Record<string, LucideIcon> = {
-  Flame, Trophy, Blocks, Pickaxe, Swords, Crown, Star, Ghost,
+  Flame, Trophy, Blocks, Pickaxe, Swords, Crown, Star, Ghost, Egg,
 };
 
 type Filter = 'all' | 'active' | 'casual';
@@ -202,7 +202,7 @@ const Games: React.FC = () => {
           <span className="gradient-text">Games</span>
         </h1>
         <p className="mt-3 text-sm md:text-base" style={{ color: 'var(--color-text-muted)' }}>
-          18 games played · 2 grinding right now · 100% mobile, zero PC
+          19 games played · 3 grinding right now · 100% mobile, zero PC
         </p>
       </motion.div>
 

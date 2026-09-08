@@ -1,6 +1,6 @@
 /**
  * JustJayDev — Games data (v3).
- * 18 games: 8 main with achievements + 10 casual classics.
+ * 19 games: 9 main with achievements + 10 casual classics.
  *
  * Field notes:
  *  - verified: false  → card shows an "unverified — update when confirmed" note.
@@ -56,6 +56,25 @@ export const mainGames: Game[] = [
     ],
     verified: true,
     lastUpdated: '2026-09-07',
+  },
+  {
+    id: 'dragon-city',
+    name: 'Dragon City',
+    icon: 'Egg',
+    image: '/games/dragoncity.svg',
+    nowPlaying: true,
+    status: 'Main game · Dragon collector',
+    badges: ['Lv 55', '163/2217 Dragonbook', 'SHURA GOD', '161 Unique Dragons'],
+    details: [
+      'Level 55 — account linked, breeding and feeding daily.',
+      'Dragonbook: 163 of 2217 dragons collected.',
+      'Alliance: SHURA GOD — 19,217 total trophies · 2,009 master points.',
+      'Top dragon: High Famine Dragon (Lv 45) — High Reborn, Terra Titan, Skullface, Pixel & High Zephyr all at Lv 40.',
+      'Collection spans High-tier, Zodiac (Gemini · Virgo · Capricorn), Pure and event legendaries like Independence Day & Trick or Treat dragons.',
+    ],
+    flex: '161 unique dragons — including High-tier and Zodiac legendaries most players never hatch.',
+    verified: true,
+    lastUpdated: '2026-09-08',
   },
   {
     id: 'roblox',
