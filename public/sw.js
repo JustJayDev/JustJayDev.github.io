@@ -1,5 +1,5 @@
 /* JustJayDev service worker — cache-first assets, network-first navigation */
-const VERSION = 'v4.2-audit';
+const VERSION = 'v5-noir-sound';
 const CORE = [
   './',
   './index.html',
