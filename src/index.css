@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== display font for headings ===== */
+h1, h2, h3, .font-display {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
 :root {
   --color-bg: #020617;
   --color-surface: #0f172a;

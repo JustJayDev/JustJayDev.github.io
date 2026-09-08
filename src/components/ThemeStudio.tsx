@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Palette, X, Check } from 'lucide-react';
 import { ACCENTS, useAccent } from '@/context/AccentContext';
+import { sfx } from '@/lib/sound';
 
 const FONTS = [
   { id: 'system', label: 'Clean' },
@@ -41,6 +42,7 @@ const ThemeStudio: React.FC = () => {
     const root = document.documentElement;
     root.classList.remove('font-system', 'font-serif', 'font-mono');
     root.classList.add(`font-${id}`);
+    sfx.tick();
     if (navigator.vibrate) navigator.vibrate(6);
   };
 
@@ -52,6 +54,7 @@ const ThemeStudio: React.FC = () => {
     root.style.setProperty('--radius-lg', r);
     root.style.setProperty('--radius-md', `calc(${r} - 0.2rem)`);
     root.style.setProperty('--radius-sm', `calc(${r} - 0.4rem)`);
+    sfx.tick();
     if (navigator.vibrate) navigator.vibrate(6);
   };
 

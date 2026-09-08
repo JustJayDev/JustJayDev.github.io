@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 // SPA fallback completion: 404.html forwards deep links as /?p=<path> — restore the real route
-// before React Router reads location, so shared URLs like /play render the Play page.
+// before React Router reads location, so shared URLs like /games render the Games page.
 (function restoreSpaPath() {
   const l = window.location;
   const m = l.search.match(/[?&]p=([^&]+)/);
@@ -22,6 +22,14 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
   });
 }
 
+// Fade out the pre-React boot splash once the app has mounted
+function dismissBoot() {
+  const boot = document.getElementById('boot');
+  if (!boot) return;
+  boot.classList.add('done');
+  setTimeout(() => boot.remove(), 500);
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -29,3 +37,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </React.StrictMode>
 );
+dismissBoot();

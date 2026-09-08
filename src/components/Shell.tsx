@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss, Joystick } from 'lucide-react';
+import { Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss, Volume2, VolumeX } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
-
+import { sfx } from '@/lib/sound';
 const NAV = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/games', label: 'Games', icon: Gamepad2 },
-  { to: '/play', label: 'Play', icon: Joystick },
   { to: '/devlog', label: 'Devlog', icon: BookOpen },
   { to: '/about', label: 'About', icon: User },
 ];
@@ -16,8 +15,11 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [muted, setMuted] = useState(sfx.isMuted());
 
   useEffect(() => {
+    // unlock WebAudio on the very first user gesture (mobile autoplay policy)
+    window.addEventListener('pointerdown', sfx.unlock, { once: true });
     const onScroll = () => {
       setScrolled(window.scrollY > 8);
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -25,10 +27,20 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('pointerdown', sfx.unlock);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
-
-  const toggleTheme = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+  const toggleTheme = () => {
+    sfx.toggle(resolvedTheme === 'dark');
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+  };
+  const toggleSound = () => {
+    sfx.setMuted(!muted);
+    setMuted(!muted);
+    if (muted) sfx.tick();
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -72,6 +84,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 key={to}
                 to={to}
                 end={to === '/'}
+                onClick={() => sfx.tick()}
                 className={({ isActive }) =>
                   `px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
                     isActive ? 'gradient-text' : ''
@@ -88,14 +101,24 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             ))}
           </nav>
 
-          <button
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-            style={{ background: 'var(--color-surface-2)', color: 'var(--color-text)' }}
-          >
-            {resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleSound}
+              aria-label={muted ? 'Unmute sounds' : 'Mute sounds'}
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+              style={{ background: 'var(--color-surface-2)', color: muted ? 'var(--color-text-muted)' : 'var(--color-accent)' }}
+            >
+              {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+            </button>
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+              style={{ background: 'var(--color-surface-2)', color: 'var(--color-text)' }}
+            >
+              {resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -167,7 +190,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <NavLink
                 key={to}
                 to={to}
-                onClick={() => { if (navigator.vibrate) navigator.vibrate(8); }}
+                onClick={() => { if (navigator.vibrate) navigator.vibrate(8); sfx.tick(); }}
                 className="relative flex flex-col items-center justify-center w-20 h-full"
                 style={{ color: active ? 'var(--color-accent-light)' : 'var(--color-text-muted)' }}
               >

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { MessageCircleHeart, Send, Loader2, PartyPopper } from 'lucide-react';
-import { buzz } from './playUtil';
+import { buzz, sfx } from '@/lib/sound';
 
 /** Guestbook — textdb.dev messages + Abacus cheers counter (both free, no signup) */
 const DB_URL = 'https://textdb.dev/api/data/';
@@ -50,8 +50,9 @@ const Guestbook: React.FC = () => {
         body: JSON.stringify({ key: DB_KEY, value: JSON.stringify(next) }),
       });
       localStorage.setItem('jj_gb_name', n);
+      sfx.confirm();
       if (alive.current) { setMsgs(next); setText(''); }
-    } catch { if (alive.current) setErr('Failed to send — try again'); }
+    } catch { sfx.error(); if (alive.current) setErr('Failed to send — try again'); }
     if (alive.current) setSending(false);
   };
 
@@ -61,6 +62,7 @@ const Guestbook: React.FC = () => {
     localStorage.setItem('jj_gb_cheered', '1');
     setCheers((c) => (c ?? 0) + 1);
     buzz([10, 30, 10]);
+    sfx.fanfare();
     try { await fetch(CHEERS_HIT); } catch { /* keep optimistic */ }
   };
 

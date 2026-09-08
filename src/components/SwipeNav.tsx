@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
  * Swipe left → next page · swipe right → previous page.
  * Ignores swipes that start on links, buttons, inputs or .no-swipe zones.
  */
-const ORDER = ['/', '/games', '/play', '/devlog', '/about'];
+const ORDER = ['/', '/games', '/devlog', '/about'];
 
 const SwipeNav: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();

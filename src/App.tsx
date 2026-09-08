@@ -8,12 +8,12 @@ import SwipeNav from '@/components/SwipeNav';
 import PullToRefresh from '@/components/PullToRefresh';
 import OfflineIndicator from '@/components/OfflineIndicator';
 import InstallBanner from '@/components/InstallBanner';
+import { sfx } from '@/lib/sound';
 import { HomeSkeleton, GamesSkeleton, DevlogSkeleton, AboutSkeleton } from '@/components/Skeletons';
 const Home = lazy(() => import('@/pages/Home'));
 const About = lazy(() => import('@/pages/About'));
 const Games = lazy(() => import('@/pages/Games'));
 const Devlog = lazy(() => import('@/pages/Devlog'));
-const Play = lazy(() => import('@/pages/Play'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 const PageLoader: React.FC<{ which?: 'home' | 'games' | 'devlog' | 'about' }> = ({ which = 'home' }) => {
@@ -51,7 +51,6 @@ const TITLES: Record<string, string> = {
   '/about': 'About — JustJayDev',
   '/games': 'Games — JustJayDev',
   '/devlog': 'Devlog — JustJayDev',
-  '/play': 'Play — JustJayDev',
 };
 const SKELETON: Record<string, 'home' | 'games' | 'devlog' | 'about'> = {
   '/': 'home',
@@ -63,6 +62,7 @@ const App: React.FC = () => {
   const location = useLocation();
   React.useEffect(() => {
     document.title = TITLES[location.pathname] || 'JustJayDev — Jay Kumar';
+    sfx.whoosh();
   }, [location.pathname]);
   return (
     <ThemeProvider>
@@ -91,7 +91,6 @@ const App: React.FC = () => {
                     <Route path="/about" element={<About />} />
                     <Route path="/games" element={<Games />} />
                     <Route path="/devlog" element={<Devlog />} />
-                    <Route path="/play" element={<Play />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>
