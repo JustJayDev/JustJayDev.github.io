@@ -13,6 +13,7 @@ import { HomeSkeleton, GamesSkeleton, DevlogSkeleton, AboutSkeleton } from '@/co
 const Home = lazy(() => import('@/pages/Home'));
 const About = lazy(() => import('@/pages/About'));
 const Games = lazy(() => import('@/pages/Games'));
+const GameProfile = lazy(() => import('@/pages/GameProfile'));
 const Devlog = lazy(() => import('@/pages/Devlog'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
@@ -52,6 +53,9 @@ const TITLES: Record<string, string> = {
   '/games': 'Games — JustJayDev',
   '/devlog': 'Devlog — JustJayDev',
 };
+const GAME_PROFILE_TITLES: Record<string, string> = {
+  'dragon-city': 'Dragon City Profile — JustJayDev',
+};
 const SKELETON: Record<string, 'home' | 'games' | 'devlog' | 'about'> = {
   '/': 'home',
   '/games': 'games',
@@ -61,7 +65,9 @@ const SKELETON: Record<string, 'home' | 'games' | 'devlog' | 'about'> = {
 const App: React.FC = () => {
   const location = useLocation();
   React.useEffect(() => {
-    document.title = TITLES[location.pathname] || 'JustJayDev — Jay Kumar';
+    document.title = TITLES[location.pathname]
+      || GAME_PROFILE_TITLES[location.pathname.split('/')[2]]
+      || 'JustJayDev — Jay Kumar';
     sfx.whoosh();
   }, [location.pathname]);
   return (
@@ -90,6 +96,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/games" element={<Games />} />
+                    <Route path="/games/:gameId" element={<GameProfile />} />
                     <Route path="/devlog" element={<Devlog />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>

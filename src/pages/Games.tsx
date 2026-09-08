@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search, Flame, Blocks, Pickaxe, Crown, Star, Ghost, Gamepad2, Egg, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { mainGames, casualGames, type Game } from '@/data/games';
+import sfx, { buzz } from '@/lib/sound';
 const GameIcons: Record<string, LucideIcon> = {
   Flame, Trophy, Blocks, Pickaxe, Swords, Crown, Star, Ghost, Egg,
 };
@@ -17,6 +19,7 @@ const FILTERS: { id: Filter; label: string }[] = [
 
 const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -121,6 +124,18 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
           </motion.span>
         </div>
       </button>
+      {game.id === 'dragon-city' && (
+        <div className="px-4 pb-3 -mt-1">
+          <button
+            onClick={(e) => { e.stopPropagation(); sfx.tick(); buzz(8); navigate(`/games/${game.id}`); }}
+            className="w-full inline-flex items-center justify-center gap-2 text-sm font-bold px-4 py-2.5 rounded-xl active:scale-[0.98] transition-transform"
+            style={{ background: 'color-mix(in srgb, var(--color-accent) 16%, transparent)', color: 'var(--color-accent-light)' }}
+          >
+            <ExternalLink size={15} /> View profile &amp; UID
+          </button>
+          <div className="h-1" />
+        </div>
+      )}
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
