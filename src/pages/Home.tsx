@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Gamepad2, User, ScrollText, Dices, RefreshCw, Copy, Share2 } from 'lucide-react';
+import { ArrowRight, Gamepad2, User, ScrollText, Dices, RefreshCw, Copy, Share2, Image as ImageIcon, ExternalLink } from 'lucide-react';
 import { profile } from '@/data/profile';
 import { mainGames, type Game } from '@/data/games';
 import { CountUp } from '@/components/CountUp';
@@ -204,6 +204,44 @@ const Home: React.FC = () => {
             </motion.div>
           ))}
         </motion.div>
+      </section>
+
+      {/* ============ PIXVAULT SHOWCASE ============ */}
+      <section className="page-container pb-16">
+        <motion.a
+          href="https://justjaydev.github.io/pixvault/"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          whileHover={{ y: -3 }}
+          whileTap={{ scale: 0.98 }}
+          className="group block max-w-2xl mx-auto rounded-2xl p-5 md:p-6 overflow-hidden relative"
+          style={{
+            background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 14%, var(--color-surface)), var(--color-surface) 55%)',
+            border: '1px solid color-mix(in srgb, var(--color-accent) 35%, var(--color-border))',
+          }}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)', color: 'var(--color-accent-light)' }}>
+              <ImageIcon size={11} />
+              New project
+            </span>
+            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full" style={{ background: 'color-mix(in srgb, #22c55e 15%, transparent)', color: '#4ade80' }}>
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+              Live
+            </span>
+            </div>
+          <h3 className="font-black text-lg md:text-xl mt-2.5 flex items-center gap-2">
+            PixVault
+            <ExternalLink size={15} style={{ color: 'var(--color-text-muted)' }} />
+          </h3>
+          <p className="text-sm mt-1 leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
+            My wallpaper vault — HD &amp; 4K wallpapers in original full quality. Free, no watermark, no signup. Tap to open it →
+          </p>
+        </motion.a>
       </section>
 
       {/* ============ NOW PLAYING ============ */}

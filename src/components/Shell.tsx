@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss, Volume2, VolumeX } from 'lucide-react';
+import { Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss, Volume2, VolumeX, Image as ImageIcon, ExternalLink } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { sfx } from '@/lib/sound';
 const NAV = [
@@ -139,14 +139,24 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               {label}
             </NavLink>
           ))}
-          <a
-            href="/feed.xml"
-            className="inline-flex items-center gap-1 transition-colors hover:opacity-70 px-1.5"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            <Rss size={11} />
-            RSS
-          </a>
+            <a
+              href="https://justjaydev.github.io/pixvault/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 transition-colors hover:opacity-70 px-1.5"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              <ImageIcon size={11} />
+              PixVault
+            </a>
+            <a
+              href="/feed.xml"
+              className="inline-flex items-center gap-1 transition-colors hover:opacity-70 px-1.5"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              <Rss size={11} />
+              RSS
+            </a>
         </div>
         <p className="text-xs mt-3" style={{ color: 'var(--color-text-muted)' }}>
           © 2026 JustJayDev · built on a phone, shipped from India

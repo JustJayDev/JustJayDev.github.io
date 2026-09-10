@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Gamepad2, Smartphone, Sparkles, TrendingUp, BookOpen } from 'lucide-react';
+import { Gamepad2, Smartphone, Image as ImageIcon, Sparkles, ExternalLink } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { profile } from '@/data/profile';
 import { casualGames } from '@/data/games';
@@ -121,10 +121,8 @@ const About: React.FC = () => {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
           {([
-            [Smartphone, 'FF Sensi Analyzer', 'Android app that reads your device & recommends Free Fire sensitivity settings.', 'In progress'],
-            [Gamepad2, 'Asteroids', 'A classic arcade game rebuilt in one HTML file — canvas + pure JS.', 'Building'],
-            [TrendingUp, 'Paper trading', 'Learning chart patterns, risk management & market structure.', 'Learning'],
-            [BookOpen, 'Manhua shelf', 'Daily reader — always hunting underrated series before they blow up.', 'Daily'],
+            [ImageIcon, 'PixVault', 'My wallpaper vault — original-quality wallpapers, free to download, no watermark. Tap the button below to open it.', 'Live now'],
+            [Sparkles, 'This website', 'My personal site — always getting new stuff, all built and shipped from my phone.', 'Always improving'],
           ] as [LucideIcon, string, string, string][]).map(([Icon, title, desc, status], i) => (
             <motion.div
               key={title}
@@ -151,8 +149,19 @@ const About: React.FC = () => {
             </motion.div>
           ))}
         </div>
+        <motion.a
+          href="https://justjaydev.github.io/pixvault/"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileTap={{ scale: 0.97 }}
+          className="btn-shine mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold text-sm text-white"
+          style={{ background: 'linear-gradient(135deg, var(--color-accent), var(--color-accent-2, #ec4899))' }}
+        >
+          <ImageIcon size={17} />
+          Open PixVault — my wallpaper vault
+          <ExternalLink size={15} style={{ opacity: 0.8 }} />
+        </motion.a>
       </motion.section>
-
       {/* Casual classics */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
