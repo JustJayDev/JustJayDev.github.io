@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <link rel="alternate" type="application/rss+xml" title="JustJayDev Devlog RSS" href="https://justjaydev.github.io/feed.xml" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="JustJayDev" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#020617" />
+    <meta name="description" content="Jay Kumar (JustJayDev) - 16-year-old developer, gamer and creator from India. Apps, projects, gaming, and everything about me in one place." />
+    <meta name="author" content="Jay Kumar" />
+    <meta name="keywords" content="JustJayDev, Jay Kumar, developer, India, teen developer, gaming, projects" />
+    <!-- Open Graph (WhatsApp/Instagram/Discord share cards) -->
+    <meta property="og:title" content="JustJayDev - Jay Kumar" />
+    <meta property="og:description" content="16 y/o developer, gamer and creator from India. Everything about me in one place." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://justjaydev.github.io/" />
+    <meta property="og:image" content="https://justjaydev.github.io/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JustJayDev - Jay Kumar, developer from India" />
+    <meta property="og:site_name" content="JustJayDev" />
+    <meta property="og:locale" content="en_IN" />
+    <!-- Twitter/X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="JustJayDev - Jay Kumar" />
+    <meta name="twitter:description" content="16 y/o developer, gamer and creator from India." />
+    <meta name="twitter:image" content="https://justjaydev.github.io/og-image.jpg" />
+    <!-- Structured data for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Jay Kumar",
+      "alternateName": "JustJayDev",
+      "url": "https://justjaydev.github.io/",
+      "image": "https://justjaydev.github.io/og-image.jpg",
+      "jobTitle": "Developer & Student",
+      "address": { "@type": "PostalAddress", "addressCountry": "IN" },
+      "knowsAbout": ["Android development", "Web development", "Gaming"]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <title>JustJayDev - Jay Kumar</title>
+    <style>
+      html { background: #020617; }
+      #boot {
+        position: fixed; inset: 0; z-index: 9999;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+        background: #020617;
+        transition: opacity .45s ease;
+      }
+      #boot.done { opacity: 0; pointer-events: none; }
+      #boot .boot-logo {
+        width: 72px; height: 72px; border-radius: 18px;
+        animation: bootpop .7s cubic-bezier(.2,1.4,.4,1) both;
+        box-shadow: 0 8px 40px rgba(99,102,241,.45);
+      }
+      #boot .boot-name {
+        font-family: 'Space Grotesk', 'Inter', sans-serif;
+        font-weight: 700; font-size: 22px; letter-spacing: -.02em; color: #f8fafc;
+        opacity: 0; animation: bootfade .5s ease .25s both;
+      }
+      #boot .boot-name b { color: #818cf8; font-weight: 700; }
+      #boot .boot-ring {
+        width: 26px; height: 26px; border-radius: 50%;
+        border: 3px solid rgba(99,102,241,.2); border-top-color: #818cf8;
+        animation: bootspin .7s linear infinite, bootfade .4s ease .4s both;
+      }
+      @keyframes bootspin { to { transform: rotate(360deg); } }
+      @keyframes bootpop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+      @keyframes bootfade { to { opacity: 1; } }
+      @media (prefers-reduced-motion: reduce) {
+        #boot .boot-logo, #boot .boot-name, #boot .boot-ring { animation-duration: .01s; animation-delay: 0s; }
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-DJb2LlGf.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/vendor-Py0ZF7sn.js">
+    <link rel="modulepreload" crossorigin href="./assets/motion-Caknx_0j.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-CC67NHnj.css">
+  </head>
+  <body>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('jjdev-theme');
+          var sys = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var resolved = (stored === 'light' || stored === 'dark') ? stored : (sys ? 'dark' : 'light');
+          var root = document.documentElement;
+          root.classList.remove('dark', 'light');
+          root.classList.add(resolved);
+          root.style.colorScheme = resolved;
+        } catch (e) {}
+      })();
+    </script>
+    <script>
+      // SPA receiver: restore the real path from ?p=... (set by 404.html)
+      (function(l) {
+        if (l.search) {
+          var q = {};
+          l.search.slice(1).split('&').forEach(function(v) {
+            var a = v.split('=');
+            q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
+          });
+          if (q.p !== undefined) {
+            window.history.replaceState(null, null,
+              l.pathname + (q.p || '') +
+              (q.q ? ('?' + q.q) : '') +
+              l.hash
+            );
+          }
+        }
+      }(window.location));
+    </script>
+    <div id="root"><div id="boot">
+      <img class="boot-logo" src="./logo.svg" alt="" />
+      <div class="boot-name">Just<b>JayDev</b></div>
+      <div class="boot-ring"></div>
+    </div></div>
+  </body>
+</html>
