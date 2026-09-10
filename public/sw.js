@@ -1,5 +1,5 @@
 /* JustJayDev service worker — cache-first assets, network-first navigation */
-const VERSION = 'v6-game-profiles';
+const VERSION = 'v7-scope-fix';
 const CORE = [
   './',
   './index.html',
@@ -27,6 +27,8 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
+  // Never touch other apps hosted on this domain (e.g. /pixvault/)
+  if (url.pathname.startsWith('/pixvault')) return;
   // Pages: network first, cache fallback (keeps content fresh, works offline)
   if (req.mode === 'navigate') {
     e.respondWith(
