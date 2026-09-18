@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search, Flame, Blocks, Pickaxe, Crown, Star, Ghost, Gamepad2, Egg, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { mainGames, casualGames, type Game } from '@/data/games';
+import { useTilt } from '@/lib/useTilt';
 import sfx, { buzz } from '@/lib/sound';
 const GameIcons: Record<string, LucideIcon> = {
   Flame, Trophy, Blocks, Pickaxe, Swords, Crown, Star, Ghost, Egg,
@@ -20,8 +21,10 @@ const FILTERS: { id: Filter; label: string }[] = [
 const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const tiltRef = useTilt<HTMLDivElement>(5);
   return (
     <motion.div
+      ref={tiltRef}
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: Math.min(index * 0.06, 0.3), duration: 0.45 }}
@@ -45,8 +48,7 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
                 src={game.image}
                 alt={`${game.name} artwork`}
                 loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500"
-                style={{ transform: open ? 'scale(1.06)' : 'scale(1)' }}
+                className="kenburns absolute inset-0 w-full h-full object-cover"
               />
               <div
                 className="absolute inset-0"

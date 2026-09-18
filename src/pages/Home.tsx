@@ -5,8 +5,67 @@ import { ArrowRight, Gamepad2, User, ScrollText, Dices, RefreshCw, Copy, Share2,
 import { profile } from '@/data/profile';
 import { mainGames, type Game } from '@/data/games';
 import { CountUp } from '@/components/CountUp';
+import { useTilt } from '@/lib/useTilt';
 
 const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.', 'AI-assisted dev.'];
+
+const NowPlayingCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
+  const navigate = useNavigate();
+  const tiltRef = useTilt<HTMLButtonElement>(6);
+  return (
+    <motion.button
+      ref={tiltRef}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      whileTap={{ scale: 0.97 }}
+      onClick={() => navigate('/games')}
+      className="tilt-card p-5 rounded-2xl text-left"
+      style={{
+        background: 'var(--color-surface)',
+        border: '1px solid var(--color-border)',
+      }}
+    >
+      <div className="flex items-center justify-between">
+        {game.image ? (
+          <img
+            src={game.image}
+            alt={`${game.name} artwork`}
+            loading="lazy"
+            className="kenburns w-14 h-14 rounded-xl object-cover"
+            style={{ border: '1px solid var(--color-border)' }}
+          />
+        ) : (
+          <Gamepad2 size={28} style={{ color: 'var(--color-accent)' }} />
+        )}
+        <span
+          className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full"
+          style={{
+            background: 'rgba(239,68,68,0.12)',
+            color: '#ef4444',
+          }}
+        >
+          <span
+            className="w-1.5 h-1.5 rounded-full pulse-dot"
+            style={{ background: '#ef4444' }}
+          />
+          Now Playing
+        </span>
+      </div>
+      <h3 className="mt-3 font-bold text-lg">{game.name}</h3>
+      <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
+        {game.badges.slice(0, 3).join(' · ')}
+      </p>
+      {game.lastUpdated && (
+        <p className="text-[10px] uppercase tracking-wider font-semibold mt-2" style={{ color: 'var(--color-text-muted)' }}>
+          Updated {game.lastUpdated}
+        </p>
+      )}
+    </motion.button>
+  );
+};
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [tagIdx, setTagIdx] = useState(0);
@@ -92,7 +151,7 @@ const Home: React.FC = () => {
           className="flex flex-col items-center text-center"
         >
           <div
-            className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-6"
+            className="hero-float w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-6"
             style={{
               border: '3px solid transparent',
               background:
@@ -256,57 +315,7 @@ const Home: React.FC = () => {
         </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 max-w-2xl mx-auto">
           {nowPlaying.map((g, i) => (
-            <motion.button
-              key={g.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -4 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/games')}
-              className="tilt-card p-5 rounded-2xl text-left"
-              style={{
-                background: 'var(--color-surface)',
-                border: '1px solid var(--color-border)',
-              }}
-            >
-              <div className="flex items-center justify-between">
-                {g.image ? (
-                  <img
-                    src={g.image}
-                    alt={`${g.name} artwork`}
-                    loading="lazy"
-                    className="w-14 h-14 rounded-xl object-cover"
-                    style={{ border: '1px solid var(--color-border)' }}
-                  />
-                ) : (
-                  <Gamepad2 size={28} style={{ color: 'var(--color-accent)' }} />
-                )}
-                <span
-                  className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full"
-                  style={{
-                    background: 'rgba(239,68,68,0.12)',
-                    color: '#ef4444',
-                  }}
-                >
-                  <span
-                    className="w-1.5 h-1.5 rounded-full pulse-dot"
-                    style={{ background: '#ef4444' }}
-                  />
-                  Now Playing
-                </span>
-              </div>
-              <h3 className="mt-3 font-bold text-lg">{g.name}</h3>
-              <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
-                {g.badges.slice(0, 3).join(' · ')}
-              </p>
-              {g.lastUpdated && (
-                <p className="text-[10px] uppercase tracking-wider font-semibold mt-2" style={{ color: 'var(--color-text-muted)' }}>
-                  Updated {g.lastUpdated}
-                </p>
-              )}
-            </motion.button>
+            <NowPlayingCard key={g.id} game={g} index={i} />
           ))}
         </div>
       </section>

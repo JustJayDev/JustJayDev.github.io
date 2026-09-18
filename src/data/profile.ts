@@ -31,6 +31,8 @@ export const profile = {
   },
   socials: [
     { label: 'GitHub', url: 'https://github.com/JustJayDev', live: true },
+    // TODO: replace with real URLs once provided, then they show up again
+    // (About page filters out any social whose url is '#')
     { label: 'YouTube', url: '#', live: false },
     { label: 'Discord', url: '#', live: false },
     { label: 'Instagram', url: '#', live: false },
