@@ -7,6 +7,27 @@
     <language>en</language>
     <atom:link href="https://justjaydev.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>v4.1 — game cards that don't crop your logos</title>
+      <link>https://justjaydev.github.io/games</link>
+      <guid>v41-game-cards</guid>
+      <pubDate>Sat, 20 Sep 2026 12:30:00 +0530</pubDate>
+      <description>Fixed the Games page banners. Every game art is a different shape, so the old fixed-height crop was cutting logos in half. Banners are now aspect-ratio safe with object-fit: contain, a subtle scanline texture, and a slow hover zoom that scales without re-cropping. Achievement chips got an animated shine sweep. Among Us art was portrait (0.67 ratio) — it letterboxes cleanly now instead of showing a sliver.</description>
+    </item>
+    <item>
+      <title>v4 — the revamp: command palette, achievements, cinematic hero</title>
+      <link>https://justjaydev.github.io/</link>
+      <guid>v4-revamp</guid>
+      <pubDate>Sat, 20 Sep 2026 11:30:00 +0530</pubDate>
+      <description>Big visual revamp. Hero got an animated mesh-gradient backdrop and a character-by-character title reveal. Added a command palette (Cmd/Ctrl+K) for jumping anywhere, a visitor achievement system with 5 unlockable badges that persist in localStorage, a spotlight glow that follows the cursor on desktop, magnetic hero buttons, a live now-playing ticker, and scroll-triggered section reveals. Also deleted 157 lines of dead arcade/mini-games CSS that nothing used.</description>
+    </item>
+    <item>
+      <title>v3.9 — dead code cleanup + verified stats</title>
+      <link>https://justjaydev.github.io/games</link>
+      <guid>v39-cleanup-stats</guid>
+      <pubDate>Thu, 18 Sep 2026 15:00:00 +0530</pubDate>
+      <description>Cleanup pass: removed the unused Guestbook component, 5 dead CSS classes, and fixed a missing button-shine class that About page relied on. Clash Royale and Brawl Stars cards now show real trophy counts and rank badges with a verified flag and last-updated date. The 3D tilt on game cards actually works now — it was defined in CSS but nothing was driving it.</description>
+    </item>
+    <item>
       <title>v3.1 → v3.3 — the overnight polish sprint</title>
       <link>https://justjaydev.github.io/devlog</link>
       <guid>polish-sprint-v33</guid>

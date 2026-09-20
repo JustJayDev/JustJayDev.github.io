@@ -41,21 +41,14 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
         className="w-full text-left"
         aria-expanded={open}
       >
-        {/* banner */}
-        <div className="relative h-28 overflow-hidden">
+        {/* banner — aspect-ratio safe, whole logo always visible */}
+        <div className="game-banner">
           {game.image ? (
-            <>
-              <img
-                src={game.image}
-                alt={`${game.name} artwork`}
-                loading="lazy"
-                className="kenburns absolute inset-0 w-full h-full object-cover"
-              />
-              <div
-                className="absolute inset-0"
-                style={{ background: 'linear-gradient(to top, var(--color-surface) 2%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.25))' }}
-              />
-            </>
+            <img
+              src={game.image}
+              alt={`${game.name} artwork`}
+              loading="lazy"
+            />
           ) : (
             <div
               className="absolute inset-0 flex items-center justify-center"
@@ -67,7 +60,7 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
               })()}
             </div>
           )}
-          <div className="absolute bottom-2.5 left-4 right-4 flex items-center justify-between gap-2">
+          <div className="absolute bottom-2.5 left-4 right-4 z-[2] flex items-center justify-between gap-2">
             <h3
               className="font-bold text-lg text-white truncate"
               style={{ textShadow: '0 1px 10px rgba(0,0,0,0.85)' }}
@@ -108,7 +101,7 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
               {game.badges.map((b) => (
                 <span
                   key={b}
-                  className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg"
+                  className="ach-chip inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg"
                   style={{ background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)', color: 'var(--color-accent-light)' }}
                 >
                   <Trophy size={11} />
