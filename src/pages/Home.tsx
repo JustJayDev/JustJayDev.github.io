@@ -8,6 +8,7 @@ import { CountUp } from '@/components/CountUp';
 import { useTilt } from '@/lib/useTilt';
 import { useMagnetic } from '@/lib/useMagnetic';
 import { useAch } from '@/context/AchievementContext';
+import { useParallax, useRipple, useScrollProgress } from '@/lib/useCinematic';
 
 const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.', 'AI-assisted dev.'];
 
@@ -77,6 +78,10 @@ const Home: React.FC = () => {
   const { unlock } = useAch();
   const heroBtnRef = useMagnetic<HTMLButtonElement>(0.25);
   const aboutBtnRef = useMagnetic<HTMLButtonElement>(0.25);
+  const heroRef = useParallax<HTMLDivElement>();
+  const gamesBtnRipple = useRipple<HTMLButtonElement>();
+  const aboutBtnRipple = useRipple<HTMLButtonElement>();
+  useScrollProgress();
 
   useEffect(() => {
     unlock('first_visit');
@@ -163,7 +168,34 @@ const Home: React.FC = () => {
     <div>
       {/* ============ HERO ============ */}
       <section className="page-container relative pt-12 pb-16 md:pt-20 md:pb-24">
-        <div className="mesh-hero" aria-hidden="true" />
+        <div ref={heroRef} className="absolute inset-0" aria-hidden="true">
+          <div className="mesh-hero" />
+          {/* ambient drifting orbs — parallax layers */}
+          <div
+            className="orb parallax-layer"
+            style={{
+              width: '180px', height: '180px', top: '8%', left: '6%',
+              background: 'var(--color-accent)', opacity: 0.35,
+              transform: 'translate3d(calc((var(--px) - 0.5) * 40px), calc((var(--py) - 0.5) * 40px), 0)',
+            }}
+          />
+          <div
+            className="orb parallax-layer"
+            style={{
+              width: '140px', height: '140px', top: '52%', right: '4%',
+              background: '#d946ef', opacity: 0.3,
+              transform: 'translate3d(calc((var(--px) - 0.5) * -56px), calc((var(--py) - 0.5) * -34px), 0)',
+            }}
+          />
+          <div
+            className="orb parallax-layer"
+            style={{
+              width: '100px', height: '100px', bottom: '6%', left: '26%',
+              background: '#22d3ee', opacity: 0.25,
+              transform: 'translate3d(calc((var(--px) - 0.5) * 28px), calc((var(--py) - 0.5) * -46px), 0)',
+            }}
+          />
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -171,12 +203,11 @@ const Home: React.FC = () => {
           className="flex flex-col items-center text-center relative"
         >
           <div
-            className="hero-float w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-6"
+            className="hero-float glow-pulse w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-6"
             style={{
               border: '3px solid transparent',
               background:
                 'linear-gradient(var(--color-bg), var(--color-bg)) padding-box, linear-gradient(135deg, var(--color-accent), #d946ef, #22d3ee) border-box',
-              boxShadow: '0 0 44px color-mix(in srgb, var(--color-accent) 35%, transparent)',
             }}
           >
             <img
@@ -238,10 +269,10 @@ const Home: React.FC = () => {
 
           <div className="flex flex-wrap justify-center gap-3 mt-8">
             <motion.button
-              ref={heroBtnRef}
+              ref={(node) => { heroBtnRef.current = node; gamesBtnRipple.current = node; }}
               whileTap={{ scale: 0.94 }}
               onClick={() => navigate('/games')}
-              className="btn-primary magnetic"
+              className="btn-primary magnetic btn-magnet"
               style={{ textDecoration: 'none' }}
             >
               <Gamepad2 size={18} />
@@ -249,10 +280,10 @@ const Home: React.FC = () => {
               <ArrowRight size={16} />
             </motion.button>
             <motion.button
-              ref={aboutBtnRef}
+              ref={(node) => { aboutBtnRef.current = node; aboutBtnRipple.current = node; }}
               whileTap={{ scale: 0.94 }}
               onClick={() => navigate('/about')}
-              className="btn-ghost magnetic"
+              className="btn-ghost magnetic btn-magnet"
               style={{ textDecoration: 'none' }}
             >
               <User size={18} />

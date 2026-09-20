@@ -82,7 +82,7 @@ export const mainGames: Game[] = [
     id: 'roblox',
     name: 'Roblox',
     icon: 'Blocks',
-    image: '/games/roblox.png',
+    image: '/games/roblox.svg',
     status: 'Grinder',
     badges: ['30M Bounty', 'V4 Max', 'Titanic Pets'],
     details: [

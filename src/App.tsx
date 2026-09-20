@@ -83,6 +83,7 @@ const App: React.FC = () => {
           <ScrollToTop />
           <div className="aurora" />
           <div className="bg-grid" />
+          <div className="scroll-progress" aria-hidden="true" />
           <Spotlight />
           <Shell>
             <ThemeStudio />

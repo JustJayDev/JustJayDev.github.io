@@ -6,6 +6,7 @@ import type { LucideIcon } from 'lucide-react';
 import { mainGames, casualGames, type Game } from '@/data/games';
 import { useTilt } from '@/lib/useTilt';
 import { useAch } from '@/context/AchievementContext';
+import { useRipple } from '@/lib/useCinematic';
 import sfx, { buzz } from '@/lib/sound';
 const GameIcons: Record<string, LucideIcon> = {
   Flame, Trophy, Blocks, Pickaxe, Swords, Crown, Star, Ghost, Egg,
@@ -23,22 +24,25 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const tiltRef = useTilt<HTMLDivElement>(5);
+  const profileBtnRef = useRipple<HTMLButtonElement>();
   return (
     <motion.div
       ref={tiltRef}
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: Math.min(index * 0.06, 0.3), duration: 0.45 }}
-      className="rounded-2xl overflow-hidden"
+      className="poster-card rounded-2xl overflow-hidden"
       style={{
         background: 'var(--color-surface)',
         border: `1px solid ${game.nowPlaying ? 'color-mix(in srgb, var(--color-accent) 55%, transparent)' : 'var(--color-border)'}`,
         boxShadow: game.nowPlaying ? '0 0 28px color-mix(in srgb, var(--color-accent) 18%, transparent)' : 'none',
       }}
     >
+      {/* pointer-following glow */}
+      <div className="tilt-glow absolute inset-0 z-[2]" aria-hidden="true" />
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full text-left"
+        className="w-full text-left relative z-[2]"
         aria-expanded={open}
       >
         {/* banner — aspect-ratio safe, whole logo always visible */}
@@ -98,11 +102,15 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
               {game.lastUpdated ? ` · Updated ${game.lastUpdated}` : ''}
             </p>
             <div className="flex flex-wrap gap-1.5 mt-2.5">
-              {game.badges.map((b) => (
+              {game.badges.map((b, bi) => (
                 <span
                   key={b}
-                  className="ach-chip inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg"
-                  style={{ background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)', color: 'var(--color-accent-light)' }}
+                  className="ach-chip badge-pop inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg"
+                  style={{
+                    background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)',
+                    color: 'var(--color-accent-light)',
+                    animationDelay: `${0.15 + bi * 0.08}s`,
+                  }}
                 >
                   <Trophy size={11} />
                   {b}
@@ -121,10 +129,11 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
         </div>
       </button>
       {game.profile && (
-        <div className="px-4 pb-3 -mt-1">
+        <div className="px-4 pb-3 -mt-1 relative z-[2]">
           <button
+            ref={profileBtnRef}
             onClick={(e) => { e.stopPropagation(); sfx.tick(); buzz(8); navigate(`/games/${game.id}`); }}
-            className="w-full inline-flex items-center justify-center gap-2 text-sm font-bold px-4 py-2.5 rounded-xl active:scale-[0.98] transition-transform"
+            className="btn-magnet w-full inline-flex items-center justify-center gap-2 text-sm font-bold px-4 py-2.5 rounded-xl active:scale-[0.98] transition-transform"
             style={{ background: 'color-mix(in srgb, var(--color-accent) 16%, transparent)', color: 'var(--color-accent-light)' }}
           >
             <ExternalLink size={15} /> View profile &amp; UID
@@ -311,25 +320,28 @@ const Games: React.FC = () => {
           </p>
         )}
       </div>
-      {/* Casual classics strip */}
+      {/* Casual classics strip — infinite marquee */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="mt-8 max-w-2xl mx-auto rounded-2xl p-6"
+        className="mt-8 max-w-2xl mx-auto rounded-2xl p-6 reveal"
+        data-r="scale"
         style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
       >
         <h2 className="section-title text-lg md:text-xl">Casual classics</h2>
-        <div className="flex flex-wrap gap-2 mt-4">
-          {casualGames.map((g) => (
-            <span
-              key={g}
-              className="text-xs px-3 py-1.5 rounded-full"
-              style={{ background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
-            >
-              {g}
-            </span>
-          ))}
+        <div className="marquee mt-4 -mx-2">
+          <div className="marquee__track gap-2 px-2">
+            {[...casualGames, ...casualGames].map((g, i) => (
+              <span
+                key={i}
+                className="text-xs px-3 py-1.5 rounded-full whitespace-nowrap"
+                style={{ background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
+              >
+                {g}
+              </span>
+            ))}
+          </div>
         </div>
       </motion.section>
     </div>
