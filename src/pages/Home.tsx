@@ -6,6 +6,8 @@ import { profile } from '@/data/profile';
 import { mainGames, type Game } from '@/data/games';
 import { CountUp } from '@/components/CountUp';
 import { useTilt } from '@/lib/useTilt';
+import { useMagnetic } from '@/lib/useMagnetic';
+import { useAch } from '@/context/AchievementContext';
 
 const TAGLINES = ['Mobile gamer.', 'Builder.', 'Future trader.', 'AI-assisted dev.'];
 
@@ -72,6 +74,23 @@ const Home: React.FC = () => {
   const [typed, setTyped] = useState('');
   const [now, setNow] = useState(() => new Date());
   const [spotlight, setSpotlight] = useState<Game | null>(null);
+  const { unlock } = useAch();
+  const heroBtnRef = useMagnetic<HTMLButtonElement>(0.25);
+  const aboutBtnRef = useMagnetic<HTMLButtonElement>(0.25);
+
+  useEffect(() => {
+    unlock('first_visit');
+  }, [unlock]);
+
+  // deep-diver: fire when the visitor nears the bottom of the page
+  useEffect(() => {
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max > 0 && window.scrollY / max > 0.92) unlock('deep_diver');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [unlock]);
 
   useEffect(() => {
     document.title = 'JustJayDev — Mobile gamer. Builder. Future trader.';
@@ -143,12 +162,13 @@ const Home: React.FC = () => {
   return (
     <div>
       {/* ============ HERO ============ */}
-      <section className="page-container pt-12 pb-16 md:pt-20 md:pb-24">
+      <section className="page-container relative pt-12 pb-16 md:pt-20 md:pb-24">
+        <div className="mesh-hero" aria-hidden="true" />
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center"
+          className="flex flex-col items-center text-center relative"
         >
           <div
             className="hero-float w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden mb-6"
@@ -175,7 +195,17 @@ const Home: React.FC = () => {
           </p>
 
           <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
-            <span className="gradient-text">JustJayDev</span>
+            {'JustJayDev'.split('').map((ch, i) => (
+              <span
+                key={i}
+                className="hero-char gradient-text"
+                style={{ ['--i' as string]: i }}
+                aria-hidden="true"
+              >
+                {ch}
+              </span>
+            ))}
+            <span className="sr-only">JustJayDev</span>
           </h1>
 
           <p className="mt-3 text-xl md:text-3xl font-bold h-9 md:h-12">
@@ -208,9 +238,10 @@ const Home: React.FC = () => {
 
           <div className="flex flex-wrap justify-center gap-3 mt-8">
             <motion.button
+              ref={heroBtnRef}
               whileTap={{ scale: 0.94 }}
               onClick={() => navigate('/games')}
-              className="btn-primary"
+              className="btn-primary magnetic"
               style={{ textDecoration: 'none' }}
             >
               <Gamepad2 size={18} />
@@ -218,9 +249,10 @@ const Home: React.FC = () => {
               <ArrowRight size={16} />
             </motion.button>
             <motion.button
+              ref={aboutBtnRef}
               whileTap={{ scale: 0.94 }}
               onClick={() => navigate('/about')}
-              className="btn-ghost"
+              className="btn-ghost magnetic"
               style={{ textDecoration: 'none' }}
             >
               <User size={18} />
@@ -228,6 +260,30 @@ const Home: React.FC = () => {
             </motion.button>
           </div>
         </motion.div>
+      </section>
+
+      {/* ============ LIVE TICKER ============ */}
+      <section className="page-container pb-10">
+        <div
+          className="ticker-wrap rounded-2xl py-3"
+          style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+        >
+          <div className="ticker">
+            {[...nowPlaying, ...nowPlaying].map((g, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-2 px-5 text-sm font-semibold whitespace-nowrap"
+                style={{ color: 'var(--color-text-muted)' }}
+              >
+                <span
+                  className="w-1.5 h-1.5 rounded-full pulse-dot shrink-0"
+                  style={{ background: '#ef4444' }}
+                />
+                {g.name} — {g.status}
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ============ STATS STRIP ============ */}
@@ -266,7 +322,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* ============ PIXVAULT SHOWCASE ============ */}
-      <section className="page-container pb-16">
+      <section className="page-container pb-16 reveal">
         <motion.a
           href="https://justjaydev.github.io/pixvault/"
           target="_blank"
@@ -304,7 +360,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* ============ NOW PLAYING ============ */}
-      <section className="page-container pb-16">
+      <section className="page-container pb-16 reveal">
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -321,7 +377,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* ============ DEVLOG TEASER ============ */}
-      <section className="page-container pb-16">
+      <section className="page-container pb-16 reveal">
         <motion.button
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -353,7 +409,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* ============ SURPRISE SPOTLIGHT ============ */}
-      <section className="page-container pb-16">
+      <section className="page-container pb-16 reveal">
         <div className="flex items-center justify-center gap-3 mb-6">
           <motion.button
             whileTap={{ scale: 0.94 }}

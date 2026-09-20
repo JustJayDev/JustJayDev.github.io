@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Zap, Swords, Trophy, ShieldAlert, ExternalLink, Search, Flame, Blocks, Pickaxe, Crown, Star, Ghost, Gamepad2, Egg, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { mainGames, casualGames, type Game } from '@/data/games';
 import { useTilt } from '@/lib/useTilt';
+import { useAch } from '@/context/AchievementContext';
 import sfx, { buzz } from '@/lib/sound';
 const GameIcons: Record<string, LucideIcon> = {
   Flame, Trophy, Blocks, Pickaxe, Swords, Crown, Star, Ghost, Egg,
@@ -190,6 +191,11 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
 const Games: React.FC = () => {
   const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
+  const { unlock } = useAch();
+
+  useEffect(() => {
+    unlock('gamer');
+  }, [unlock]);
 
   const filtered = mainGames.filter((g) => {
     if (filter === 'active') return g.nowPlaying;

@@ -2,12 +2,17 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { AccentProvider } from '@/context/AccentContext';
+import { AchievementProvider } from '@/context/AchievementContext';
 import Shell from '@/components/Shell';
 import ThemeStudio from '@/components/ThemeStudio';
 import SwipeNav from '@/components/SwipeNav';
 import PullToRefresh from '@/components/PullToRefresh';
 import OfflineIndicator from '@/components/OfflineIndicator';
 import InstallBanner from '@/components/InstallBanner';
+import Spotlight from '@/components/Spotlight';
+import CommandPalette from '@/components/CommandPalette';
+import AchievementToast from '@/components/AchievementToast';
+import { useReveal } from '@/lib/useReveal';
 import { sfx } from '@/lib/sound';
 import { HomeSkeleton, GamesSkeleton, DevlogSkeleton, AboutSkeleton } from '@/components/Skeletons';
 const Home = lazy(() => import('@/pages/Home'));
@@ -64,6 +69,7 @@ const SKELETON: Record<string, 'home' | 'games' | 'devlog' | 'about'> = {
 };
 const App: React.FC = () => {
   const location = useLocation();
+  useReveal();
   React.useEffect(() => {
     document.title = TITLES[location.pathname]
       || GAME_PROFILE_TITLES[location.pathname.split('/')[2]]
@@ -73,39 +79,44 @@ const App: React.FC = () => {
   return (
     <ThemeProvider>
       <AccentProvider>
-        <ScrollToTop />
-        <div className="aurora" />
-        <div className="bg-grid" />
-        <Shell>
-          <ThemeStudio />
-          <OfflineIndicator />
-          <SwipeNav>
-            <PullToRefresh>
-              <Suspense fallback={<PageLoader which={SKELETON[location.pathname] || 'home'} />}>
-                <main
-                  key={location.pathname}
-                  className={`page-enter pb-24 md:pb-12 ${
-                    document.documentElement.getAttribute('data-navdir') === 'forward'
-                      ? 'page-dir-forward'
-                      : document.documentElement.getAttribute('data-navdir') === 'back'
-                        ? 'page-dir-back'
-                        : ''
-                  }`}
-                >
-                  <Routes location={location}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/games" element={<Games />} />
-                    <Route path="/games/:gameId" element={<GameProfile />} />
-                    <Route path="/devlog" element={<Devlog />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-              </Suspense>
-            </PullToRefresh>
-          </SwipeNav>
-          <InstallBanner />
-        </Shell>
+        <AchievementProvider>
+          <ScrollToTop />
+          <div className="aurora" />
+          <div className="bg-grid" />
+          <Spotlight />
+          <Shell>
+            <ThemeStudio />
+            <OfflineIndicator />
+            <SwipeNav>
+              <PullToRefresh>
+                <Suspense fallback={<PageLoader which={SKELETON[location.pathname] || 'home'} />}>
+                  <main
+                    key={location.pathname}
+                    className={`page-enter pb-24 md:pb-12 ${
+                      document.documentElement.getAttribute('data-navdir') === 'forward'
+                        ? 'page-dir-forward'
+                        : document.documentElement.getAttribute('data-navdir') === 'back'
+                          ? 'page-dir-back'
+                          : ''
+                    }`}
+                  >
+                    <Routes location={location}>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/games" element={<Games />} />
+                      <Route path="/games/:gameId" element={<GameProfile />} />
+                      <Route path="/devlog" element={<Devlog />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </main>
+                </Suspense>
+              </PullToRefresh>
+            </SwipeNav>
+            <InstallBanner />
+          </Shell>
+          <CommandPalette />
+          <AchievementToast />
+        </AchievementProvider>
       </AccentProvider>
     </ThemeProvider>
   );
