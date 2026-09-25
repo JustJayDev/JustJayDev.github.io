@@ -6,17 +6,16 @@ import { useTilt } from '@/lib/useTilt';
 /**
  * GameCard — neon cyber game card (tilt, glow, sheen, banners).
  */
-const GameCard: React.FC<{ game: Game; wide?: boolean }> = ({ game, wide }) => {
+const GameCard: React.FC<{ game: Game }> = ({ game }) => {
   const tiltRef = useTilt<HTMLAnchorElement>(8);
 
   return (
-    <div className={wide ? '' : undefined}>
-      <Link
-        to={game.profile ? `/games/${game.id}` : `/games`}
-        className="game-card sheen brackets"
-        ref={tiltRef}
-        style={{ ['--acc' as string]: game.accent, display: 'block', textDecoration: 'none', color: 'inherit' }}
-      >
+    <Link
+      to={game.profile ? `/games/${game.id}` : `/games`}
+      className="game-card sheen brackets"
+      ref={tiltRef}
+      style={{ ['--acc' as string]: game.accent, display: 'block', textDecoration: 'none', color: 'inherit' }}
+    >
         {game.image && (
           <div className="card-banner">
             <img src={game.image} alt={game.name} loading="lazy" />
@@ -57,7 +56,6 @@ const GameCard: React.FC<{ game: Game; wide?: boolean }> = ({ game, wide }) => {
           </div>
         </div>
       </Link>
-    </div>
   );
 };
 

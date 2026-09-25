@@ -4,17 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 
-// SPA fallback: 404.html forwards deep links as /?p=<path>
-(function restoreSpaPath() {
-  const l = window.location;
-  const m = l.search.match(/[?&]p=([^&]+)/);
-  if (!m) return;
-  const path = m[1].replace(/~and~/g, '&');
-  let rest = l.search.replace(/[?&]p=[^&]+/, '');
-  if (rest.startsWith('&')) rest = '?' + rest.slice(1);
-  window.history.replaceState(null, '', (path.startsWith('/') ? path : '/' + path) + rest + l.hash);
-})();
-
 // PWA service worker (production only)
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {

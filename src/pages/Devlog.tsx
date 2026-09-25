@@ -81,7 +81,7 @@ const Devlog: React.FC = () => {
           <div className="glass reveal" style={{ padding: 24 }}>
             <p className="mono" style={{ color: 'var(--muted)', margin: 0 }}>
               &gt; couldn't load the feed. Read it directly:{' '}
-              <a href="/feed.xml" style={{ color: 'var(--cy)' }}>
+              <a href="./feed.xml" style={{ color: 'var(--cy)' }}>
                 feed.xml
               </a>
             </p>

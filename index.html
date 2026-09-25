@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-    <link rel="alternate" type="application/rss+xml" title="JustJayDev Devlog RSS" href="https://justjaydev.github.io/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="JustJayDev Devlog RSS" href="https://justjaydev.github.io/just-jay-alt/feed.xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="JustJayDev" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#020617" />
+    <meta name="theme-color" content="#05060f" />
     <meta name="description" content="Jay Kumar (JustJayDev) - 16-year-old developer, gamer and creator from India. Apps, projects, gaming, and everything about me in one place." />
     <meta name="author" content="Jay Kumar" />
     <meta name="keywords" content="JustJayDev, Jay Kumar, developer, India, teen developer, gaming, projects" />
@@ -50,11 +50,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <title>JustJayDev - Jay Kumar</title>
     <style>
-      html { background: #020617; }
+      html { background: #05060f; }
       #boot {
         position: fixed; inset: 0; z-index: 9999;
         display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-        background: #020617;
+        background: #05060f;
         transition: opacity .45s ease;
       }
       #boot.done { opacity: 0; pointer-events: none; }
@@ -83,19 +83,6 @@
     </style>
   </head>
   <body>
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem('jjdev-theme');
-          var sys = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          var resolved = (stored === 'light' || stored === 'dark') ? stored : (sys ? 'dark' : 'light');
-          var root = document.documentElement;
-          root.classList.remove('dark', 'light');
-          root.classList.add(resolved);
-          root.style.colorScheme = resolved;
-        } catch (e) {}
-      })();
-    </script>
     <script>
       // SPA receiver: restore the real path from ?p=... (set by 404.html)
       (function(l) {

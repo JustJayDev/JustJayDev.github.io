@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Copy, Check } from 'lucide-react';
-import { useState } from 'react';
 import { mainGames } from '@/data/games';
 
 /**

@@ -98,13 +98,13 @@ const Home: React.FC = () => {
         </div>
 
         <div className="reveal" style={{ display: 'flex', gap: 12, marginTop: 30, flexWrap: 'wrap' }}>
-          <Link to="/games" className="btn btn-primary" onClick={spawnRipple as any}>
+          <Link to="/games" className="btn btn-primary" onClick={spawnRipple}>
             <Gamepad2 size={18} /> View Games <ArrowRight size={16} />
           </Link>
-          <Link to="/about" className="btn" onClick={spawnRipple as any}>
+          <Link to="/about" className="btn" onClick={spawnRipple}>
             <TerminalSquare size={18} /> About Me
           </Link>
-          <a href={profile.github} target="_blank" rel="noreferrer" className="btn" onClick={spawnRipple as any}>
+          <a href={profile.github} target="_blank" rel="noreferrer" className="btn" onClick={spawnRipple}>
             <Github size={18} /> GitHub
           </a>
         </div>

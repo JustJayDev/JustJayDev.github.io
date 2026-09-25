@@ -2,8 +2,8 @@
  * Ripple effect for buttons.
  * Call on a button click to spawn a ripple at the pointer position.
  */
-export function spawnRipple(e: React.MouseEvent<HTMLElement>) {
-  const el = e.currentTarget;
+export function spawnRipple(e: React.MouseEvent) {
+  const el = e.currentTarget as HTMLElement;
   const rect = el.getBoundingClientRect();
   const size = Math.max(rect.width, rect.height) * 1.2;
   const ripple = document.createElement('span');

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { ArrowUp } from 'lucide-react';
 import { profile } from '@/data/profile';
 
 /**
@@ -7,8 +8,12 @@ import { profile } from '@/data/profile';
  */
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [showTop, setShowTop] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+      setShowTop(window.scrollY > 500);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -61,6 +66,14 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </p>
         </div>
       </footer>
+
+      <button
+        className={'back-to-top' + (showTop ? ' show' : '')}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="back to top"
+      >
+        <ArrowUp size={20} />
+      </button>
     </>
   );
 };

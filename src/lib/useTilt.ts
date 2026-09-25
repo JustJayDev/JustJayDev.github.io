@@ -16,8 +16,10 @@ export function useTilt<T extends HTMLElement>(max = 8) {
     const el = elRef.current;
     if (!el) return;
     if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     let raf = 0;
+    el.style.willChange = 'transform';
 
     const onMove = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
@@ -45,6 +47,7 @@ export function useTilt<T extends HTMLElement>(max = 8) {
       el.removeEventListener('pointermove', onMove);
       el.removeEventListener('pointerleave', onLeave);
       cancelAnimationFrame(raf);
+      el.style.willChange = '';
     };
   }, [max]);
 

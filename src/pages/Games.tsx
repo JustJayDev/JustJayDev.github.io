@@ -12,9 +12,10 @@ const Games: React.FC = () => {
 
   const filtered = useMemo(() => {
     const term = q.trim().toLowerCase();
-    let list = mainGames;
+    // 'casual' tab shows only the casual classics section below; the main grid
+    // is intentionally empty for that tab.
+    let list = filter === 'casual' ? [] : mainGames;
     if (filter === 'active') list = mainGames.filter((g) => g.nowPlaying);
-    if (filter === 'casual') list = mainGames.filter((g) => false); // casual handled separately
     if (term) {
       list = list.filter(
         (g) =>
@@ -115,10 +116,8 @@ const Games: React.FC = () => {
       </div>
 
       {filtered.length === 0 && !q && filter === 'casual' && (
-        <div className="glass reveal" style={{ padding: 30, marginTop: 20, textAlign: 'center' }}>
-          <div className="mono" style={{ color: 'var(--muted)' }}>
-            &gt; casual classics
-          </div>
+        <div className="mono" style={{ color: 'var(--muted)', marginTop: 20 }}>
+          &gt; casual classics listed below
         </div>
       )}
 
