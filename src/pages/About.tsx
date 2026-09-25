@@ -55,6 +55,7 @@ const About: React.FC = () => {
             ['Tuning', profile.setup.tuning],
             ['RAM', profile.setup.ram],
             ['Storage', profile.setup.storage],
+            ['Android', profile.setup.android],
             ['Extra', profile.setup.extra],
           ].map(([k, v], i, arr) => (
             <div
@@ -83,6 +84,18 @@ const About: React.FC = () => {
           {profile.footballers.map((f) => (
             <span key={f} className="chip">
               ⚽ {f}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* clubs */}
+      <div className="reveal" style={{ marginTop: 34 }}>
+        <div className="section-title">clubs_i_support</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 14 }}>
+          {profile.footballClubs.map((c) => (
+            <span key={c} className="chip neon-chip">
+              🛡 {c}
             </span>
           ))}
         </div>

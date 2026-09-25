@@ -3,9 +3,16 @@
   <channel>
     <title>JustJayDev — Devlog</title>
     <link>https://justjaydev.github.io/devlog</link>
-    <description>Build log of a 16-year-old self-taught developer from India. What I am working on, what broke, what shipped.</description>
+    <description>Build log of a self-taught mobile developer from India. What I am working on, what broke, what shipped.</description>
     <language>en</language>
     <atom:link href="https://justjaydev.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>v6 — official game art + real profile</title>
+      <link>https://justjaydev.github.io/games</link>
+      <guid>v6-official-art</guid>
+      <pubDate>Thu, 25 Sep 2026 18:00:00 +0530</pubDate>
+      <description>Two upgrades. First the art: every game banner is now the official Google Play feature graphic for that game — real, current, high-quality artwork instead of AI-generated placeholders. All nine images were verified, converted to webp, and are serving live. Second the profile: re-collected everything from scratch — a new tagline, a fresh bio, sharper interest tags, all six social links wired in (GitHub, YouTube, Instagram, Threads, Discord, Reddit), the real device specs pulled straight from the phone, and a clubs section for the teams I support. Private details stay private and are only visible in the password-protected secret area.</description>
+    </item>
     <item>
       <title>v1 — the alt site is live: Neon Cyber Terminal edition</title>
       <link>https://justjaydev.github.io/</link>
