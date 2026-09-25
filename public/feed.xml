@@ -7,6 +7,13 @@
     <language>en</language>
     <atom:link href="https://justjaydev.github.io/just-jay-alt/feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>v1 — the alt site is live: Neon Cyber Terminal edition</title>
+      <link>https://justjaydev.github.io/just-jay-alt/</link>
+      <guid>v1-alt-launch</guid>
+      <pubDate>Fri, 25 Sep 2026 06:50:00 +0530</pubDate>
+      <description>Shipped a brand-new sister site at justjaydev.github.io/just-jay-alt — same content, completely different skin. This one runs a Neon Cyber Terminal design: dark glassmorphism panels, neon glow palette, a fixed grid backdrop with drifting glow orbs and scanlines, a glitch-slice hero title, typewriter caret, ripple buttons, an infinite ticker, animated stat counters, a horizontal scroll-snap game showcase (instead of the main site's grid), a casual-classics marquee, terminal-style about blocks, a timeline devlog, and a glitch 404. Same 19 games, same profile, same RSS feed — just rebuilt the way I wanted it to look. Every effect respects prefers-reduced-motion and touch devices skip the pointer effects.</description>
+    </item>
+    <item>
       <title>v5 — cinematic motion system + Roblox art fixed</title>
       <link>https://justjaydev.github.io/just-jay-alt/games</link>
       <guid>v5-cinematic</guid>
