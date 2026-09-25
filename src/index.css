@@ -725,3 +725,24 @@ input:focus-visible {
   }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* command palette trigger */
+.cmd-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 6px 10px;
+  margin-left: 6px;
+  transition: color .2s, border-color .2s;
+  font-family: var(--mono);
+}
+.cmd-trigger:hover {
+  color: var(--cy);
+  border-color: var(--line-strong);
+}
+.cmd-overlay .cmd-panel input::placeholder { color: var(--mg); }

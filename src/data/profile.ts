@@ -6,7 +6,6 @@ export const profile = {
   name: 'Jay Kumar',
   handle: 'JustJayDev',
   github: 'https://github.com/JustJayDev',
-  site: 'https://justjaydev.github.io/',
   tagline: 'Mobile gamer. Builder. Future trader.',
   bio: 'I build apps, websites and games with AI, I grind Free Fire Max as a rusher, and I’m learning paper trading. Pure mobile player — everything I make, I make on my phone.',
   location: 'India',

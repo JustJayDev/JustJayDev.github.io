@@ -25,17 +25,19 @@ const GameProfile: React.FC = () => {
     );
   }
 
-  const rows: { label: string; value: string }[] = [
-    { label: 'IGN', value: 'SHURA GOD' },
-    { label: 'UID', value: '3573597772887622722' },
-    { label: 'Level', value: '55' },
-    { label: 'Alliance', value: 'SHURA GOD' },
-    { label: 'Dragonbook', value: '163 / 2217' },
-    { label: 'Unique Dragons', value: '161' },
-    { label: 'Alliance Trophies', value: '19,217' },
-    { label: 'Master Points', value: '2,009' },
-    { label: 'Top Dragon', value: 'High Famine Dragon (Lv 45)' },
-  ];
+  const rows: { label: string; value: string }[] = game.profileRows?.length
+    ? game.profileRows
+    : [
+        { label: 'IGN', value: 'SHURA GOD' },
+        { label: 'UID', value: '3573597772887622722' },
+        { label: 'Level', value: '55' },
+        { label: 'Alliance', value: 'SHURA GOD' },
+        { label: 'Dragonbook', value: '163 / 2217' },
+        { label: 'Unique Dragons', value: '161' },
+        { label: 'Alliance Trophies', value: '19,217' },
+        { label: 'Master Points', value: '2,009' },
+        { label: 'Top Dragon', value: 'High Famine Dragon (Lv 45)' },
+      ];
 
   const copy = (label: string, value: string) => {
     navigator.clipboard?.writeText(value).then(() => {
@@ -50,8 +52,11 @@ const GameProfile: React.FC = () => {
         ← back to games
       </Link>
 
+      <div className="reveal" style={{ margin: '18px 0 8px', borderRadius: 16, overflow: 'hidden', border: '1px solid var(--line)' }}>
+        <img src={game.image} alt={game.name} style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', display: 'block' }} />
+      </div>
+
       <div className="reveal" style={{ display: 'flex', alignItems: 'center', gap: 20, margin: '18px 0 8px' }}>
-        <img src={game.image} alt={game.name} style={{ width: 90, height: 90, objectFit: 'contain', borderRadius: 14, background: 'var(--panel-solid)', padding: 8, border: '1px solid var(--line)' }} />
         <div>
           <div className="section-title" style={{ marginBottom: 4 }}>
             game_profile

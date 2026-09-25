@@ -115,21 +115,15 @@ const Home: React.FC = () => {
         <div className="ticker-track">
           {[0, 1].map((dup) => (
             <React.Fragment key={dup}>
-              <span>
-                <b>FREE FIRE MAX</b> · Grandmaster Rusher
-              </span>
-              <span>
-                <b>CLASH ROYALE</b> · 6,840 trophies
-              </span>
-              <span>
-                <b>BRAWL STARS</b> · Masters I
-              </span>
-              <span>
-                <b>DRAGON CITY</b> · 161 unique dragons
-              </span>
-              <span>
-                <b>ROBLOX</b> · 30M bounty
-              </span>
+              {mainGames.map((g) => {
+                const head = g.name.toUpperCase();
+                const sub = g.badges[0] || g.status;
+                return (
+                  <span key={g.id + '-' + dup}>
+                    <b>{head}</b> · {sub}
+                  </span>
+                );
+              })}
             </React.Fragment>
           ))}
         </div>
@@ -144,13 +138,13 @@ const Home: React.FC = () => {
         >
           <div className="stat">
             <div className="num">
-              <CountUp to={19} />
+              <CountUp to={mainGames.length + casualGames.length} />
             </div>
             <div className="lbl">Games played</div>
           </div>
           <div className="stat">
             <div className="num">
-              <CountUp to={3} />
+              <CountUp to={nowPlaying.length} />
             </div>
             <div className="lbl">Grinding now</div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Command } from 'lucide-react';
 import { profile } from '@/data/profile';
 
 /**
@@ -47,6 +47,15 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 {l.label}
               </NavLink>
             ))}
+            <button
+              className="cmd-trigger"
+              onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))}
+              aria-label="command palette (Ctrl+K)"
+              title="Ctrl+K"
+            >
+              <Command size={15} />
+              <span className="mono" style={{ fontSize: 10, color: 'var(--mg)' }}>K</span>
+            </button>
           </div>
         </div>
       </nav>

@@ -15,6 +15,7 @@ export interface Game {
   verified?: boolean;
   lastUpdated?: string;
   profile?: boolean;
+  profileRows?: { label: string; value: string }[];
   accent: string; // neon accent for the card
 }
 
@@ -23,7 +24,7 @@ export const mainGames: Game[] = [
     id: 'free-fire-max',
     name: 'Free Fire Max',
     icon: 'Flame',
-    image: '/games/freefire.png',
+    image: '/games/freefire.svg',
     nowPlaying: true,
     status: 'Main game · Rusher',
     badges: ['Grandmaster BR', 'Grandmaster CS', 'Rusher'],
@@ -35,13 +36,22 @@ export const mainGames: Game[] = [
     flex: 'Defeated many YouTubers in ranked matches.',
     verified: true,
     lastUpdated: '2026-09-07',
+    profile: true,
+    profileRows: [
+      { label: 'IGN', value: 'JustJayDev' },
+      { label: 'Server', value: 'India' },
+      { label: 'BR Rank', value: 'Grandmaster' },
+      { label: 'CS Rank', value: 'Grandmaster' },
+      { label: 'Role', value: 'Rusher' },
+      { label: 'Device', value: 'realme 9 Pro 5G · 480 DPI' },
+    ],
     accent: '#ff4d4d',
   },
   {
     id: 'fc-mobile',
     name: 'FC Mobile',
     icon: 'Trophy',
-    image: '/games/fcmobile.jpg',
+    image: '/games/fcmobile.svg',
     nowPlaying: true,
     status: 'Main game · Football',
     badges: ['10★ Manager Mode', '5★ H2H', '7★ VSA', '126 OVR'],
@@ -52,6 +62,14 @@ export const mainGames: Game[] = [
     ],
     verified: true,
     lastUpdated: '2026-09-07',
+    profile: true,
+    profileRows: [
+      { label: 'Manager Mode', value: '10★' },
+      { label: 'H2H', value: '5★' },
+      { label: 'VSA', value: '7★' },
+      { label: 'Best OVR', value: '126' },
+      { label: 'Fav Card', value: 'TOTS Dembélé' },
+    ],
     accent: '#4de1ff',
   },
   {
@@ -88,13 +106,21 @@ export const mainGames: Game[] = [
       '30M bounty in BOTH Marines and Pirates.',
     ],
     verified: true,
+    profile: true,
+    profileRows: [
+      { label: 'Bounty', value: '30M (Marines + Pirates)' },
+      { label: 'Race', value: 'V4 Max' },
+      { label: 'Fruits', value: 'All permanent (excl. mythical)' },
+      { label: 'Dark Blade', value: 'Unlocked' },
+      { label: 'Pets', value: 'Titanic & Huge' },
+    ],
     accent: '#9d4dff',
   },
   {
     id: 'minecraft',
     name: 'Minecraft',
     icon: 'Pickaxe',
-    image: '/games/minecraft.png',
+    image: '/games/minecraft.svg',
     status: 'Since 2019',
     badges: ['Ender Dragon ×4', 'Mods & Add-ons'],
     details: [
@@ -109,7 +135,7 @@ export const mainGames: Game[] = [
     id: 'mobile-legends',
     name: 'Mobile Legends',
     icon: 'Swords',
-    image: '/games/mlbb.png',
+    image: '/games/mlbb.svg',
     status: 'Casual veteran',
     badges: ['Mythic tier'],
     details: [
@@ -123,7 +149,7 @@ export const mainGames: Game[] = [
     id: 'clash-royale',
     name: 'Clash Royale',
     icon: 'Crown',
-    image: '/games/clashroyale.png',
+    image: '/games/clashroyale.svg',
     status: 'Ladder grinder',
     badges: ['6,840 Trophies', 'Ultimate Champion', 'Fast Cycle'],
     details: [
@@ -139,7 +165,7 @@ export const mainGames: Game[] = [
     id: 'brawl-stars',
     name: 'Brawl Stars',
     icon: 'Star',
-    image: '/games/brawlstars.png',
+    image: '/games/brawlstars.svg',
     status: 'Casual ranked',
     badges: ['17,250 Trophies', 'Masters I', 'Edgar · Crow · Spike'],
     details: [
@@ -155,7 +181,7 @@ export const mainGames: Game[] = [
     id: 'among-us',
     name: 'Among Us',
     icon: 'Ghost',
-    image: '/games/amongus.jpg',
+    image: '/games/amongus.svg',
     status: 'For fun',
     badges: ['Certified Impostor'],
     details: ['Just for fun with friends.'],

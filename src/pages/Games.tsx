@@ -43,10 +43,10 @@ const Games: React.FC = () => {
     <div className="wrap" style={{ paddingTop: 40 }}>
       <div className="section-title reveal">games</div>
       <h2 className="reveal" style={{ fontSize: 'clamp(28px,5vw,44px)', fontWeight: 800, margin: '8px 0 4px' }}>
-        <span className="neon-text">19 games</span> played
+        <span className="neon-text">{mainGames.length + casualGames.length} games</span> played
       </h2>
       <p className="mono reveal" style={{ color: 'var(--muted)', margin: 0 }}>
-        3 grinding right now · 100% mobile, zero PC
+        {mainGames.filter((g) => g.nowPlaying).length} grinding right now · 100% mobile, zero PC
       </p>
 
       {/* search + filter */}

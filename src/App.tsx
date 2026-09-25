@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Shell from '@/components/Shell';
+import CommandPalette from '@/components/CommandPalette';
 import { useReveal } from '@/lib/useReveal';
 
 const Home = lazy(() => import('@/pages/Home'));
@@ -74,11 +75,12 @@ const App: React.FC = () => {
               <Route path="/games" element={<Games />} />
               <Route path="/games/:gameId" element={<GameProfile />} />
               <Route path="/devlog" element={<Devlog />} />
-              <Route path="*" element={<NotFound />} />
+<Route path="*" element={<NotFound />} />
             </Routes>
           </main>
         </Suspense>
       </Shell>
+      <CommandPalette />
     </>
   );
 };
