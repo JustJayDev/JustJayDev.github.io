@@ -33,7 +33,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <img src="./logo.svg" alt="JustJayDev" />
             <span className="logo-name">
               Just<b>JayDev</b>
-              <span style={{ color: 'var(--mg)', marginLeft: 6 }}>//alt</span>
+              
             </span>
           </Link>
           <div className="nav-links">

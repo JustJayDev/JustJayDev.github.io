@@ -12,10 +12,10 @@ const Devlog = lazy(() => import('@/pages/Devlog'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 const TITLES: Record<string, string> = {
-  '/': 'JustJayDev //alt — Jay Kumar',
-  '/about': 'About — JustJayDev //alt',
-  '/games': 'Games — JustJayDev //alt',
-  '/devlog': 'Devlog — JustJayDev //alt',
+  '/': 'JustJayDev — Jay Kumar',
+  '/about': 'About — JustJayDev',
+  '/games': 'Games — JustJayDev',
+  '/devlog': 'Devlog — JustJayDev',
 };
 
 const Loader: React.FC = () => (
@@ -34,8 +34,8 @@ const App: React.FC = () => {
     document.title =
       TITLES[location.pathname] ||
       (location.pathname.startsWith('/games/')
-        ? 'Game Profile — JustJayDev //alt'
-        : 'JustJayDev //alt — Jay Kumar');
+        ? 'Game Profile — JustJayDev'
+        : 'JustJayDev — Jay Kumar');
   }, [location.pathname]);
 
   // scroll to top on nav

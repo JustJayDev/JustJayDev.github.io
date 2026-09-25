@@ -1,5 +1,5 @@
-/* JustJayDev //alt service worker — cache-first assets, network-first navigation */
-const VERSION = 'alt-v1';
+/* JustJayDev service worker — cache-first assets, network-first navigation */
+const VERSION = 'v2';
 const CORE = [
   './',
   './index.html',

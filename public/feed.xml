@@ -2,97 +2,97 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JustJayDev — Devlog</title>
-    <link>https://justjaydev.github.io/just-jay-alt/devlog</link>
+    <link>https://justjaydev.github.io/devlog</link>
     <description>Build log of a 16-year-old self-taught developer from India. What I am working on, what broke, what shipped.</description>
     <language>en</language>
-    <atom:link href="https://justjaydev.github.io/just-jay-alt/feed.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://justjaydev.github.io/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>v1 — the alt site is live: Neon Cyber Terminal edition</title>
-      <link>https://justjaydev.github.io/just-jay-alt/</link>
+      <link>https://justjaydev.github.io/</link>
       <guid>v1-alt-launch</guid>
       <pubDate>Fri, 25 Sep 2026 06:50:00 +0530</pubDate>
-      <description>Shipped a brand-new sister site at justjaydev.github.io/just-jay-alt — same content, completely different skin. This one runs a Neon Cyber Terminal design: dark glassmorphism panels, neon glow palette, a fixed grid backdrop with drifting glow orbs and scanlines, a glitch-slice hero title, typewriter caret, ripple buttons, an infinite ticker, animated stat counters, a horizontal scroll-snap game showcase (instead of the main site's grid), a casual-classics marquee, terminal-style about blocks, a timeline devlog, and a glitch 404. Same 19 games, same profile, same RSS feed — just rebuilt the way I wanted it to look. Every effect respects prefers-reduced-motion and touch devices skip the pointer effects.</description>
+      <description>The new main site — a full rebuild in a Neon Cyber Terminal design. This one runs a Neon Cyber Terminal design: dark glassmorphism panels, neon glow palette, a fixed grid backdrop with drifting glow orbs and scanlines, a glitch-slice hero title, typewriter caret, ripple buttons, an infinite ticker, animated stat counters, a horizontal scroll-snap game showcase (instead of the main site's grid), a casual-classics marquee, terminal-style about blocks, a timeline devlog, and a glitch 404. Same 19 games, same profile, same RSS feed — just rebuilt the way I wanted it to look. Every effect respects prefers-reduced-motion and touch devices skip the pointer effects.</description>
     </item>
     <item>
       <title>v5 — cinematic motion system + Roblox art fixed</title>
-      <link>https://justjaydev.github.io/just-jay-alt/games</link>
+      <link>https://justjaydev.github.io/games</link>
       <guid>v5-cinematic</guid>
       <pubDate>Sat, 20 Sep 2026 13:45:00 +0530</pubDate>
       <description>Two things. First the bug: the Roblox banner never loaded because the file was SVG content saved with a .png extension — GitHub served it as image/png so browsers refused to render it. Renamed to .svg and it renders now. Second the overhaul: replaced the flat animations with a proper cinematic system — layered parallax orbs that drift with the pointer, a breathing glow on the avatar, poster-card sheen sweeps with corner brackets, a glow that follows the cursor across each game card, staggered spring pops on achievement badges, ripple feedback on every button, a gradient scroll-progress bar, and the casual classics strip is now an infinite marquee. Every effect respects prefers-reduced-motion and touch devices skip the pointer effects.</description>
     </item>
     <item>
       <title>v4.1 — game cards that don't crop your logos</title>
-      <link>https://justjaydev.github.io/just-jay-alt/games</link>
+      <link>https://justjaydev.github.io/games</link>
       <guid>v41-game-cards</guid>
       <pubDate>Sat, 20 Sep 2026 12:30:00 +0530</pubDate>
       <description>Fixed the Games page banners. Every game art is a different shape, so the old fixed-height crop was cutting logos in half. Banners are now aspect-ratio safe with object-fit: contain, a subtle scanline texture, and a slow hover zoom that scales without re-cropping. Achievement chips got an animated shine sweep. Among Us art was portrait (0.67 ratio) — it letterboxes cleanly now instead of showing a sliver.</description>
     </item>
     <item>
       <title>v4 — the revamp: command palette, achievements, cinematic hero</title>
-      <link>https://justjaydev.github.io/just-jay-alt/</link>
+      <link>https://justjaydev.github.io/</link>
       <guid>v4-revamp</guid>
       <pubDate>Sat, 20 Sep 2026 11:30:00 +0530</pubDate>
       <description>Big visual revamp. Hero got an animated mesh-gradient backdrop and a character-by-character title reveal. Added a command palette (Cmd/Ctrl+K) for jumping anywhere, a visitor achievement system with 5 unlockable badges that persist in localStorage, a spotlight glow that follows the cursor on desktop, magnetic hero buttons, a live now-playing ticker, and scroll-triggered section reveals. Also deleted 157 lines of dead arcade/mini-games CSS that nothing used.</description>
     </item>
     <item>
       <title>v3.9 — dead code cleanup + verified stats</title>
-      <link>https://justjaydev.github.io/just-jay-alt/games</link>
+      <link>https://justjaydev.github.io/games</link>
       <guid>v39-cleanup-stats</guid>
       <pubDate>Thu, 18 Sep 2026 15:00:00 +0530</pubDate>
       <description>Cleanup pass: removed the unused Guestbook component, 5 dead CSS classes, and fixed a missing button-shine class that About page relied on. Clash Royale and Brawl Stars cards now show real trophy counts and rank badges with a verified flag and last-updated date. The 3D tilt on game cards actually works now — it was defined in CSS but nothing was driving it.</description>
     </item>
     <item>
       <title>v3.1 → v3.3 — the overnight polish sprint</title>
-      <link>https://justjaydev.github.io/just-jay-alt/devlog</link>
+      <link>https://justjaydev.github.io/devlog</link>
       <guid>polish-sprint-v33</guid>
       <pubDate>Tue, 08 Sep 2026 03:15:00 +0530</pubDate>
       <description>Big polish pass: scroll progress bar, back-to-top button, typewriter taglines, a stats strip, live search on the Games page, copy-link buttons on every devlog entry, per-page titles, a custom 404 page, and a keyboard focus ring. Three builds, one night.</description>
     </item>
     <item>
       <title>Site v3 — the lean rebuild</title>
-      <link>https://justjaydev.github.io/just-jay-alt/devlog</link>
+      <link>https://justjaydev.github.io/devlog</link>
       <guid>site-v3-lean</guid>
       <pubDate>Mon, 07 Sep 2026 20:30:00 +0530</pubDate>
       <description>Rebuilt the whole site lean: 3 focused pages (Home, Games, About), every page lazy-loaded, Firebase and 13 unused pages removed. Same URL, same QR, way faster.</description>
     </item>
     <item>
       <title>One repo to rule them all</title>
-      <link>https://justjaydev.github.io/just-jay-alt/devlog</link>
+      <link>https://justjaydev.github.io/devlog</link>
       <guid>repo-restructure</guid>
       <pubDate>Mon, 07 Sep 2026 18:00:00 +0530</pubDate>
       <description>Deleted 4 old repos and renamed this one to JustJayDev.github.io — the site now lives at the ROOT: justjaydev.github.io. Every path config migrated in one pass, QR still works, Google Search Console verification planted.</description>
     </item>
     <item>
       <title>New hero: the motto wall</title>
-      <link>https://justjaydev.github.io/just-jay-alt/devlog</link>
+      <link>https://justjaydev.github.io/devlog</link>
       <guid>hero-photo-motto</guid>
       <pubDate>Mon, 07 Sep 2026 17:30:00 +0530</pubDate>
       <description>Added my motto wallpaper as the homepage hero — "A King Never Wavers", Code. Build. Improve. Repeat., Focus. Discipline. Freedom. Also the new OG share image and the PWA app icon.</description>
     </item>
     <item>
       <title>Made every page load lazy</title>
-      <link>https://justjaydev.github.io/just-jay-alt/devlog</link>
+      <link>https://justjaydev.github.io/devlog</link>
       <guid>speed-pass</guid>
       <pubDate>Mon, 07 Sep 2026 17:00:00 +0530</pubDate>
       <description>All 16 pages used to load in one big JavaScript bundle. Now every page is code-split with React.lazy — the browser only downloads the page you actually open. First paint feels snappier on slow data.</description>
     </item>
     <item>
       <title>New Details page — everything in one place</title>
-      <link>https://justjaydev.github.io/just-jay-alt/details</link>
+      <link>https://justjaydev.github.io/details</link>
       <guid>details-page</guid>
       <pubDate>Sun, 06 Sep 2026 12:00:00 +0530</pubDate>
       <description>Added a Details page: one page with all my info, setup, skills, projects, a timeline, and an FAQ. It runs on a single data file.</description>
     </item>
     <item>
       <title>Site v2 is live — and the QR works</title>
-      <link>https://justjaydev.github.io/just-jay-alt/devlog</link>
+      <link>https://justjaydev.github.io/devlog</link>
       <guid>site-v2-live</guid>
       <pubDate>Fri, 05 Sep 2026 12:00:00 +0530</pubDate>
       <description>Rebuilt the whole site: PWA offline support, animated stats, glare-tilt cards, magnetic buttons, a glitch 404, and a footer with a real scannable QR code that opens this site.</description>
     </item>
     <item>
       <title>justjaydev.github.io — this site is now my main home</title>
-      <link>https://justjaydev.github.io/just-jay-alt/devlog</link>
+      <link>https://justjaydev.github.io/devlog</link>
       <guid>root-promotion</guid>
       <pubDate>Fri, 05 Sep 2026 09:00:00 +0530</pubDate>
       <description>Promoted this site to my main GitHub Pages home: the URL is now just justjaydev.github.io (no subfolder), old project repos are retired, and this is where everything new will ship first.</description>
