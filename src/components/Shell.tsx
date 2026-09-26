@@ -21,8 +21,10 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const links = [
     { to: '/', label: 'home' },
     { to: '/games', label: 'games' },
+    { to: '/achievements', label: 'trophies' },
     { to: '/devlog', label: 'devlog' },
     { to: '/about', label: 'about' },
+    { to: '/secret', label: '🔒 secret' },
   ];
 
   return (

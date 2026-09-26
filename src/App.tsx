@@ -9,13 +9,20 @@ const About = lazy(() => import('@/pages/About'));
 const Games = lazy(() => import('@/pages/Games'));
 const GameProfile = lazy(() => import('@/pages/GameProfile'));
 const Devlog = lazy(() => import('@/pages/Devlog'));
+const Secret = lazy(() => import('@/pages/Secret'));
+const Achievements = lazy(() => import('@/pages/Achievements'));
+const Contact = lazy(() => import('@/pages/Contact'));
+const Anime = lazy(() => import('@/pages/Anime'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
-
 const TITLES: Record<string, string> = {
   '/': 'JustJayDev — Jay Kumar',
   '/about': 'About — JustJayDev',
   '/games': 'Games — JustJayDev',
   '/devlog': 'Devlog — JustJayDev',
+  '/secret': 'Secret — JustJayDev',
+  '/achievements': 'Achievements — JustJayDev',
+  '/contact': 'Contact — JustJayDev',
+  '/anime': 'Anime Library — JustJayDev',
 };
 
 const Loader: React.FC = () => (
@@ -75,7 +82,11 @@ const App: React.FC = () => {
               <Route path="/games" element={<Games />} />
               <Route path="/games/:gameId" element={<GameProfile />} />
               <Route path="/devlog" element={<Devlog />} />
-<Route path="*" element={<NotFound />} />
+              <Route path="/secret" element={<Secret />} />
+              <Route path="/achievements" element={<Achievements />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/anime" element={<Anime />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
         </Suspense>

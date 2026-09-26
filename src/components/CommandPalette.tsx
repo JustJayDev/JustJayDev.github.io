@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, CornerDownLeft, Home, Gamepad2, Newspaper, User, Flame } from 'lucide-react';
+import { Search, CornerDownLeft, Home, Gamepad2, Newspaper, User, Flame, Trophy, Lock, Mail, BookOpen } from 'lucide-react';
 import { mainGames } from '@/data/games';
 
 /**
@@ -36,8 +36,12 @@ const CommandPalette: React.FC = () => {
     const base = [
       { to: '/', label: 'Home', icon: <Home size={16} /> },
       { to: '/games', label: 'Games', icon: <Gamepad2 size={16} /> },
+      { to: '/achievements', label: 'Achievements', icon: <Trophy size={16} /> },
       { to: '/devlog', label: 'Devlog', icon: <Newspaper size={16} /> },
       { to: '/about', label: 'About', icon: <User size={16} /> },
+      { to: '/anime', label: 'Anime Library', icon: <BookOpen size={16} /> },
+      { to: '/contact', label: 'Contact', icon: <Mail size={16} /> },
+      { to: '/secret', label: 'Secret Area', icon: <Lock size={16} /> },
       ...mainGames
         .filter((g) => g.profile)
         .map((g) => ({

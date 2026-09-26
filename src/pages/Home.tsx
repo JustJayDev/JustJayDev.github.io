@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Gamepad2, TerminalSquare, Github } from 'lucide-react';
-import { profile } from '@/data/profile';
+import { ArrowRight, Gamepad2, TerminalSquare, Github, Youtube, Trophy } from 'lucide-react';
+import { profile, achievements, nowGrinding } from '@/data/profile';
 import { mainGames, casualGames } from '@/data/games';
 import GameCard from '@/components/GameCard';
 import CountUp from '@/components/CountUp';
@@ -60,6 +60,9 @@ const Home: React.FC = () => {
         <div className="reveal">
           <span className="hero-status">
             <span className="dot" /> system_online · india
+          </span>
+          <span className="chip" style={{ marginLeft: 10, color: 'var(--gr)', borderColor: 'rgba(74,222,128,0.3)' }}>
+            ▶ grinding: {nowGrinding}
           </span>
         </div>
 
@@ -201,6 +204,47 @@ const Home: React.FC = () => {
               </span>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ================= ACHIEVEMENTS PREVIEW ================= */}
+      <section style={{ margin: '54px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="section-title" style={{ flex: 1 }}>
+            achievements
+          </div>
+          <Link to="/achievements" className="mono" style={{ color: 'var(--cy)', textDecoration: 'none', fontSize: 13 }}>
+            view_all ↗
+          </Link>
+        </div>
+        <div className="hscroll reveal" style={{ marginTop: 18 }}>
+          {achievements.slice(0, 4).map((a) => (
+            <div key={a.title} className="glass brackets" style={{ padding: 22, width: 300 }}>
+              <div style={{ fontSize: 30, lineHeight: 1 }}>{a.icon}</div>
+              <div className="mono" style={{ fontSize: 10, color: 'var(--cy)', margin: '10px 0 4px', textTransform: 'uppercase', letterSpacing: 1 }}>
+                {a.tag}
+              </div>
+              <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>{a.title}</div>
+              <div className="mono" style={{ color: 'var(--muted)', fontSize: 12, lineHeight: 1.6 }}>{a.detail}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ================= YOUTUBE SHOWCASE ================= */}
+      <section style={{ margin: '54px 0' }}>
+        <div className="section-title">neonnova_x</div>
+        <div className="glass neon-border reveal" style={{ marginTop: 18, padding: 26, display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+          <div style={{ fontSize: 44 }}>📺</div>
+          <div style={{ flex: 1, minWidth: 220 }}>
+            <div style={{ fontWeight: 800, fontSize: 20 }}>NeonNova X</div>
+            <p className="mono" style={{ color: 'var(--muted)', fontSize: 13, margin: '6px 0 0', lineHeight: 1.6 }}>
+              High-octane gameplay · no commentary · pure vibes. Free Fire MAX rank pushes, FC Mobile pack openings &amp; more — 88 videos and counting.
+            </p>
+          </div>
+          <a href="https://youtube.com/@neonnovaxplays" target="_blank" rel="noreferrer" className="btn btn-primary">
+            <Youtube size={18} /> Watch on YouTube
+          </a>
         </div>
       </section>
 
