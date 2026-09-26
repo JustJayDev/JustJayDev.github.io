@@ -22,6 +22,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { to: '/', label: 'home' },
     { to: '/games', label: 'games' },
     { to: '/achievements', label: 'trophies' },
+    { to: '/projects', label: 'projects' },
     { to: '/devlog', label: 'devlog' },
     { to: '/about', label: 'about' },
     { to: '/secret', label: '🔒 secret' },

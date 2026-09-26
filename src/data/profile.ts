@@ -67,3 +67,25 @@ export const achievements = [
 
 /** Currently grinding status. */
 export const nowGrinding = 'Free Fire MAX — Solo Grandmaster push';
+
+/** Projects — things I've built. */
+export const projects = [
+  {
+    icon: '⚒️',
+    name: 'TitleForge',
+    tagline: 'AI bulk YouTube title renamer',
+    detail: 'Connect your channel → AI analyzes every video → forges click-worthy titles → apply in one click. Open source, bring-your-own-AI.',
+    url: 'https://justjaydev.github.io/TitleForge/',
+    repo: 'https://github.com/JustJayDev/TitleForge',
+    status: 'live',
+  },
+  {
+    icon: '🖼️',
+    name: 'PixVault',
+    tagline: 'Wallpaper library',
+    detail: 'A clean, fast wallpaper gallery — browse, preview and grab high-quality walls for your phone.',
+    url: 'https://justjaydev.github.io/pixvault/',
+    repo: 'https://github.com/JustJayDev/pixvault',
+    status: 'live',
+  },
+];

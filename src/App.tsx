@@ -13,6 +13,7 @@ const Secret = lazy(() => import('@/pages/Secret'));
 const Achievements = lazy(() => import('@/pages/Achievements'));
 const Contact = lazy(() => import('@/pages/Contact'));
 const Anime = lazy(() => import('@/pages/Anime'));
+const Projects = lazy(() => import('@/pages/Projects'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 const TITLES: Record<string, string> = {
   '/': 'JustJayDev — Jay Kumar',
@@ -23,6 +24,7 @@ const TITLES: Record<string, string> = {
   '/achievements': 'Achievements — JustJayDev',
   '/contact': 'Contact — JustJayDev',
   '/anime': 'Anime Library — JustJayDev',
+  '/projects': 'Projects — JustJayDev',
 };
 
 const Loader: React.FC = () => (
@@ -86,6 +88,7 @@ const App: React.FC = () => {
               <Route path="/achievements" element={<Achievements />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/anime" element={<Anime />} />
+              <Route path="/projects" element={<Projects />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

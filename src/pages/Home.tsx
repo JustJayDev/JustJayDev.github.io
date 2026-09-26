@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Gamepad2, TerminalSquare, Github, Youtube, Trophy } from 'lucide-react';
-import { profile, achievements, nowGrinding } from '@/data/profile';
+import { profile, achievements, nowGrinding, projects } from '@/data/profile';
 import { mainGames, casualGames } from '@/data/games';
 import GameCard from '@/components/GameCard';
 import CountUp from '@/components/CountUp';
@@ -245,6 +245,44 @@ const Home: React.FC = () => {
           <a href="https://youtube.com/@neonnovaxplays" target="_blank" rel="noreferrer" className="btn btn-primary">
             <Youtube size={18} /> Watch on YouTube
           </a>
+        </div>
+      </section>
+
+      {/* ================= PROJECTS ================= */}
+      <section style={{ margin: '54px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="section-title" style={{ flex: 1 }}>projects</div>
+          <Link to="/projects" className="mono" style={{ color: 'var(--cy)', textDecoration: 'none', fontSize: 13 }}>
+            view_all ↗
+          </Link>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginTop: 18 }}>
+          {projects.map((p) => (
+            <a
+              key={p.name}
+              href={p.url}
+              target="_blank"
+              rel="noreferrer"
+              className="glass brackets reveal"
+              style={{ padding: 22, textDecoration: 'none', color: 'inherit' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ fontSize: 28, lineHeight: 1 }}>{p.icon}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800, fontSize: 16 }}>{p.name}</div>
+                  <div className="mono" style={{ fontSize: 10, color: 'var(--cy)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                    {p.tagline}
+                  </div>
+                </div>
+                <span className="mono" style={{ fontSize: 10, padding: '3px 8px', borderRadius: 6, color: 'var(--gr)', border: '1px solid rgba(74,222,128,0.3)' }}>
+                  {p.status}
+                </span>
+              </div>
+              <p className="mono" style={{ color: 'var(--muted)', fontSize: 12, margin: '12px 0 0', lineHeight: 1.6 }}>
+                {p.detail}
+              </p>
+            </a>
+          ))}
         </div>
       </section>
 
