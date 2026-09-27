@@ -3,9 +3,17 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Gamepad2, TerminalSquare, Github, Youtube, Trophy } from 'lucide-react';
 import { profile, achievements, nowGrinding, projects } from '@/data/profile';
 import { mainGames, casualGames } from '@/data/games';
+import { sortedUpdates, projectById, type ProjectId } from '@/data/devlog';
 import GameCard from '@/components/GameCard';
 import CountUp from '@/components/CountUp';
+import ProjectLogo from '@/components/ProjectLogo';
 import { spawnRipple } from '@/lib/ripple';
+
+/** Map shipped projects onto their central-registry IDs for real logos. */
+const LIVE_PROJECT_ID: Record<string, ProjectId> = {
+  TitleForge: 'titleforge',
+  PixVault: 'pixvault',
+};
 
 /**
  * Home — neon cyber hero, live ticker, stats, horizontal game showcase,
@@ -14,6 +22,7 @@ import { spawnRipple } from '@/lib/ripple';
 const Home: React.FC = () => {
   const [typed, setTyped] = useState('');
   const roles = ['Mobile Gamer', 'Builder', 'Future Trader', 'Rusher'];
+  const latestUpdates = sortedUpdates().slice(0, 3);
 
   // typewriter loop
   useEffect(() => {
@@ -257,32 +266,86 @@ const Home: React.FC = () => {
           </Link>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginTop: 18 }}>
-          {projects.map((p) => (
-            <a
-              key={p.name}
-              href={p.url}
-              target="_blank"
-              rel="noreferrer"
-              className="glass brackets glass-hover sweep-border reveal"
-              style={{ padding: 22, textDecoration: 'none', color: 'inherit' }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{ fontSize: 28, lineHeight: 1 }}>{p.icon}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 800, fontSize: 16 }}>{p.name}</div>
-                  <div className="mono" style={{ fontSize: 10, color: 'var(--cy)', textTransform: 'uppercase', letterSpacing: 1 }}>
-                    {p.tagline}
+          {projects.map((p) => {
+            const pid = LIVE_PROJECT_ID[p.name];
+            return (
+              <a
+                key={p.name}
+                href={p.url}
+                target="_blank"
+                rel="noreferrer"
+                className="glass brackets glass-hover sweep-border reveal"
+                style={{ padding: 22, textDecoration: 'none', color: 'inherit' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {pid ? (
+                    <ProjectLogo projectId={pid} size={40} />
+                  ) : (
+                    <span style={{ fontSize: 28, lineHeight: 1 }}>{p.icon}</span>
+                  )}
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 800, fontSize: 16 }}>{p.name}</div>
+                    <div className="mono" style={{ fontSize: 10, color: 'var(--cy)', textTransform: 'uppercase', letterSpacing: 1 }}>
+                      {p.tagline}
+                    </div>
+                  </div>
+                  <span className="mono" style={{ fontSize: 10, padding: '3px 8px', borderRadius: 6, color: 'var(--gr)', border: '1px solid rgba(74,222,128,0.3)' }}>
+                    {p.status}
+                  </span>
+                </div>
+                <p className="mono" style={{ color: 'var(--muted)', fontSize: 12, margin: '12px 0 0', lineHeight: 1.6 }}>
+                  {p.detail}
+                </p>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ================= LATEST UPDATES ================= */}
+      <section style={{ margin: '54px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="section-title" style={{ flex: 1 }}>latest_updates</div>
+          <Link to="/devlog" className="mono" style={{ color: 'var(--cy)', textDecoration: 'none', fontSize: 13 }}>
+            full devlog ↗
+          </Link>
+        </div>
+        <div className="glass reveal" style={{ marginTop: 18, overflow: 'hidden' }}>
+          {latestUpdates.map((u, i, arr) => {
+            const p = projectById(u.project);
+            return (
+              <Link
+                key={u.title}
+                to="/devlog"
+                style={{
+                  display: 'flex',
+                  gap: 14,
+                  alignItems: 'center',
+                  padding: '14px 20px',
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  borderBottom: i < arr.length - 1 ? '1px solid var(--line)' : 'none',
+                  transition: 'background 0.2s ease',
+                }}
+              >
+                <ProjectLogo projectId={u.project} size={32} withGlow={false} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {u.title}
+                  </div>
+                  <div className="mono" style={{ fontSize: 11, color: 'var(--muted)' }}>
+                    {p.name} · {u.date}
                   </div>
                 </div>
-                <span className="mono" style={{ fontSize: 10, padding: '3px 8px', borderRadius: 6, color: 'var(--gr)', border: '1px solid rgba(74,222,128,0.3)' }}>
-                  {p.status}
+                <span
+                  className="mono"
+                  style={{ fontSize: 10, color: p.accent, border: `1px solid ${p.accent}44`, borderRadius: 999, padding: '2px 8px', flex: 'none' }}
+                >
+                  {u.type}
                 </span>
-              </div>
-              <p className="mono" style={{ color: 'var(--muted)', fontSize: 12, margin: '12px 0 0', lineHeight: 1.6 }}>
-                {p.detail}
-              </p>
-            </a>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
 

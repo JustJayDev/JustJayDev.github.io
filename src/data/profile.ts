@@ -43,9 +43,17 @@ export const profile = {
   email: 'coming soon — dedicated email on the way',
 };
 
-/** Secret area data — only shown behind the password gate. Never render publicly. */
+/** Secret area data — only shown behind the password gate. Never render publicly.
+ *
+ * SECURITY: the password is stored as a salted SHA-256 hash, never as plain text.
+ * The passphrase itself exists nowhere in the source or the built bundle. Login
+ * runs the same hash client-side and compares digests. This stops casual reading
+ * of the bundle; it is NOT a substitute for a real server-side gate for truly
+ * sensitive data.
+ */
 export const secret = {
-  password: 'jaydev2026', // ⚠️ change this before deploy
+  // sha256 of the agreed passphrase (kept out of the repo on purpose)
+  passwordHash: '07faa6aaabc7950c92cda92e7bac36ba1e6acf59a4ee935c3d8b9a4102dc3fa2',
   fullName: 'Jay Kumar Chaudhary',
   age: 15,
   class: 'Class 9',

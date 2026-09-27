@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "feed": "node scripts/gen-feed.mjs",
+    "build": "node scripts/gen-feed.mjs && vite build",
     "preview": "vite preview",
-    "deploy": "vite build && npx gh-pages -d dist"
+    "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
     "framer-motion": "^11.3.0",

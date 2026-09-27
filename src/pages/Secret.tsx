@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 import { Lock, Unlock, KeyRound, ShieldCheck } from 'lucide-react';
 import { secret } from '@/data/profile';
 
+/** Hash the user's input with the same one-way function used to store the
+ *  expected digest, then compare digests. The plaintext password is never
+ *  stored or compared as a string anywhere in the codebase. */
+async function digestOf(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 /**
  * Secret — password-protected private area.
  * Shows surname, age, class, exact location behind a gate.
@@ -11,8 +22,9 @@ const Secret: React.FC = () => {
   const [unlocked, setUnlocked] = useState(false);
   const [wrong, setWrong] = useState(false);
 
-  const tryUnlock = () => {
-    if (input.trim() === secret.password) {
+  const tryUnlock = async () => {
+    const guess = await digestOf(input.trim());
+    if (guess === secret.passwordHash) {
       setUnlocked(true);
       setWrong(false);
     } else {
