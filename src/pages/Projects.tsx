@@ -20,7 +20,7 @@ const Projects: React.FC = () => {
         {projects.map((p, i) => (
           <div
             key={p.name}
-            className="glass brackets reveal"
+            className="glass brackets glass-hover sweep-border reveal"
             style={{ padding: 24, animationDelay: String(i * 80) + 'ms' }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

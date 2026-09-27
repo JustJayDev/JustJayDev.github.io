@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { ArrowUp, Command } from 'lucide-react';
+import { ArrowUp, Command, Menu, X } from 'lucide-react';
 import { profile } from '@/data/profile';
 
 /**
@@ -9,6 +9,7 @@ import { profile } from '@/data/profile';
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [scrolled, setScrolled] = useState(false);
   const [showTop, setShowTop] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -16,6 +17,13 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // close the mobile menu on route change / resize to desktop
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth > 720) setMenuOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
   const links = [
@@ -30,7 +38,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <>
-      <nav className="topnav" style={scrolled ? { borderBottomColor: 'var(--line-strong)' } : undefined}>
+      <nav className={'topnav' + (scrolled ? ' scrolled' : '')}>
         <div className="nav-inner">
           <Link to="/" className="logo-mark">
             <img src="./logo.svg" alt="JustJayDev" />
@@ -45,6 +53,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 key={l.to}
                 to={l.to}
                 end={l.to === '/'}
+                onClick={() => setMenuOpen(false)}
                 className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')}
               >
                 {l.label}
@@ -60,6 +69,28 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               <span className="mono" style={{ fontSize: 10, color: 'var(--mg)' }}>K</span>
             </button>
           </div>
+          <button
+            className="burger"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="toggle menu"
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+        {/* mobile drawer */}
+        <div className={'mobile-menu' + (menuOpen ? ' open' : '')}>
+          {links.map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.to === '/'}
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) => 'mobile-link' + (isActive ? ' active' : '')}
+            >
+              {l.label}
+            </NavLink>
+          ))}
         </div>
       </nav>
 

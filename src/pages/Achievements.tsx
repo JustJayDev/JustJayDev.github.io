@@ -19,7 +19,7 @@ const Achievements: React.FC = () => {
         {achievements.map((a, i) => (
           <div
             key={a.title}
-            className="glass brackets reveal"
+            className="glass brackets glass-hover sweep-border reveal"
             style={{ padding: 22, animationDelay: String(i * 60) + 'ms' }}
           >
             <div style={{ fontSize: 34, lineHeight: 1 }}>{a.icon}</div>

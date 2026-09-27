@@ -28,9 +28,14 @@ const TITLES: Record<string, string> = {
 };
 
 const Loader: React.FC = () => (
-  <div className="wrap" style={{ paddingTop: 80, textAlign: 'center' }}>
-    <div className="mono" style={{ color: 'var(--cy)' }}>
-      &gt; loading_…
+  <div className="wrap" style={{ paddingTop: 80 }}>
+    <div className="skel" style={{ height: 16, width: 140, marginBottom: 22 }} />
+    <div className="skel" style={{ height: 44, width: 'min(340px, 70%)', marginBottom: 14 }} />
+    <div className="skel" style={{ height: 14, width: 'min(260px, 60%)', marginBottom: 34 }} />
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 18 }}>
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="skel" style={{ height: 150, borderRadius: 16 }} />
+      ))}
     </div>
   </div>
 );
@@ -67,10 +72,23 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, [location.pathname]);
 
+  // spotlight cursor (desktop pointers only)
+  useEffect(() => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const onMove = (e: PointerEvent) => {
+      document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+      document.documentElement.style.setProperty('--my', e.clientY + 'px');
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
+  }, []);
+
   return (
     <>
       <div className="grid-bg" />
       <div className="glow-field" />
+      <div className="spotlight" />
       <div className="vignette" />
       <div className="scanlines" />
       <div className="scroll-progress" id="scrollProgress" aria-hidden="true" />

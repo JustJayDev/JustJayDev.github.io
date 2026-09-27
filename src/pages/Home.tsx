@@ -66,14 +66,14 @@ const Home: React.FC = () => {
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, margin: '26px 0 8px' }} className="reveal">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24, margin: '26px 0 8px' }} className="reveal d2">
           <img src={profile.heroImage} alt="Jay Kumar" className="hero-avatar floaty" />
           <div>
             <div className="mono" style={{ color: 'var(--mg)', fontSize: 13, letterSpacing: 2 }}>
               $ whoami
             </div>
             <h1
-              className="glitch neon-text"
+              className="glitch neon-text hero-name-glow"
               data-text={profile.handle}
               style={{ fontSize: 'clamp(44px, 9vw, 84px)', fontWeight: 800, margin: '4px 0', lineHeight: 1 }}
             >
@@ -83,16 +83,16 @@ const Home: React.FC = () => {
         </div>
 
         <p
-          className="reveal"
+          className="reveal d3"
           style={{ fontSize: 'clamp(18px, 3vw, 26px)', fontWeight: 500, color: 'var(--text)', margin: '6px 0 0' }}
         >
           {profile.name} — <span className="caret">{typed}</span>
         </p>
-        <p className="mono reveal" style={{ color: 'var(--muted)', maxWidth: 620, lineHeight: 1.7, marginTop: 14 }}>
+        <p className="mono reveal d4" style={{ color: 'var(--muted)', maxWidth: 620, lineHeight: 1.7, marginTop: 14 }}>
           {profile.bio}
         </p>
 
-        <div className="reveal" style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 26 }}>
+        <div className="reveal d5" style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 26 }}>
           {profile.chips.map((c) => (
             <span key={c} className="chip">
               {c}
@@ -100,7 +100,7 @@ const Home: React.FC = () => {
           ))}
         </div>
 
-        <div className="reveal" style={{ display: 'flex', gap: 12, marginTop: 30, flexWrap: 'wrap' }}>
+        <div className="reveal d6" style={{ display: 'flex', gap: 12, marginTop: 30, flexWrap: 'wrap' }}>
           <Link to="/games" className="btn btn-primary" onClick={spawnRipple}>
             <Gamepad2 size={18} /> View Games <ArrowRight size={16} />
           </Link>
@@ -219,7 +219,7 @@ const Home: React.FC = () => {
         </div>
         <div className="hscroll reveal" style={{ marginTop: 18 }}>
           {achievements.slice(0, 4).map((a) => (
-            <div key={a.title} className="glass brackets" style={{ padding: 22, width: 300 }}>
+            <div key={a.title} className="glass brackets glass-hover sweep-border" style={{ padding: 22, width: 300 }}>
               <div style={{ fontSize: 30, lineHeight: 1 }}>{a.icon}</div>
               <div className="mono" style={{ fontSize: 10, color: 'var(--cy)', margin: '10px 0 4px', textTransform: 'uppercase', letterSpacing: 1 }}>
                 {a.tag}
@@ -263,7 +263,7 @@ const Home: React.FC = () => {
               href={p.url}
               target="_blank"
               rel="noreferrer"
-              className="glass brackets reveal"
+              className="glass brackets glass-hover sweep-border reveal"
               style={{ padding: 22, textDecoration: 'none', color: 'inherit' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>

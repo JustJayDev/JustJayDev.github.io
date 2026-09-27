@@ -808,3 +808,204 @@ input:focus-visible {
   .devlog-item::after { display: none; }
   .devlog-pop { animation: none; }
 }
+
+/* ============================================================
+   v2.0 ENHANCEMENT LAYER
+   ============================================================ */
+
+/* ---- animated gradient text (neon-text now shimmers) ---- */
+.neon-text {
+  background-size: 220% auto;
+  animation: neonShift 6s linear infinite;
+}
+@keyframes neonShift {
+  to { background-position: 220% center; }
+}
+
+/* ---- third aurora blob for a richer backdrop ---- */
+.glow-field::before { animation: drift1 18s ease-in-out infinite alternate, hueShift 14s ease-in-out infinite; }
+@keyframes hueShift {
+  0%, 100% { filter: blur(90px) hue-rotate(0deg); }
+  50% { filter: blur(110px) hue-rotate(40deg); }
+}
+
+/* ---- spotlight cursor (desktop only) ---- */
+.spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    420px circle at var(--mx, 50vw) var(--my, 30vh),
+    rgba(34, 211, 238, 0.10),
+    rgba(168, 85, 247, 0.05) 45%,
+    transparent 70%
+  );
+  transition: background 0.18s ease;
+}
+@media (pointer: coarse) { .spotlight { display: none; } }
+
+/* ---- staggered reveal delays (pair with .reveal) ---- */
+.reveal.d1 { transition-delay: 0.06s; }
+.reveal.d2 { transition-delay: 0.12s; }
+.reveal.d3 { transition-delay: 0.18s; }
+.reveal.d4 { transition-delay: 0.24s; }
+.reveal.d5 { transition-delay: 0.30s; }
+.reveal.d6 { transition-delay: 0.36s; }
+
+/* ---- card hover lift (generic glass cards) ---- */
+.glass-hover {
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+              border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-hover:hover {
+  transform: translateY(-5px);
+  border-color: var(--line-strong);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.55), 0 0 34px rgba(34, 211, 238, 0.10);
+}
+
+/* ---- gradient border sweep on hover ---- */
+.sweep-border { position: relative; }
+.sweep-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--cy), var(--mg), var(--am));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.sweep-border:hover::before { opacity: 1; }
+
+/* ---- primary button: glow + sheen ---- */
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -120%;
+  width: 55%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+.btn-primary:hover::after { left: 160%; }
+
+/* ---- nav: shrink + intensify blur when scrolled ---- */
+nav.topnav { transition: border-color 0.3s ease, background 0.3s ease; }
+nav.topnav.scrolled {
+  background: rgba(5, 6, 15, 0.86);
+  border-bottom-color: var(--line-strong);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ---- skeleton shimmer for lazy-loaded pages ---- */
+.skel {
+  background: linear-gradient(
+    90deg,
+    rgba(120, 130, 255, 0.06) 25%,
+    rgba(120, 130, 255, 0.14) 37%,
+    rgba(120, 130, 255, 0.06) 63%
+  );
+  background-size: 400% 100%;
+  animation: skelMove 1.4s ease-in-out infinite;
+  border-radius: 10px;
+}
+@keyframes skelMove {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* ---- hero name: layered glow under glitch ---- */
+.hero-name-glow {
+  text-shadow: 0 0 42px rgba(168, 85, 247, 0.45), 0 0 90px rgba(34, 211, 238, 0.22);
+}
+
+/* ---- game banner: zoom on card hover ---- */
+.game-card:hover .card-banner img {
+  animation-play-state: paused;
+  transform: scale(1.06);
+}
+.card-banner img { transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+/* ---- stat number pop on count complete ---- */
+.stat .num { transition: transform 0.3s cubic-bezier(0.2, 1.4, 0.4, 1); }
+.stat:hover .num { transform: scale(1.08); }
+
+/* ---- chip hover micro-interaction ---- */
+.chip { transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease; }
+.chip:hover { transform: translateY(-2px); border-color: var(--line-strong); color: var(--text); }
+
+/* ---- command palette entrance ---- */
+.cmd-panel { animation: cmdIn 0.22s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+@keyframes cmdIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- reduced motion: kill all v2 additions ---- */
+@media (prefers-reduced-motion: reduce) {
+  .neon-text { animation: none; background-size: 100% auto; }
+  .glow-field::before { animation: none; }
+  .spotlight { display: none; }
+  .btn-primary::after { display: none; }
+  .skel { animation: none; }
+  .cmd-panel { animation: none; }
+  .glass-hover:hover { transform: none; }
+}
+
+/* ---- mobile nav: burger + slide-down drawer ---- */
+.burger {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  width: 40px; height: 40px;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.burger:hover { border-color: var(--cy); color: var(--cy); }
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 20px 14px;
+  border-top: 1px solid var(--line);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.32s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.28s ease, padding 0.3s ease;
+}
+.mobile-menu.open {
+  max-height: 420px;
+  opacity: 1;
+  padding-bottom: 16px;
+}
+.mobile-link {
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.mobile-link:hover { color: var(--text); background: rgba(120, 130, 255, 0.06); }
+.mobile-link.active {
+  color: var(--cy);
+  border-color: rgba(34, 211, 238, 0.3);
+  background: rgba(34, 211, 238, 0.07);
+}
+@media (max-width: 720px) {
+  .burger { display: inline-flex; }
+  .nav-links { display: none; }
+  .mobile-menu { display: flex; }
+}
