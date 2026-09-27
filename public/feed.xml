@@ -42,6 +42,20 @@
       <description>Publishing a wallpaper from the admin panel could fail with a sync conflict if anything else had committed since the page loaded. The pipeline now fetches the current catalog straight from the repository at publish time instead of trusting the copy bundled with the page, and it retries automatically when it detects a stale-file conflict. Deleting and editing entries read live too, so two publishes in a row can no longer silently overwrite each other. End-to-end verified: a real wallpaper was published and confirmed visible on the live site.</description>
     </item>
     <item>
+      <title>Health check: orphaned wallpaper recovered, downloads fixed</title>
+      <link>https://justjaydev.github.io/pixvault/</link>
+      <guid>pixvault-2026-09-27-health-check:-orphaned-w</guid>
+      <pubDate>Sun, 27 Sep 2026 06:30:00 GMT</pubDate>
+      <description>A full health pass over PixVault found a wallpaper that had been committed to the repository with its thumbnail but never registered in the catalog, so it was invisible on the site. It is now listed — the vault has its first desktop wallpaper. Downloads also kept naming every file .jpg even when the original was a PNG, so saved files now keep their true extension. A site-wide sweep confirmed every wallpaper asset resolves, the service worker and install manifest are healthy, and no API key appears as a complete literal in the shipped bundle.</description>
+    </item>
+    <item>
+      <title>Admin panel rebuilt as a dashboard</title>
+      <link>https://justjaydev.github.io/pixvault/</link>
+      <guid>pixvault-2026-09-27-admin-panel-rebuilt-as-a</guid>
+      <pubDate>Sun, 27 Sep 2026 06:30:00 GMT</pubDate>
+      <description>The admin panel outgrew its chip-tab layout, so it was rebuilt as a real dashboard: a sidebar with navigation and live counts, a status card showing how many wallpapers are live, how many prompts are awaiting an image and how many are ready to publish, plus search and sorting across the wallpaper list. Loading now shows skeleton rows instead of a frozen screen, empty states explain what to do next, and actions confirm with toasts. The login compares a salted hash instead of a plaintext password, and the whole publishing pipeline was verified end to end against the live repository.</description>
+    </item>
+    <item>
       <title>UI v2 — spotlight cursor, card depth, skeleton loaders</title>
       <link>https://justjaydev.github.io/</link>
       <guid>main-site-2026-09-26-ui-v2-—-spotlight-cursor</guid>

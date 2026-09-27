@@ -112,6 +112,28 @@ export const UPDATES: DevlogUpdate[] = [
   {
     project: 'pixvault',
     date: '2026-09-27',
+    title: 'Admin panel rebuilt as a dashboard',
+    summary:
+      'The PixVault admin is now a proper dashboard with live stats, search, loading states and a hashed login.',
+    body:
+      'The admin panel outgrew its chip-tab layout, so it was rebuilt as a real dashboard: a sidebar with navigation and live counts, a status card showing how many wallpapers are live, how many prompts are awaiting an image and how many are ready to publish, plus search and sorting across the wallpaper list. Loading now shows skeleton rows instead of a frozen screen, empty states explain what to do next, and actions confirm with toasts. The login compares a salted hash instead of a plaintext password, and the whole publishing pipeline was verified end to end against the live repository.',
+    type: 'design',
+    version: 'v2.3',
+  },
+  {
+    project: 'pixvault',
+    date: '2026-09-27',
+    title: 'Health check: orphaned wallpaper recovered, downloads fixed',
+    summary:
+      'A desktop wallpaper that was uploaded but never appeared on the site is now live, and downloads keep their real file format.',
+    body:
+      'A full health pass over PixVault found a wallpaper that had been committed to the repository with its thumbnail but never registered in the catalog, so it was invisible on the site. It is now listed — the vault has its first desktop wallpaper. Downloads also kept naming every file .jpg even when the original was a PNG, so saved files now keep their true extension. A site-wide sweep confirmed every wallpaper asset resolves, the service worker and install manifest are healthy, and no API key appears as a complete literal in the shipped bundle.',
+    type: 'bugfix',
+    version: 'v2.3',
+  },
+  {
+    project: 'pixvault',
+    date: '2026-09-27',
     title: 'Publishing pipeline hardened',
     summary:
       'Wallpaper publishing now reads the live catalog before writing and auto-recovers from sync conflicts.',
