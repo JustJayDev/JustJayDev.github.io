@@ -14,7 +14,8 @@ const Contact: React.FC = () => {
     if (!name.trim() || !msg.trim()) return;
     const subject = encodeURIComponent('Message from ' + name);
     const body = encodeURIComponent(msg + '\n\n— ' + name);
-    window.open('mailto:hello@justjaydev.dev?subject=' + subject + '&body=' + body, '_self');
+    const target = profile.email && profile.email.includes('@') ? profile.email : 'hello@justjaydev.dev';
+    window.open('mailto:' + target + '?subject=' + subject + '&body=' + body, '_self');
     setSent(true);
   };
 

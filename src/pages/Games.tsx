@@ -64,11 +64,11 @@ const Games: React.FC = () => {
             background: 'var(--panel)',
           }}
         >
-          <Search size={16} style={{ color: 'var(--muted)' }} />
+          <Search size={15} style={{ color: 'var(--muted)', flex: 'none' }} />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="filter games…"
+            placeholder="filter games…" aria-label="filter games"
             style={{
               flex: 1,
               background: 'transparent',
@@ -79,13 +79,23 @@ const Games: React.FC = () => {
               fontSize: 14,
             }}
           />
+          {q && (
+            <button
+              onClick={() => setQ('')}
+              aria-label="clear filter"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', display: 'flex', padding: 0 }}
+            >
+              ✕
+            </button>
+          )}
         </div>
-        <div style={{ display: 'flex', gap: 6 }}>
+        <div style={{ display: 'flex', gap: 6 }} role="group" aria-label="game filter">
           {tabs.map((t) => (
             <button
               key={t.key}
               onClick={() => setFilter(t.key)}
               className="btn"
+              aria-pressed={filter === t.key}
               style={{
                 padding: '10px 16px',
                 fontSize: 12,
@@ -94,7 +104,7 @@ const Games: React.FC = () => {
                   : {}),
               }}
             >
-              {t.label}
+              {t.label}{t.key === 'active' ? ` (${mainGames.filter((g) => g.nowPlaying).length})` : ''}
             </button>
           ))}
         </div>
@@ -110,9 +120,15 @@ const Games: React.FC = () => {
           marginTop: 10,
         }}
       >
-        {filtered.map((g) => (
-          <GameCard key={g.id} game={g} />
-        ))}
+        {filtered.length === 0
+          ? filter !== 'casual'
+            ? (
+              <p className="mono" style={{ color: q ? 'var(--rd)' : 'var(--muted)' }}>
+                &gt; {q ? `no results for "${q}"` : 'no games match this filter'}
+              </p>
+            )
+            : null
+          : filtered.map((g) => <GameCard key={g.id} game={g} />)}
       </div>
 
       {filtered.length === 0 && !q && filter === 'casual' && (
@@ -144,11 +160,6 @@ const Games: React.FC = () => {
         </section>
       )}
 
-      {q && filtered.length === 0 && casualFiltered.length === 0 && (
-        <p className="mono" style={{ color: 'var(--rd)', marginTop: 20 }}>
-          &gt; no results for "{q}"
-        </p>
-      )}
     </div>
   );
 };
