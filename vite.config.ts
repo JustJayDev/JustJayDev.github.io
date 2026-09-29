@@ -4,8 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  // The MAIN site is served from the domain root (https://justjaydev.github.io/).
-  base: '/',
+  base: './',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

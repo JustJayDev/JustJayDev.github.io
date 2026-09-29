@@ -1,5 +1,5 @@
 /* JustJayDev service worker — cache-first assets, network-first navigation */
-const VERSION = 'v8-alt';
+const VERSION = 'v7-scope-fix';
 const CORE = [
   './',
   './index.html',

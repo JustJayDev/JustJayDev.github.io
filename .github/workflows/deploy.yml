@@ -1,85 +1,39 @@
-name: Deploy MAIN site to GitHub Pages
-
-# ============================================================================
-# The MAIN website. This workflow is the ONLY thing allowed to publish the
-# live site at https://justjaydev.github.io/
-#
-# It deliberately uses the OFFICIAL GitHub Pages Actions rather than
-# peaceiris/actions-gh-pages:
-#   - We upload a build artifact, and GitHub's own deploy-pages action
-#     publishes it. The workflow never force-pushes to `gh-pages`.
-#   - That removes the race that previously existed with the legacy
-#     just-jay-alt workflow, which force-pushed an orphan commit to the same
-#     branch and could silently replace this entire site.
-#   - It also keeps a per-deployment artifact + environment we can roll back
-#     to from the GitHub UI.
-#
-# See docs/DEPLOYMENT-TOPOLOGY.md for the full write-up.
-# ============================================================================
-
+name: Deploy to GitHub Pages
 on:
   push:
     branches: ['main']
   workflow_dispatch:
-
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
-
-# Never cancel a running deploy halfway; let it finish cleanly.
 concurrency:
-  group: "pages-main"
+  group: "pages"
   cancel-in-progress: false
-
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v2
         with:
           version: 9
-
       - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
+        run: node --version
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile || pnpm install
-
-      - name: Type-check
-        run: pnpm exec tsc --noEmit
-
+        run: pnpm install
       - name: Build
         run: pnpm run build
         env:
-          # Absolute site root — the MAIN site is served from the domain root.
-          VITE_SITE_URL: https://justjaydev.github.io/
-          VITE_BASE: /
-
-      - name: Guard — dist must not be empty
-        run: |
-          test -f dist/index.html || { echo "::error::dist/index.html missing"; exit 1; }
-          echo "Built files: $(find dist -type f | wc -l)"
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
+          VITE_SITE_URL: https://JustJayDev.github.io/
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'

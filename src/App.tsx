@@ -81,8 +81,9 @@ const App: React.FC = () => {
       <AccentProvider>
         <AchievementProvider>
           <ScrollToTop />
-          {/* The v6 backdrop stack (starfield + aurora ribbons + horizon grid)
-              and the wired scroll arc are mounted once, inside Shell. */}
+          <div className="aurora" />
+          <div className="bg-grid" />
+          <div className="scroll-progress" aria-hidden="true" />
           <Spotlight />
           <Shell>
             <ThemeStudio />

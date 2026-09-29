@@ -11,11 +11,7 @@ export const useCountUp = (target: number, durationMs = 1200): { ref: React.RefO
   const [value, setValue] = useState(0);
 
   useEffect(() => {
-    // Safety net: if IntersectionObserver never fires (certain in-app
-    // webviews, or content restored straight into a scrolled position), the
-    // counter must still show its real value instead of sitting at 0.
-    const guard = setTimeout(() => setValue(target), 2500);
-    if (!inView) return () => clearTimeout(guard);
+    if (!inView) return;
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {
@@ -26,10 +22,7 @@ export const useCountUp = (target: number, durationMs = 1200): { ref: React.RefO
       if (p < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => {
-      clearTimeout(guard);
-      cancelAnimationFrame(raf);
-    };
+    return () => cancelAnimationFrame(raf);
   }, [inView, target, durationMs]);
 
   return { ref, value };

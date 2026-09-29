@@ -40,15 +40,6 @@ export function useParallax<T extends HTMLElement>() {
 }
 
 /**
- * setRef — assign a node to a ref that TS treats as read-only
- * (refs returned from hooks are React.RefObject<T>). Needed when one element
- * is shared by more than one hook, e.g. magnetic + ripple on the same button.
- */
-export function setRef<T>(ref: { current: T | null }, node: T | null) {
-  (ref as { current: T | null }).current = node;
-}
-
-/**
  * useRipple — material-style ripple on click. Call on any button.
  */
 export function useRipple<T extends HTMLElement>() {

@@ -1,50 +1,15 @@
-/**
- * Shell — v6 "Observatory" chrome.
- *
- * The three fixed backdrop layers (starfield, aurora ribbons, horizon grid)
- * are mounted here so the whole document shares one set of depth layers.
- * Without these the design has no metaphor, which is exactly what made v5
- * read as flat.
- */
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss, Volume2, VolumeX,
-  Image as ImageIcon, ExternalLink,
-} from 'lucide-react';
+import { Home, Gamepad2, User, BookOpen, Moon, Sun, ArrowUp, Rss, Volume2, VolumeX, Image as ImageIcon, ExternalLink } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { sfx } from '@/lib/sound';
-
 const NAV = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/games', label: 'Games', icon: Gamepad2 },
   { to: '/devlog', label: 'Devlog', icon: BookOpen },
   { to: '/about', label: 'About', icon: User },
 ];
-
-/** Icon button used in the header for sound + theme. */
-const GhostButton: React.FC<{
-  onClick: () => void;
-  label: string;
-  active?: boolean;
-  children: React.ReactNode;
-}> = ({ onClick, label, active, children }) => (
-  <button
-    onClick={onClick}
-    aria-label={label}
-    title={label}
-    className="w-10 h-10 rounded-lg flex items-center justify-center transition-all active:scale-95 hover:scale-105"
-    style={{
-      border: `1px solid ${active ? 'var(--au-1)' : 'var(--line)'}`,
-      color: active ? 'var(--au-1)' : 'var(--muted)',
-      background: 'transparent',
-    }}
-  >
-    {children}
-  </button>
-);
-
 const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { resolvedTheme, setTheme } = useTheme();
   const location = useLocation();
@@ -67,12 +32,10 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       window.removeEventListener('scroll', onScroll);
     };
   }, []);
-
   const toggleTheme = () => {
     sfx.toggle(resolvedTheme === 'dark');
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };
-
   const toggleSound = () => {
     sfx.setMuted(!muted);
     setMuted(!muted);
@@ -81,31 +44,39 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* ============ BACKDROP (the observatory) ============ */}
-      <div className="starfield" aria-hidden="true" />
-      <div className="aurora" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </div>
-      <div className="bg-grid" aria-hidden="true" />
-
-      {/* orbital scroll arc */}
+      {/* ============ SCROLL PROGRESS ============ */}
       <div
-        className="scroll-progress"
+        className="fixed top-0 left-0 right-0 z-[60] h-[3px] pointer-events-none"
         aria-hidden="true"
-        style={{ ['--p' as string]: progress }}
-      />
+      >
+        <div
+          className="h-full origin-left transition-transform duration-150 ease-out"
+          style={{
+            transform: `scaleX(${progress})`,
+            background: 'linear-gradient(90deg, var(--color-accent), #8b5cf6, #d946ef)',
+          }}
+        />
+      </div>
 
-      {/* ============ HEADER ============ */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass' : 'bg-transparent'}`}>
-        <div className="page-container h-16 flex items-center justify-between">
-          <NavLink to="/" className="flex items-center gap-2.5 shrink-0">
-            <img src="/logo.svg" alt="" className="w-8 h-8 rounded-lg" style={{ border: '1px solid var(--line)' }} />
-            <span className="font-display text-[17px] tracking-tight">
-              Just<span className="aurora-text">JayDev</span>
+      {/* ============ TOP BAR ============ */}
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? 'glass shadow-sm' : 'bg-transparent'
+        }`}
+      >
+        <div className="page-container h-14 flex items-center justify-between">
+          <NavLink to="/" className="flex items-center gap-2">
+            <img
+              src="/logo.svg"
+              alt="JustJayDev logo"
+              className="w-8 h-8 rounded-lg"
+              style={{ boxShadow: '0 2px 10px color-mix(in srgb, var(--color-accent) 40%, transparent)' }}
+            />
+            <span className="font-black tracking-tight text-lg">
+              Just<span className="gradient-text">JayDev</span>
             </span>
           </NavLink>
+
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">
             {NAV.map(({ to, label }) => (
@@ -115,74 +86,84 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 end={to === '/'}
                 onClick={() => sfx.tick()}
                 className={({ isActive }) =>
-                  `px-4 py-2 rounded-lg text-[13px] font-semibold transition-all ${
-                    isActive ? 'aurora-text' : ''
+                  `px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                    isActive ? 'gradient-text' : ''
                   }`
                 }
                 style={({ isActive }) =>
                   isActive
-                    ? {
-                        color: 'var(--au-1)',
-                        background: 'color-mix(in srgb, var(--au-1) 10%, transparent)',
-                      }
-                    : { color: 'var(--muted)' }
+                    ? { background: 'var(--color-surface-2)' }
+                    : { color: 'var(--color-text-muted)' }
                 }
               >
                 {label}
               </NavLink>
             ))}
           </nav>
+
           <div className="flex items-center gap-2">
-            <GhostButton onClick={toggleSound} label={muted ? 'Unmute sounds' : 'Mute sounds'} active={!muted}>
-              {muted ? <VolumeX size={17} /> : <Volume2 size={17} />}
-            </GhostButton>
-            <GhostButton onClick={toggleTheme} label={`Switch to ${resolvedTheme === 'dark' ? 'light' : 'dark'} theme`}>
-              {resolvedTheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
-            </GhostButton>
+            <button
+              onClick={toggleSound}
+              aria-label={muted ? 'Unmute sounds' : 'Mute sounds'}
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+              style={{ background: 'var(--color-surface-2)', color: muted ? 'var(--color-text-muted)' : 'var(--color-accent)' }}
+            >
+              {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+            </button>
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+              style={{ background: 'var(--color-surface-2)', color: 'var(--color-text)' }}
+            >
+              {resolvedTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
           </div>
         </div>
       </header>
 
       {/* ============ PAGE CONTENT ============ */}
-      <div className="flex-1 pt-16">{children}</div>
+      <div className="flex-1 pt-14">{children}</div>
 
-      {/* ============ FOOTER ============ */}
-      <footer className="page-container py-10 text-center">
-        <div
-          className="flex items-center justify-center gap-x-5 gap-y-2 flex-wrap text-xs font-mono uppercase tracking-[0.12em]"
-          style={{ color: 'var(--muted)' }}
-        >
+      {/* ============ FOOTER (desktop) ============ */}
+      <footer className="hidden md:block page-container py-8 text-center">
+        <div className="flex items-center justify-center gap-1.5 flex-wrap text-xs" style={{ color: 'var(--color-text-muted)' }}>
           {NAV.map(({ to, label }) => (
-            <NavLink key={to} to={to} end={to === '/'} className="hover:opacity-70 transition-opacity">
+            <NavLink
+              key={to}
+              to={to}
+              end={to === '/'}
+              className="transition-colors hover:opacity-70 px-1.5"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
               {label}
             </NavLink>
           ))}
-          <a
-            href="https://justjaydev.github.io/pixvault/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 hover:opacity-70 transition-opacity"
-          >
-            <ImageIcon size={11} /> PixVault
-          </a>
-          <a
-            href="https://justjaydev.github.io/TitleForge/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 hover:opacity-70 transition-opacity"
-          >
-            <ExternalLink size={11} /> TitleForge
-          </a>
-          <a href="/feed.xml" className="inline-flex items-center gap-1 hover:opacity-70 transition-opacity">
-            <Rss size={11} /> RSS
-          </a>
+            <a
+              href="https://justjaydev.github.io/pixvault/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 transition-colors hover:opacity-70 px-1.5"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              <ImageIcon size={11} />
+              PixVault
+            </a>
+            <a
+              href="/feed.xml"
+              className="inline-flex items-center gap-1 transition-colors hover:opacity-70 px-1.5"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              <Rss size={11} />
+              RSS
+            </a>
         </div>
-        <p className="text-[11px] mt-4 font-mono tracking-[0.12em]" style={{ color: 'var(--muted)' }}>
+        <p className="text-xs mt-3" style={{ color: 'var(--color-text-muted)' }}>
           © 2026 JustJayDev · built on a phone, shipped from India
         </p>
       </footer>
 
-      {/* ============ BACK TO TOP (mobile) ============ */}
+      {/* ============ BACK TO TOP ============ */}
       <AnimatePresence>
         {progress > 0.25 && (
           <motion.button
@@ -194,10 +175,11 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             aria-label="Back to top"
             className="md:hidden fixed right-4 z-40 w-11 h-11 rounded-full flex items-center justify-center"
             style={{
-              bottom: 'calc(5rem + env(safe-area-inset-bottom))',
-              background: 'var(--panel-solid)',
-              border: '1px solid var(--line)',
-              color: 'var(--text)',
+              bottom: 'calc(4.5rem + env(safe-area-inset-bottom))',
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
+              color: 'var(--color-text)',
             }}
           >
             <ArrowUp size={18} />
@@ -206,26 +188,27 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </AnimatePresence>
 
       {/* ============ BOTTOM NAV (mobile) ============ */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
         <div className="flex items-center justify-around h-16">
           {NAV.map(({ to, label, icon: Icon }) => {
-            const active = to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
+            const active =
+              to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
             return (
               <NavLink
                 key={to}
                 to={to}
-                onClick={() => {
-                  if (navigator.vibrate) navigator.vibrate(8);
-                  sfx.tick();
-                }}
+                onClick={() => { if (navigator.vibrate) navigator.vibrate(8); sfx.tick(); }}
                 className="relative flex flex-col items-center justify-center w-20 h-full"
-                style={{ color: active ? 'var(--au-1)' : 'var(--muted)' }}
+                style={{ color: active ? 'var(--color-accent-light)' : 'var(--color-text-muted)' }}
               >
                 {active && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute inset-x-3 inset-y-2 rounded-lg"
-                    style={{ background: 'color-mix(in srgb, var(--au-1) 12%, transparent)' }}
+                    className="absolute inset-x-3 inset-y-2 rounded-xl"
+                    style={{ background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)' }}
                     transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                   />
                 )}
