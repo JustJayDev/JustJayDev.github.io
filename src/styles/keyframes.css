@@ -1,0 +1,76 @@
+/* ============================================================
+   KEYFRAMES — the complete animation inventory.
+   Every one of these has a stated purpose. Nothing decorative.
+   ============================================================ */
+
+/* Interest marquee (hero) — continuous, pausable on hover */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Now-playing artwork drift — transform only, never background-size */
+@keyframes ken-burns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to   { transform: scale(1.08) translate3d(-1.5%, -1.5%, 0); }
+}
+
+/* Backdrop field */
+@keyframes field-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(4%, -3%, 0) scale(1.12); }
+}
+
+/* Live dot */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.35; transform: scale(0.82); }
+}
+
+/* "Surprise me" card flip */
+@keyframes flip-in {
+  from { transform: rotateY(-90deg) scale(0.94); opacity: 0; }
+  to   { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+/* Trophy-case settle for the achievements wall */
+@keyframes case-in {
+  from { opacity: 0; transform: translateY(10px) rotate(var(--tilt, 0deg)); }
+  to   { opacity: 1; transform: translateY(0) rotate(var(--tilt, 0deg)); }
+}
+
+/* Loading skeleton sweep */
+@keyframes skel-sweep {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+.skel {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-sunken);
+}
+.skel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+  animation: skel-sweep 1.4s linear infinite;
+}
+
+/* Now-playing card artwork wrapper */
+.kb {
+  animation: ken-burns 18s var(--ease-in-out) infinite alternate;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.flipped {
+  animation: flip-in 420ms var(--ease-spring) both;
+  transform-style: preserve-3d;
+}
+
+.case-item {
+  animation: case-in 400ms var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+}

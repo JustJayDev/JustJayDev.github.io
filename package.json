@@ -1,13 +1,15 @@
 {
-  "name": "just-jay-dev",
-  "version": "1.0.0",
+  "name": "justjaydev",
   "private": true,
+  "version": "7.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "gen:static": "node scripts/gen-static.mjs",
+    "build": "tsc --noEmit && vite build && node scripts/gen-static.mjs",
     "preview": "vite preview",
-    "deploy": "vite build && npx gh-pages -d dist"
+    "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
     "framer-motion": "^11.3.0",
@@ -21,7 +23,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
-    "gh-pages": "^6.1.1",
+    "esbuild": "^0.21.5",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.5.0",

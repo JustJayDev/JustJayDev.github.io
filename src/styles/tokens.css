@@ -1,0 +1,104 @@
+/* ============================================================
+   v7 — DESIGN TOKENS
+   The single source of truth for colour, type, space, motion.
+   No versioned identity layers. Nothing overrides this file.
+   ============================================================ */
+
+:root {
+  /* ---- type ---- */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --t-display: clamp(2.5rem, 1.2rem + 6.2vw, 5.5rem);
+  --t-h1: clamp(1.9rem, 1.3rem + 2.6vw, 3.1rem);
+  --t-h2: clamp(1.35rem, 1.1rem + 1.2vw, 1.9rem);
+  --t-h3: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
+  --t-body: clamp(0.95rem, 0.9rem + 0.25vw, 1.06rem);
+  --t-mono: 0.8rem;
+
+  /* ---- space ---- */
+  --s-1: 4px;  --s-2: 8px;   --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px;  --s-7: 48px; --s-8: 72px;
+
+  /* ---- radius ---- */
+  --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-pill: 999px;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --d-micro: 140ms;
+  --d-state: 240ms;
+  --d-enter: 400ms;
+  --d-ambient: 24s;
+
+  /* ---- elevation (shadow, never glow-as-decoration) ---- */
+  --e-1: 0 1px 2px rgba(0, 0, 0, 0.28);
+  --e-2: 0 4px 16px -4px rgba(0, 0, 0, 0.40);
+  --e-3: 0 12px 40px -8px rgba(0, 0, 0, 0.50);
+}
+
+/* ============================================================
+   DARK — default
+   Deep slate-teal. Restrained single accent.
+   ============================================================ */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #070b10;
+  --bg-raise: #0c1219;
+  --bg-sunken: #05080c;
+  --line: rgba(148, 178, 199, 0.10);
+  --line-2: rgba(148, 178, 199, 0.18);
+
+  --text: #e6edf3;
+  --text-dim: #8fa3b0;
+  --text-mute: #7e919c;
+
+  --accent: #34d399;
+  --accent-soft: rgba(52, 211, 153, 0.12);
+  --accent-line: rgba(52, 211, 153, 0.30);
+
+  --ok: #34d399;
+  --warn: #fbbf24;
+  --live: #f87171;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.40);
+  --shadow-2: 0 4px 16px -4px rgba(0, 0, 0, 0.55);
+  --shadow-3: 0 12px 40px -8px rgba(0, 0, 0, 0.65);
+
+  --field-opacity: 0.30;
+}
+
+/* ============================================================
+   LIGHT — a peer, not an afterthought. Same token contract.
+   ============================================================ */
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f7f9fa;
+  --bg-raise: #ffffff;
+  --bg-sunken: #eef2f4;
+  --line: rgba(11, 18, 24, 0.10);
+  --line-2: rgba(11, 18, 24, 0.20);
+
+  --text: #0b1218;
+  --text-dim: #4a5b67;
+  --text-mute: #5c6d79;
+
+  --accent: #0f7a56;
+  --accent-soft: rgba(15, 122, 86, 0.10);
+  --accent-line: rgba(15, 122, 86, 0.28);
+
+  --ok: #0f7a56;
+  --warn: #a16207;
+  --live: #c2410c;
+
+  --shadow-1: 0 1px 2px rgba(11, 18, 24, 0.06);
+  --shadow-2: 0 4px 16px -4px rgba(11, 18, 24, 0.12);
+  --shadow-3: 0 12px 40px -8px rgba(11, 18, 24, 0.16);
+
+  --field-opacity: 0.16;
+}

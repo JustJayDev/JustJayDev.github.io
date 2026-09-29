@@ -1,40 +1,44 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import './index.css';
-// SPA fallback completion: 404.html forwards deep links as /?p=<path> — restore the real route
-// before React Router reads location, so shared URLs like /games render the Games page.
+import App from './app/App';
+import { ThemeProvider } from './lib/theme';
+
+// Token layer first, then base, then components. No versioned identity files.
+import './styles/tokens.css';
+import './styles/keyframes.css';
+import './styles/base.css';
+import './styles/components.css';
+
+const root = document.getElementById('root');
+if (!root) throw new Error('Root element #root not found');
+
+createRoot(root).render(
+  <StrictMode>
+    <ThemeProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
+  </StrictMode>,
+);
+
+// Restore the real path before React Router reads location, so deep links work
+// on a static host that serves index.html for every path.
 (function restoreSpaPath() {
-  const l = window.location;
-  const m = l.search.match(/[?&]p=([^&]+)/);
-  if (!m) return;
-  const path = m[1].replace(/~and~/g, '&');
-  let rest = l.search.replace(/[?&]p=[^&]+/, '');
-  if (rest.startsWith('&')) rest = '?' + rest.slice(1); // "?p=x&y=1" → "?y=1"
-  window.history.replaceState(null, '', (path.startsWith('/') ? path : '/' + path) + rest + l.hash);
+  const key = 'jj-spa-path';
+  if (window.location.pathname === '/' || window.location.pathname.endsWith('.html')) return;
+  const real = window.sessionStorage.getItem(key);
+  if (real && real !== window.location.pathname) {
+    window.history.replaceState(null, '', real + window.location.search + window.location.hash);
+    window.sessionStorage.removeItem(key);
+  }
 })();
 
-// PWA service worker (production only)
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
+    navigator.serviceWorker.register('./sw.js').catch(() => {
+      /* offline support is optional; never break the page over it */
+    });
   });
 }
-
-// Fade out the pre-React boot splash once the app has mounted
-function dismissBoot() {
-  const boot = document.getElementById('boot');
-  if (!boot) return;
-  boot.classList.add('done');
-  setTimeout(() => boot.remove(), 500);
-}
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
-);
-dismissBoot();

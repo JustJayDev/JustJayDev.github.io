@@ -1,80 +1,22 @@
 {
-  "name": "JustJayDev - Jay Kumar",
+  "name": "JustJayDev",
   "short_name": "JustJayDev",
-  "description": "Gamer \u2022 Creator \u2022 Builder. Personal digital identity of Jay Kumar (JustJayDev).",
+  "description": "Jay Kumar — mobile gamer, AI builder and future trader. Free Fire Max Grandmaster, Dragon City collector, and the developer behind TitleForge and PixVault.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#020617",
-  "theme_color": "#020617",
-  "lang": "en",
-  "categories": [
-    "personal",
-    "portfolio"
-  ],
+  "background_color": "#070b10",
+  "theme_color": "#070b10",
+  "categories": ["games", "portfolio", "developer"],
   "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    {
-      "name": "Games",
-      "url": "/games",
-      "icons": [
-        {
-          "src": "icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "Devlog",
-      "url": "/devlog",
-      "icons": [
-        {
-          "src": "icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    },
-    {
-      "name": "About",
-      "url": "/about",
-      "icons": [
-        {
-          "src": "icons/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    }
+    { "name": "Games", "url": "./games" },
+    { "name": "Projects", "url": "./projects" },
+    { "name": "Devlog", "url": "./devlog" }
   ]
 }
