@@ -52,8 +52,11 @@ export const profile = {
  * sensitive data.
  */
 export const secret = {
-  // sha256 of the agreed passphrase (kept out of the repo on purpose)
-  passwordHash: '07faa6aaabc7950c92cda92e7bac36ba1e6acf59a4ee935c3d8b9a4102dc3fa2',
+  // salted sha256 of the agreed passphrase (kept out of the repo on
+  // purpose). The salt stops a precomputed rainbow table from matching
+  // the digest even though the hashing happens client-side.
+  secretSalt: 'a48707fb50312f3f729fbc65266d3eca',
+  passwordHash: '7e586ddfd158d0595e8c9269e628e9e4f224a6a65f75a4bf760aaa2378b66e59',
   fullName: 'Jay Kumar Chaudhary',
   age: 15,
   class: 'Class 9',

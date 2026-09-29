@@ -6,7 +6,7 @@ import { secret } from '@/data/profile';
  *  expected digest, then compare digests. The plaintext password is never
  *  stored or compared as a string anywhere in the codebase. */
 async function digestOf(input: string): Promise<string> {
-  const data = new TextEncoder().encode(input);
+  const data = new TextEncoder().encode((secret.secretSalt || '') + ':' + input);
   const buf = await crypto.subtle.digest('SHA-256', data);
   return Array.from(new Uint8Array(buf))
     .map((b) => b.toString(16).padStart(2, '0'))
