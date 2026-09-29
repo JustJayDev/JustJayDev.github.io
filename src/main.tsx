@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
-// v5 identity layer — must load after the legacy stylesheet so it wins.
-import './v5.css';
+// v6 identity layer — must load after the legacy stylesheet so it wins.
+import './v6.css';
 // SPA fallback completion: 404.html forwards deep links as /?p=<path> — restore the real route
 // before React Router reads location, so shared URLs like /games render the Games page.
 (function restoreSpaPath() {

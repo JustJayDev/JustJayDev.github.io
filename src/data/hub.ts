@@ -43,7 +43,7 @@ export const hubProjects: HubProject[] = [
     id: 'justjaydev',
     index: '03',
     name: 'This site',
-    kind: 'Portfolio · v5',
+    kind: 'Portfolio · v6',
     blurb:
       'React, Vite and Tailwind, animated with Framer Motion. Built, debugged and shipped entirely from a phone.',
     url: 'https://github.com/JustJayDev',

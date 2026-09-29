@@ -1,3 +1,11 @@
+/**
+ * Shell — v6 "Observatory" chrome.
+ *
+ * The three fixed backdrop layers (starfield, aurora ribbons, horizon grid)
+ * are mounted here so the whole document shares one set of depth layers.
+ * Without these the design has no metaphor, which is exactly what made v5
+ * read as flat.
+ */
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -28,8 +36,8 @@ const GhostButton: React.FC<{
     title={label}
     className="w-10 h-10 rounded-lg flex items-center justify-center transition-all active:scale-95 hover:scale-105"
     style={{
-      border: `1px solid ${active ? 'var(--v5-lime)' : 'var(--v5-line)'}`,
-      color: active ? 'var(--v5-lime)' : 'var(--v5-muted)',
+      border: `1px solid ${active ? 'var(--au-1)' : 'var(--line)'}`,
+      color: active ? 'var(--au-1)' : 'var(--muted)',
       background: 'transparent',
     }}
   >
@@ -73,26 +81,31 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* ============ BACKDROP (the observatory) ============ */}
+      <div className="starfield" aria-hidden="true" />
+      <div className="aurora" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </div>
+      <div className="bg-grid" aria-hidden="true" />
+
+      {/* orbital scroll arc */}
+      <div
+        className="scroll-progress"
+        aria-hidden="true"
+        style={{ ['--p' as string]: progress }}
+      />
+
       {/* ============ HEADER ============ */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'glass' : 'bg-transparent'
-        }`}
-        style={scrolled ? undefined : { borderBottom: '1px solid transparent' }}
-      >
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass' : 'bg-transparent'}`}>
         <div className="page-container h-16 flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-2.5 shrink-0">
-            <img
-              src="/logo.svg"
-              alt=""
-              className="w-8 h-8 rounded-lg"
-              style={{ border: '1px solid var(--v5-line)' }}
-            />
+            <img src="/logo.svg" alt="" className="w-8 h-8 rounded-lg" style={{ border: '1px solid var(--line)' }} />
             <span className="font-display text-[17px] tracking-tight">
-              Just<span className="gradient-text">JayDev</span>
+              Just<span className="aurora-text">JayDev</span>
             </span>
           </NavLink>
-
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">
             {NAV.map(({ to, label }) => (
@@ -103,20 +116,22 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 onClick={() => sfx.tick()}
                 className={({ isActive }) =>
                   `px-4 py-2 rounded-lg text-[13px] font-semibold transition-all ${
-                    isActive ? 'text-[color:var(--v5-lime)]' : 'text-[color:var(--v5-muted)]'
+                    isActive ? 'aurora-text' : ''
                   }`
                 }
                 style={({ isActive }) =>
                   isActive
-                    ? { background: 'color-mix(in srgb, var(--v5-lime) 10%, transparent)' }
-                    : undefined
+                    ? {
+                        color: 'var(--au-1)',
+                        background: 'color-mix(in srgb, var(--au-1) 10%, transparent)',
+                      }
+                    : { color: 'var(--muted)' }
                 }
               >
                 {label}
               </NavLink>
             ))}
           </nav>
-
           <div className="flex items-center gap-2">
             <GhostButton onClick={toggleSound} label={muted ? 'Unmute sounds' : 'Mute sounds'} active={!muted}>
               {muted ? <VolumeX size={17} /> : <Volume2 size={17} />}
@@ -135,7 +150,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <footer className="page-container py-10 text-center">
         <div
           className="flex items-center justify-center gap-x-5 gap-y-2 flex-wrap text-xs font-mono uppercase tracking-[0.12em]"
-          style={{ color: 'var(--v5-muted)' }}
+          style={{ color: 'var(--muted)' }}
         >
           {NAV.map(({ to, label }) => (
             <NavLink key={to} to={to} end={to === '/'} className="hover:opacity-70 transition-opacity">
@@ -162,7 +177,7 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Rss size={11} /> RSS
           </a>
         </div>
-        <p className="text-[11px] mt-4 font-mono tracking-[0.12em]" style={{ color: 'var(--v5-muted)' }}>
+        <p className="text-[11px] mt-4 font-mono tracking-[0.12em]" style={{ color: 'var(--muted)' }}>
           © 2026 JustJayDev · built on a phone, shipped from India
         </p>
       </footer>
@@ -180,9 +195,9 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             className="md:hidden fixed right-4 z-40 w-11 h-11 rounded-full flex items-center justify-center"
             style={{
               bottom: 'calc(5rem + env(safe-area-inset-bottom))',
-              background: 'var(--v5-surface)',
-              border: '1px solid var(--v5-line)',
-              color: 'var(--v5-text)',
+              background: 'var(--panel-solid)',
+              border: '1px solid var(--line)',
+              color: 'var(--text)',
             }}
           >
             <ArrowUp size={18} />
@@ -191,14 +206,10 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </AnimatePresence>
 
       {/* ============ BOTTOM NAV (mobile) ============ */}
-      <nav
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-      >
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="flex items-center justify-around h-16">
           {NAV.map(({ to, label, icon: Icon }) => {
-            const active =
-              to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
+            const active = to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
             return (
               <NavLink
                 key={to}
@@ -208,13 +219,13 @@ const Shell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   sfx.tick();
                 }}
                 className="relative flex flex-col items-center justify-center w-20 h-full"
-                style={{ color: active ? 'var(--v5-lime)' : 'var(--v5-muted)' }}
+                style={{ color: active ? 'var(--au-1)' : 'var(--muted)' }}
               >
                 {active && (
                   <motion.span
                     layoutId="nav-pill"
                     className="absolute inset-x-3 inset-y-2 rounded-lg"
-                    style={{ background: 'color-mix(in srgb, var(--v5-lime) 12%, transparent)' }}
+                    style={{ background: 'color-mix(in srgb, var(--au-1) 12%, transparent)' }}
                     transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                   />
                 )}
