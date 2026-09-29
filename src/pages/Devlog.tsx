@@ -31,7 +31,7 @@ const Devlog: React.FC = () => {
 
   useEffect(() => {
     document.title = 'Devlog — JustJayDev';
-    fetch('/just-jay-alt/feed.xml')
+    fetch('/feed.xml')
       .then((r) => {
         if (!r.ok) throw new Error('feed fetch failed');
         return r.text();
@@ -74,7 +74,7 @@ const Devlog: React.FC = () => {
           <div className="rounded-2xl p-6 text-center" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
             <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
               Couldn't load the feed. Read it directly:{' '}
-              <a href="/just-jay-alt/feed.xml" className="font-semibold" style={{ color: 'var(--color-accent-light)' }}>feed.xml</a>
+              <a href="/feed.xml" className="font-semibold" style={{ color: 'var(--color-accent-light)' }}>feed.xml</a>
             </p>
           </div>
         )}
@@ -140,7 +140,7 @@ const Devlog: React.FC = () => {
         )}
 
         <a
-          href="/just-jay-alt/feed.xml"
+          href="/feed.xml"
           className="inline-flex items-center justify-center gap-2 text-sm font-semibold mt-2 mb-4"
           style={{ color: 'var(--color-accent-light)' }}
         >

@@ -330,13 +330,17 @@ const Games: React.FC = () => {
         style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
       >
         <h2 className="section-title text-lg md:text-xl">Casual classics</h2>
-        <div className="marquee mt-4 -mx-2">
+        {/* The list is repeated to make the marquee loop seamlessly, so the
+            visible copy is hidden from assistive tech and announced once
+            instead of twice. */}
+        <p className="sr-only">Also played: {casualGames.join(', ')}.</p>
+        <div className="marquee mt-4 -mx-2" aria-hidden="true">
           <div className="marquee__track gap-2 px-2">
             {[...casualGames, ...casualGames].map((g, i) => (
               <span
                 key={i}
                 className="text-xs px-3 py-1.5 rounded-full whitespace-nowrap"
-                style={{ background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
+                style={{ background: 'var(--v5-surface-2)', color: 'var(--v5-muted)' }}
               >
                 {g}
               </span>
