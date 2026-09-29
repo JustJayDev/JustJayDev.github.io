@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -31,7 +29,7 @@ jobs:
         run: npm ci
 
       # `build` runs tsc --noEmit first, so a type error fails the deploy
-      # rather than shipping. This is the whole point of v7's pipeline.
+      # rather than shipping. That is the whole point of v7's pipeline.
       - name: Build (type-check gates the bundle)
         run: npm run build
 
@@ -44,11 +42,15 @@ jobs:
           fi
           echo "No secrets found in dist/."
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
+      # This repo's Pages source is the gh-pages branch rather than GitHub
+      # Actions, so publish there. force_orphan keeps the published root clean
+      # instead of letting stale bundles accumulate across deploys.
       - name: Deploy to GitHub Pages
-        id: deploy
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
