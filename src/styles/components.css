@@ -373,6 +373,19 @@
   min-height: 24px;
 }
 
+/* ---- details/summary: a real tap target ---- */
+/* The devlog uses <details><summary> as its "Read entry" control, one per
+ * entry. A <summary> is a list-item with no padding, so it measured 18px
+ * tall -- under the 24px minimum this project already holds its buttons
+ * to, and below the WCAG 2.2 target-size guidance. The 19 devlog
+ * summaries were the only interactive elements on the site that missed it.
+ * The clickable area grows; the type stays exactly the same size, so this
+ * changes no visual weight. */
+summary {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
 /* ---- prose ---- */
 .prose p + p { margin-top: var(--s-3); }
 .prose { color: var(--text-dim); line-height: 1.7; max-width: 68ch; }
