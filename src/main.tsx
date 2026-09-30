@@ -16,14 +16,29 @@ import './styles/components.css';
  * reached only by paths that genuinely do not exist. */
 
 /* GitHub Pages 301-redirects a directory request to its trailing-slash form,
- * so /games arrives as /games/ . React Router's <Route path="/games"> does not
- * match "/games/", which would hand a valid URL to the NotFound view. Strip the
- * trailing slash before the router reads the URL. Only one slash, never root. */
-(function normalizeTrailingSlash() {
-  const p = window.location.pathname;
-  if (p.length > 1 && p.endsWith('/')) {
-    const clean = p.replace(/\/+$/, '') || '/';
-    window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+ * so /games arrives as /games/. React Router's <Route path="/games"> does not
+ * match "/games/", which would hand a valid URL to the NotFound view -- so
+ * normalise the path before the router reads it. Never from the root.
+ *
+ * Repeated slashes are collapsed in the same pass. A URL like //devlog/ used
+ * to make history.replaceState throw a SecurityError, and because this IIFE
+ * runs before createRoot, that throw aborted main.tsx and left the visitor
+ * with nothing but the <noscript> fallback -- a blank site on what is really a
+ * valid route. A crawler, a hand-typed link or a bad redirect can all produce
+ * one. The rewrite must also stay same-origin, so a leading '//' is left
+ * untouched rather than being read as a protocol-relative URL. */
+(function normalizePath() {
+  const raw = window.location.pathname;
+  if (raw.length <= 1 || !/\/{2,}|\/$/.test(raw)) return;
+  const clean =
+    ('/' + raw.replace(/\/{2,}/g, '/').replace(/\/+$/, '')).replace(/\/$/, '') || '/';
+  const next = clean + window.location.search + window.location.hash;
+  if (next.startsWith('//')) return;
+  try {
+    window.history.replaceState(null, '', next);
+  } catch {
+    /* Never let a history write take the whole app down; the router reads the
+     * current path either way. */
   }
 })();
 

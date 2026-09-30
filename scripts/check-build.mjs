@@ -308,6 +308,49 @@ for (const m of content.matchAll(/image:\s*'([^']+)'/g)) {
   }
 }
 
+/* --- 9. every prerendered route must ship parseable, route-correct JSON-LD --
+ * The structured-data graph was emitted only by src/lib/seo.ts at runtime, so
+ * the static bytes a crawler reads carried none -- exactly how the missing
+ * og:description and twitter:image tags survived to production. A graph that
+ * does not parse, or that describes a different route, is worse than none. */
+for (const loc of locs) {
+  const rp = loc.slice(SITE.length) || '/';
+  const dir = rp === '/' ? out : path.join(out, rp.replace(/^\/+/, ''));
+  const html = readFileSync(path.join(dir, 'index.html'), 'utf8');
+  const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  if (!ld) {
+    fail(rp + ': no JSON-LD -- crawlers get no structured data from the static HTML');
+    continue;
+  }
+  let parsed;
+  try {
+    parsed = JSON.parse(ld[1]);
+  } catch (e) {
+    fail(rp + ': JSON-LD is not valid JSON (' + e.message + ')');
+    continue;
+  }
+  if (parsed['@context'] !== 'https://schema.org') {
+    fail(rp + ': JSON-LD @context is ' + JSON.stringify(parsed['@context']) + ', expected schema.org');
+  }
+  const nodes = Array.isArray(parsed['@graph']) ? parsed['@graph'] : [];
+  const types = nodes.map((n) => n['@type']);
+  for (const t of ['WebSite', 'WebPage']) {
+    if (!types.includes(t)) fail(rp + ': JSON-LD has no ' + t + ' node');
+  }
+  /* The WebPage must describe THIS route, or the graph contradicts the title. */
+  const page = nodes.find((n) => n['@type'] === 'WebPage');
+  if (page) {
+    if (page.url !== loc) fail(rp + ': JSON-LD WebPage url (' + page.url + ') is not ' + loc);
+    const ttl = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1];
+    if (ttl && page.name !== ttl) {
+      fail(rp + ': JSON-LD WebPage name (' + page.name + ') disagrees with <title> (' + ttl + ')');
+    }
+    const desc = (html.match(/<meta\s+name="description"\s+content="([^"]*)"/) || [])[1];
+    if (desc && page.description !== desc) {
+      fail(rp + ': JSON-LD WebPage description disagrees with the meta description');
+    }
+  }
+}
 if (errors.length) {
   console.error(`check-build: ${errors.length} problem(s)\n`);
   for (const e of errors) console.error('  - ' + e);

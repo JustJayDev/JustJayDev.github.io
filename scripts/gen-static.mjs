@@ -136,6 +136,32 @@ function seoFor(c, pathname) {
   return { title: `Not found — ${site.title}`, desc: 'That page does not exist.', path: p };
 }
 
+/* Per-route JSON-LD. Kept beside the meta tags it has to agree with: the
+ * name and description are the same strings written into <title> and
+ * <meta name="description">, so a graph can never contradict the page. */
+function jsonLd(seo) {
+  const graph = [
+    {
+      '@type': 'WebSite',
+      '@id': SITE + '/#website',
+      name: siteMeta.title,
+      url: SITE + '/',
+      description: siteMeta.description,
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'WebPage',
+      '@id': SITE + seo.path + '#webpage',
+      url: SITE + seo.path,
+      name: seo.title,
+      description: seo.desc,
+      isPartOf: { '@id': SITE + '/#website' },
+      inLanguage: 'en',
+    },
+  ];
+  return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+}
+
 function applySeo(html, seo) {
   let out = html;
   out = out.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(seo.title)}</title>`);
@@ -212,6 +238,21 @@ function applySeo(html, seo) {
     out = out.replace(
       '</head>',
       `  <link rel="canonical" href="${SITE}${seo.path}" />\n  </head>`,
+    );
+  }
+  /* JSON-LD was the last tag injected ONLY at runtime (src/lib/seo.ts
+   * upsertLd), so every prerendered page reached a crawler with no structured
+   * data at all -- the same silent failure as the og:description and
+   * twitter:image bugs before it. Emit a real per-route graph here. */
+  if (/<script type="application\/ld\+json"/.test(out)) {
+    out = out.replace(
+      /<script type="application\/ld\+json">[\s\S]*?<\/script>/,
+      '<script type="application/ld+json">' + jsonLd(seo) + '</script>',
+    );
+  } else {
+    out = out.replace(
+      '</head>',
+      '  <script type="application/ld+json">' + jsonLd(seo) + '</script>\n  </head>',
     );
   }
   return out;
@@ -338,6 +379,7 @@ await mkdir(out, { recursive: true });
 // Static copies that live in public/ get written by Vite already; these three
 // are generated so they can never disagree with the content layer.
 const c = await loadContent();
+const siteMeta = c.site;
 await writeFile(path.join(out, 'feed.xml'), buildFeed(c.devlog, c.site));
 // Derived from the content layer, not hand-listed, so a new game profile can
 // never ship without being discoverable.
