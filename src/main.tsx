@@ -25,13 +25,12 @@ import './styles/components.css';
  * runs before createRoot, that throw aborted main.tsx and left the visitor
  * with nothing but the <noscript> fallback -- a blank site on what is really a
  * valid route. A crawler, a hand-typed link or a bad redirect can all produce
- * one. The rewrite must also stay same-origin, so a leading '//' is left
- * untouched rather than being read as a protocol-relative URL. */
+ * one. Collapse first, then strip the trailing slash, so '//devlog//' becomes
+ * '/devlog' and routes normally instead of merely avoiding the crash. */
 (function normalizePath() {
   const raw = window.location.pathname;
   if (raw.length <= 1 || !/\/{2,}|\/$/.test(raw)) return;
-  const clean =
-    ('/' + raw.replace(/\/{2,}/g, '/').replace(/\/+$/, '')).replace(/\/$/, '') || '/';
+  const clean = raw.replace(/\/{2,}/g, '/').replace(/\/+$/, '') || '/';
   const next = clean + window.location.search + window.location.hash;
   if (next.startsWith('//')) return;
   try {
