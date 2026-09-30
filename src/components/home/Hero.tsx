@@ -5,6 +5,7 @@ import { ArrowRight, User } from 'lucide-react';
 import { profile } from '@/content/profile';
 import { marqueeItems, stats } from '@/content/site';
 import { motion as M, usePrefersReducedMotion } from '@/lib/motion';
+import { assetUrl } from '@/components/ui/primitives';
 
 /** The name, in three staged layers: per-glyph rise, a primed chromatic
  *  split, and a single deliberate glitch after settle. */
@@ -90,7 +91,7 @@ export function Hero() {
     <section className="pt-[--s-7] pb-[--s-6] md:pt-[--s-8]">
       <div className="flex items-start gap-[--s-4]">
         <img
-          src={profile.heroImage}
+          src={assetUrl(profile.heroImage)}
           alt={`${profile.name} — ${profile.handle}`}
           width={56}
           height={56}

@@ -113,4 +113,68 @@ export function SpecTable({ rows }: { rows: { label: string; value: string }[] }
   );
 }
 
+/** Asset paths in the content layer are written as "./games/foo.webp". A
+ *  relative URL resolves against the CURRENT path, so on /games/dragon-city
+ *  that becomes /games/games/foo.webp and 404s. Every asset here lives at the
+ *  site root, so resolve against the base href instead. */
+export function assetUrl(src: string): string {
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+  const rel = src.replace(/^\.\//, '');
+  return `${base}/${rel}`;
+}
+
+/** Game artwork banner, shared by the Games grid and the profile hero.
+ *
+ *  Games with real artwork get the image. The casual classics have none, so
+ *  instead of an empty grey rectangle the frame renders a typographic plate
+ *  built from the game's own accent, name and status — all of which already
+ *  exist in the content layer, so nothing here is invented.
+ */
+export function GameArt({
+  name,
+  image,
+  accent,
+  kind,
+  eager = false,
+}: {
+  name: string;
+  image?: string;
+  accent: string;
+  kind: string;
+  eager?: boolean;
+}) {
+  const [failed, setFailed] = useState(false);
+  // `src` is only read when showImage is true, which already proves image exists,
+  // but TS cannot see that through a Boolean() so narrow it explicitly.
+  const showImage = Boolean(image) && !failed;
+  const src = showImage ? assetUrl(image as string) : undefined;
+
+  return (
+    <div className="artframe" style={{ '--frame-accent': accent } as React.CSSProperties}>
+      {showImage ? (
+        <img
+          className="artframe__img"
+          src={src}
+          alt={`${name} artwork`}
+          width={1294}
+          height={728}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          /* If the file 404s or fails to decode, fall through to the plate
+             rather than leaving a broken image icon on the card. */
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <div className="artframe__plate" aria-hidden="true">
+          <span className="artframe__mark">{name}</span>
+          <span className="artframe__kind">{kind}</span>
+        </div>
+      )}
+
+      {/* The scrim only exists under real artwork; the plate keeps its wash. */}
+      {showImage ? <span className="artframe__scrim" aria-hidden="true" /> : null}
+    </div>
+  );
+}
+
 export { motion };

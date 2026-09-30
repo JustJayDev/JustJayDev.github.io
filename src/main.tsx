@@ -26,6 +26,19 @@ import './styles/components.css';
   }
 })();
 
+/* GitHub Pages serves directories with a trailing slash: a request for /games
+ * is 301-redirected to /games/, which has no file and returns 404.html. React
+ * Router matches "/games/" against none of the exact routes, so the visitor got
+ * the NotFound page for a URL that is perfectly valid. Normalise the trailing
+ * slash away before the router reads the URL. Only one slash, never the root. */
+(function normalizeTrailingSlash() {
+  const p = window.location.pathname;
+  if (p.length > 1 && p.endsWith('/')) {
+    const clean = p.replace(/\/+$/, '') || '/';
+    window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+  }
+})();
+
 const root = document.getElementById('root');
 if (!root) throw new Error('Root element #root not found');
 

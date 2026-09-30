@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { nav, readout } from '@/content/site';
 import { useTheme } from '@/lib/theme';
+import { assetUrl } from '@/components/ui/primitives';
 
 export function Header() {
   const { theme, toggle } = useTheme();
@@ -28,7 +29,7 @@ export function Header() {
           className="flex items-center gap-[--s-2] font-display text-[0.95rem] font-bold tracking-tight"
           aria-label="JustJayDev — home"
         >
-          <img src="./logo.svg" alt="" width={22} height={22} aria-hidden="true" className="rounded-[6px]" />
+          <img src={assetUrl('./logo.svg')} alt="" width={22} height={22} aria-hidden="true" className="rounded-[6px]" />
           <span>JustJayDev</span>
         </Link>
 

@@ -149,6 +149,124 @@
 }
 .panel--pad { padding: var(--s-5); }
 
+/* ============================================================
+   GAME ARTWORK — artframe
+   The games with real artwork use it as a banner. The casual
+   classics have none, and a bare grey rectangle read as a bug, so
+   the same frame renders a typographic plate built from the game's
+   own accent colour instead. Nothing invented: it uses the name,
+   the real status line and the accent already in the content layer.
+   ============================================================ */
+.artframe {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bg-sunken);
+  isolation: isolate;
+}
+
+/* The accent wash: the game's own colour, kept dark enough that the
+   overlaid text still clears AA contrast in both themes. */
+.artframe::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 22% 12%, color-mix(in srgb, var(--frame-accent) 34%, transparent), transparent 62%),
+    linear-gradient(158deg, color-mix(in srgb, var(--frame-accent) 22%, transparent), transparent 58%),
+    color-mix(in srgb, var(--bg-sunken) 88%, black);
+  z-index: 0;
+}
+
+.artframe__img {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform var(--d-enter) var(--ease-out);
+}
+
+/* Scrim only under artwork, so the no-art plate keeps its clean wash. */
+.artframe__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(4, 7, 10, 0.58), transparent 58%);
+  pointer-events: none;
+}
+
+/* ---- the no-artwork plate ---- */
+.artframe__plate {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--s-4);
+  gap: var(--s-1);
+}
+
+.artframe__mark {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1.1rem + 2vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--frame-accent) 74%, white);
+  /* Long names wrap rather than overflow the fixed-ratio frame. */
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.artframe__kind {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--frame-accent) 40%, var(--text-dim));
+}
+
+/* Hairline grid, very low contrast. Gives the empty plate structure
+   without becoming a decorative pattern that fights the content. */
+.artframe__plate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--frame-accent) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--frame-accent) 12%, transparent) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom right, black, transparent 76%);
+  -webkit-mask-image: linear-gradient(to bottom right, black, transparent 76%);
+  pointer-events: none;
+}
+
+/* The 2px identity rule lives on the frame so it never doubles up. */
+.artframe {
+  border-top: 2px solid var(--frame-accent, var(--accent-line));
+}
+
+/* Hover: the artwork moves a little, the plate does not. Movement is
+   reserved for the thing that actually has an image. */
+@media (hover: hover) {
+  .group:hover .artframe__img {
+    transform: scale(1.045);
+  }
+}
+
+/* The card is a link on some cards and a div on others, so the focus
+   ring is drawn on the frame to match whichever wrapper is used. */
+.group:focus-visible {
+  outline: none;
+}
+.group:focus-visible .artframe {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* Only THREE glass surfaces exist in the whole site. */
 .glass {
   background: color-mix(in srgb, var(--bg-raise) 82%, transparent);

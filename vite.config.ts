@@ -4,8 +4,10 @@ import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   plugins: [react()],
-  // Relative base so the build works both at the domain root and any subpath.
-  base: './',
+  // Absolute base: the site is served from the domain root, and relative asset
+  // URLs resolve against the current route (so /games/dragon-city would look for
+  // /games/assets/*.js and /games/logo.svg). Must match the pages origin.
+  base: '/',
   resolve: {
     // Mirrors the `@/*` path in tsconfig.json.
     alias: {

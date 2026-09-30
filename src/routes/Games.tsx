@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search, X, BadgeCheck } from 'lucide-react';
 import { games, mainGames, casualGames } from '@/content/games';
 import { stats } from '@/content/site';
-import { PageHead, Reveal } from '@/components/ui/primitives';
+import { PageHead, Reveal, GameArt } from '@/components/ui/primitives';
 import { useSeo } from '@/lib/seo';
 
 type Filter = 'all' | 'main' | 'casual';
@@ -109,22 +109,17 @@ export default function Games() {
           {results.map((g, i) => {
             const inner = (
               <>
-                <div
-                  className="relative aspect-[16/10] overflow-hidden bg-[var(--bg-sunken)]"
-                  style={{ borderTop: `2px solid ${g.accent}` }}
-                >
-                  {g.image ? (
-                    <img
-                      src={g.image}
-                      alt={`${g.name} artwork`}
-                      loading="lazy"
-                      width={480}
-                      height={300}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                    />
-                  ) : null}
+                <div className="relative">
+                  <GameArt
+                    name={g.name}
+                    image={g.image}
+                    accent={g.accent}
+
+                    kind={g.category === 'main' ? 'Main game' : 'Casual'}
+                    eager={i < 3}
+                  />
                   {g.nowPlaying ? (
-                    <span className="absolute left-[--s-2] top-[--s-2] inline-flex items-center gap-[5px] rounded-[var(--r-pill)] bg-black/60 px-[var(--s-2)] py-[3px] backdrop-blur-sm">
+                    <span className="absolute left-[--s-2] top-[--s-2] z-[3] inline-flex items-center gap-[5px] rounded-[var(--r-pill)] bg-black/60 px-[var(--s-2)] py-[3px] backdrop-blur-sm">
                       <span className="live-dot" aria-hidden="true" />
                       <span className="mono-xs text-white">Now playing</span>
                     </span>

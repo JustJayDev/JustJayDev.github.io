@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, BadgeCheck } from 'lucide-react';
 import { gameById, mainGames } from '@/content/games';
-import { PageHead, SpecTable } from '@/components/ui/primitives';
+import { SpecTable, GameArt } from '@/components/ui/primitives';
 import { useSeo } from '@/lib/seo';
 import NotFound from './NotFound';
 
@@ -30,32 +30,36 @@ export default function GameProfile() {
 
   return (
     <div className="shell">
-      <PageHead eyebrow={game.category === 'main' ? 'Main game' : 'Casual'} title={game.name} lede={game.status} />
+      {/* The artwork banner IS the page header on this route: it carries the
+          single h1 and the status line, so the name is never stated twice and
+          the artwork is integrated rather than stacked above the text. */}
+      <header className="pt-[--s-8]">
+        <div className="relative overflow-hidden rounded-[var(--r-md)] border border-[--line]">
+          <GameArt
+            name={game.name}
+            image={game.image}
+            accent={game.accent}
+
+            kind={game.category === 'main' ? 'Main game' : 'Casual'}
+            eager
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] p-[--s-5]">
+            <p className="artframe__kind">{game.category === 'main' ? 'Main game' : 'Casual'}</p>
+            <h1 className="mt-[6px] font-display text-[clamp(1.5rem,1.1rem+1.6vw,2.3rem)] font-bold leading-tight tracking-[-0.02em] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
+              {game.name}
+            </h1>
+            <p className="mono-xs mt-[6px] text-white/85">{game.status}</p>
+          </div>
+        </div>
+      </header>
 
       <div className="grid gap-[--s-6] lg:grid-cols-[1.2fr_1fr]">
         <div>
-          {game.image ? (
-            <div
-              className="overflow-hidden rounded-[var(--r-md)] border border-[--line] bg-[var(--bg-sunken)]"
-              style={{ borderTop: `2px solid ${game.accent}` }}
-            >
-              <img
-                src={game.image}
-                alt={`${game.name} artwork`}
-                width={720}
-                height={450}
-                className="aspect-[16/10] w-full object-cover"
-              />
-            </div>
-          ) : null}
-
-          <div className="mt-[--s-5]">
-            <h2 className="text-[1.1rem]">Details</h2>
-            <div className="prose mt-[--s-3] text-[0.95rem]">
-              {game.details.map((d) => (
-                <p key={d}>{d}</p>
-              ))}
-            </div>
+          <h2 className="text-[1.1rem]">Details</h2>
+          <div className="prose mt-[--s-3] text-[0.95rem]">
+            {game.details.map((d) => (
+              <p key={d}>{d}</p>
+            ))}
           </div>
 
           {game.flex ? (

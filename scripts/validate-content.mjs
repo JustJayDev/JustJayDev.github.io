@@ -67,6 +67,12 @@ for (const g of c.games) {
   if (g.image && !existsSync(path.join(root, 'public', g.image.replace(/^\.?\//, '')))) {
     fail(`${where}: image "${g.image}" does not exist in public/`);
   }
+  /* Artwork paths are resolved against the site root at runtime, not against
+     the current route. A path with a leading slash or a "../" would break
+     that contract, so reject it here rather than shipping a 404 image. */
+  if (g.image && (g.image.startsWith('/') || g.image.includes('..'))) {
+    fail(`${where}: image "${g.image}" must be relative to the site root (no leading "/" or "..")`);
+  }
   if (g.hasProfile) {
     for (const [i, d] of (g.details || []).entries()) {
       if (!str(d)) fail(`${where}: details[${i}] is empty`);
