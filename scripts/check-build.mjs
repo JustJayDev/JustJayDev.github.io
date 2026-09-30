@@ -142,6 +142,12 @@ for (const [f, kind] of [
   }
   const s = readFileSync(p, 'utf8');
   if (kind === 'xml' && !s.startsWith('<?xml')) fail(`${f}: missing XML declaration`);
+  if (f === 'feed.xml') {
+    /* A well-formed but empty feed is a silent regression: subscribers get
+       nothing and nothing in the pipeline complains. Require one item. */
+    const items = s.match(/<item>/g) || [];
+    if (!items.length) fail('feed.xml has no <item> — subscribers would get an empty feed');
+  }
 }
 {
   const p = path.join(out, 'manifest.webmanifest');
