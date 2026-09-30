@@ -23,6 +23,10 @@ const out = path.join(root, 'dist');
 const errors = [];
 const fail = (m) => errors.push(m);
 const SITE = 'https://justjaydev.github.io';
+/* Every URL the sitemap promises, read once and reused by the
+ * prerender, lazy-chunk and og:image checks below. Hoisted to module
+ * scope so each check validates the SAME route set. */
+let locs = [];
 
 if (!existsSync(out)) {
   console.error('check-build: dist/ does not exist — run the build first.');
@@ -93,7 +97,7 @@ if (!existsSync(sitemapPath)) {
   fail('sitemap.xml was not generated');
 } else {
   const xml = readFileSync(sitemapPath, 'utf8');
-  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   if (!locs.length) fail('sitemap.xml lists no URLs');
 
   for (const loc of locs) {
@@ -163,7 +167,99 @@ for (const m of content.matchAll(/image:\s*'([^']+)'/g)) {
   }
 }
 
-/* --- 5. 404.html must stay an honest 404 ------------------------------- */
+
+/* --- 6. every lazy route chunk must exist, and be reachable -------------- */
+/* App.tsx lazy()s seven routes. If a chunk were renamed, dropped by a
+ * tree-shake, or simply never emitted, the failure is a blank screen at
+ * runtime -- tsc and the content validator both pass. So read the real
+ * chunk graph out of the emitted entry instead of trusting the source. */
+{
+  const assetsDir = path.join(out, 'assets');
+  const all = readdirSync(assetsDir);
+  const emitted = new Set(all);
+  const entry = all.filter((n) => /^index-.*\.js$/.test(n))[0];
+  if (!entry) {
+    fail('assets: no index-*.js entry chunk was emitted');
+  } else {
+    /* The entry references its route chunks as "./Home-XXXX.js" in the
+     * static-import map. Walk the graph transitively from the entry. */
+    const seen = {};
+    seen[entry] = 1;
+    const queue = [entry];
+    const referenced = {};
+    while (queue.length) {
+      const name = queue.pop();
+      const src = readFileSync(path.join(assetsDir, name), 'utf8');
+      const re = /"\.\/(?!\.)([A-Za-z0-9_.-]+)"/g;
+      let m;
+      while ((m = re.exec(src))) {
+        const dep = m[1];
+        referenced[dep] = 1;
+        if (emitted.has(dep) && !seen[dep]) {
+          seen[dep] = 1;
+          queue.push(dep);
+        }
+      }
+    }
+    /* Every src/routes/*.tsx must have produced a chunk. Vite names a lazy
+     * chunk after its module, so the basename must be present. */
+    const routesDir = path.join(root, 'src', 'routes');
+    const routeNames = readdirSync(routesDir)
+      .filter((n) => n.slice(-4) === '.tsx')
+      .map((n) => n.slice(0, -4));
+    for (const r of routeNames) {
+      const chunk = all.filter(
+        (n) => n.indexOf(r + '-') === 0 && n.slice(-3) === '.js',
+      )[0];
+      if (!chunk) {
+        fail('routes/' + r + '.tsx is lazy()d but no assets/' + r + '-<hash>.js chunk was emitted');
+      } else if (!referenced[chunk]) {
+        fail('assets/' + chunk + ' is emitted but the entry chunk never references it -- dead weight');
+      }
+    }
+    /* Any /assets/ URL referenced from a prerendered shell must exist. */
+    for (const loc of locs) {
+      const p = loc.slice(SITE.length) || '/';
+      const dir = p === '/' ? out : path.join(out, p.replace(/^\/+/, ''));
+      const html = readFileSync(path.join(dir, 'index.html'), 'utf8');
+      const are = /(?:src|href)="(\/assets\/[^"]+)"/g;
+      let am;
+      while ((am = are.exec(html))) {
+        const rel = am[1].replace(/^\/assets\//, '');
+        if (!emitted.has(rel)) fail(p + ': references /assets/' + rel + ', which was not emitted');
+      }
+    }
+  }
+}
+/* --- 7. every route needs an absolute og:image that exists --------------- */
+{
+  const og = path.join(out, 'og-image.jpg');
+  if (!existsSync(og)) {
+    fail('og-image.jpg is missing from dist');
+  } else {
+    /* Under 1KB is a placeholder, not a real share card. */
+    const size = readFileSync(og).length;
+    if (size < 1024) fail('og-image.jpg is only ' + size + ' bytes -- too small to be a real share card');
+  }
+  for (const loc of locs) {
+    const p = loc.slice(SITE.length) || '/';
+    const dir = p === '/' ? out : path.join(out, p.replace(/^\/+/, ''));
+    const html = readFileSync(path.join(dir, 'index.html'), 'utf8');
+    const m = html.match(/<meta property="og:image" content="([^"]+)"/);
+    if (!m) {
+      fail(p + ': no og:image -- link previews would have no image');
+    } else if (m[1].indexOf(SITE + '/') !== 0) {
+      fail(p + ': og:image "' + m[1] + '" is not an absolute URL on ' + SITE);
+    }
+    const tw = html.match(/<meta name="twitter:image" content="([^"]+)"/);
+    if (!tw) {
+      fail(p + ': no twitter:image');
+    } else if (m && tw[1] !== m[1]) {
+      fail(p + ': twitter:image (' + tw[1] + ') disagrees with og:image (' + m[1] + ')');
+    }
+  }
+}
+/* --- 8. 404.html must stay an honest 404 ------------------------------- */
 {
   const p = path.join(out, '404.html');
   if (!existsSync(p)) fail('404.html is missing');

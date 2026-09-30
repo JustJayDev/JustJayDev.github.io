@@ -177,6 +177,22 @@ function applySeo(html, seo) {
         `  <meta name="twitter:description" content="${esc(seo.desc)}" />\n  </head>`,
     );
   }
+  /* twitter:image was the one social tag index.html never ships. seo.ts
+   * injects it at runtime, but a preview bot reads the static HTML and
+   * never runs the bundle, so every Twitter/X card rendered with no image.
+   * Inject it here, alongside the other per-route twitter tags. */
+  const TW_IMG = SITE + '/og-image.jpg';
+  if (/<meta\s+name="twitter:image"/.test(out)) {
+    out = out.replace(
+      /(<meta\s+name="twitter:image"\s+content=")[^"]*(")/,
+      '$1' + TW_IMG + '$2',
+    );
+  } else {
+    out = out.replace(
+      '</head>',
+      '  <meta name="twitter:image" content="' + TW_IMG + '" />\n  </head>',
+    );
+  }
   // Canonical must be absolute and route-specific, or every profile page
   // would advertise itself as the homepage.
   if (/<link\s+rel="canonical"/.test(out)) {
