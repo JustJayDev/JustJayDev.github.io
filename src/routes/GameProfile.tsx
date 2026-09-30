@@ -107,7 +107,7 @@ export default function GameProfile() {
         ) : (
           <span />
         )}
-        <Link to="/games" className="mono-xs mute">
+        <Link to="/games" className="mono-xs mute link-target">
           All games
         </Link>
         {next ? (

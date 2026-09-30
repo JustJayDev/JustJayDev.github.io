@@ -22,12 +22,22 @@
     <meta property="og:image" content="https://justjaydev.github.io/og-image.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Fonts: preconnect, then load with swap so text never waits on them -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fonts: self-hosted latin variable woff2 (all OFL). Preloading the two
+         families used above the fold lets the text paint in the right face on
+         the first pass instead of swapping after a third-party round trip. -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="preload"
+      href="/fonts/space-grotesk-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
 
     <script>

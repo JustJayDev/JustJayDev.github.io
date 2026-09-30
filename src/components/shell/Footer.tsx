@@ -21,7 +21,7 @@ export function Footer() {
 
           <nav aria-label="Footer">
             <p className="eyebrow">Pages</p>
-            <ul className="mt-[--s-3] flex flex-col gap-[6px]">
+            <ul className="link-row mt-[--s-3]">
               {nav.map((item) => (
                 <li key={item.to}>
                   <Link to={item.to} className="link-quiet text-[0.9rem]">
@@ -34,7 +34,7 @@ export function Footer() {
 
           <div>
             <p className="eyebrow">Elsewhere</p>
-            <ul className="mt-[--s-3] flex flex-col gap-[6px]">
+            <ul className="link-row mt-[--s-3]">
               {socials.slice(0, 4).map((s) => (
                 <li key={s.label}>
                   <a
@@ -48,7 +48,7 @@ export function Footer() {
                 </li>
               ))}
               <li>
-                <a href="./feed.xml" className="link-quiet inline-flex items-center gap-[6px] text-[0.9rem]">
+                <a href="/feed.xml" className="link-quiet inline-flex items-center gap-[6px] text-[0.9rem]">
                   <Rss size={13} aria-hidden="true" /> RSS
                 </a>
               </li>
@@ -71,7 +71,7 @@ export function Footer() {
             © {year} {profile.name} · Built on a phone
           </p>
           <p className="mono-xs mute">
-            <a href={site.url} className="link-quiet">
+            <a href={site.url} className="link-quiet link-target">
               justjaydev.github.io
             </a>
           </p>

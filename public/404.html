@@ -5,8 +5,15 @@
     <title>Not found — JustJayDev</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta http-equiv="refresh" content="0; url=/" />
-    <link rel="canonical" href="https://justjaydev.github.io/" />
+    <meta name="robots" content="noindex" />
+    <!--
+      This page is only reached for paths that do not exist. Every real route
+      now ships its own index.html (see scripts/gen-static.mjs), so Pages serves
+      those with HTTP 200 and never lands here. There is deliberately no
+      meta-refresh and no sessionStorage redirect: bouncing a genuine 404 to the
+      homepage hides the missing page from crawlers and loses the visitor's
+      context. One honest 404, with a real link home.
+    -->
     <style>
       :root { color-scheme: dark; }
       body {
@@ -23,19 +30,12 @@
       }
       a { color: #34d399; }
       h1 { font-size: 1.5rem; margin: 0; }
-      p { margin: 0; color: #8b98a5; }
+      p { margin: 0; color: #8fa3b0; }
     </style>
   </head>
   <body>
     <h1>404 — that page does not exist.</h1>
-    <p>Taking you back to the homepage.</p>
-    <p><a href="/">justjaydev.github.io</a></p>
-    <script>
-      // The SPA reads this back before React Router mounts and restores the
-      // original path, so a deep link lands on its real page instead of "/".
-      try {
-        sessionStorage.setItem('jj-spa-path', location.pathname + location.search + location.hash);
-      } catch (e) {}
-    </script>
+    <p>Nothing is published at this address.</p>
+    <p><a href="/">Back to justjaydev.github.io</a></p>
   </body>
 </html>

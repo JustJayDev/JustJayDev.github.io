@@ -72,6 +72,127 @@ ${items}
 `;
 }
 
+/* --- prerender ---
+ * GitHub Pages serves <dir>/index.html for <dir> with HTTP 200, and only
+ * falls through to 404.html (HTTP 404) when nothing matches. A single
+ * catch-all shell therefore forces every deep route to answer 404, which
+ * breaks link previews and tells crawlers 5 of 9 sitemap URLs are missing.
+ *
+ * So each real route gets its own directory containing a copy of the built
+ * index.html with that route's <title>/description/og/canonical pre-filled
+ * from the content layer. The runtime is untouched -- React Router still
+ * mounts and takes over -- but the bytes a crawler or preview bot sees are
+ * now the correct ones, served with a 200.
+ *
+ * Genuine unknown paths still reach 404.html and still answer 404.
+ */
+function seoFor(c, pathname) {
+  const { site, profile, games } = c;
+  const p = pathname === '/' ? '/' : pathname;
+  if (p === '/') {
+    return {
+      title: `${site.title} — ${site.tagline}`,
+      desc: site.description,
+      path: '/',
+    };
+  }
+  if (p === '/games') {
+    return {
+      title: `Games — ${site.title}`,
+      desc: 'Every game Jay plays — ranks, trophies, levels and badges, updated as they change.',
+      path: '/games',
+    };
+  }
+  if (p === '/projects') {
+    return {
+      title: `Projects — ${site.title}`,
+      desc: 'TitleForge and PixVault — the apps Jay builds and ships. Plus the Developer Vault that keeps their secrets out of the browser.',
+      path: '/projects',
+    };
+  }
+  if (p === '/devlog') {
+    return {
+      title: `Devlog — ${site.title}`,
+      desc: 'Build notes across this site, TitleForge, PixVault and the Developer Vault — newest first.',
+      path: '/devlog',
+    };
+  }
+  if (p === '/about') {
+    return {
+      title: `About — ${site.title}`,
+      desc: `${profile.name} — ${profile.tagline} Mobile gamer, AI builder, and the developer behind TitleForge and PixVault.`,
+      path: '/about',
+    };
+  }
+  const m = /^\/games\/([^/]+)$/.exec(p);
+  if (m) {
+    const g = games.find((x) => x.id === m[1]);
+    return {
+      title: g ? `${g.name} — ${site.title}` : `Game not found — ${site.title}`,
+      desc: g ? `${g.name} — ${g.status}. ${g.badges.join(' · ')}.` : 'Game not found.',
+      path: p,
+    };
+  }
+  return { title: `Not found — ${site.title}`, desc: 'That page does not exist.', path: p };
+}
+
+function applySeo(html, seo) {
+  let out = html;
+  out = out.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(seo.title)}</title>`);
+  out = out.replace(
+    /(<meta\s+name="description"\s+content=")[^"]*(")/,
+    `$1${esc(seo.desc)}$2`,
+  );
+  out = out.replace(
+    /(<meta\s+property="og:title"\s+content=")[^"]*(")/,
+    `$1${esc(seo.title)}$2`,
+  );
+  out = out.replace(
+    /(<meta\s+property="og:description"\s+content=")[^"]*(")/,
+    `$1${esc(seo.desc)}$2`,
+  );
+  if (/<meta\s+property="og:url"/.test(out)) {
+    out = out.replace(
+      /(<meta\s+property="og:url"\s+content=")[^"]*(")/,
+      `$1${SITE}${seo.path}$2`,
+    );
+  } else {
+    out = out.replace('</head>', `  <meta property="og:url" content="${SITE}${seo.path}" />\n  </head>`);
+  }
+  if (/<meta\s+name="twitter:title"/.test(out)) {
+    out = out.replace(
+      /(<meta\s+name="twitter:title"\s+content=")[^"]*(")/,
+      `$1${esc(seo.title)}$2`,
+    );
+    out = out.replace(
+      /(<meta\s+name="twitter:description"\s+content=")[^"]*(")/,
+      `$1${esc(seo.desc)}$2`,
+    );
+  } else {
+    // index.html only ships twitter:card, so a preview bot would otherwise
+    // fall back to og:title with no per-route twitter copy.
+    out = out.replace(
+      '</head>',
+      `  <meta name="twitter:title" content="${esc(seo.title)}" />\n` +
+        `  <meta name="twitter:description" content="${esc(seo.desc)}" />\n  </head>`,
+    );
+  }
+  // Canonical must be absolute and route-specific, or every profile page
+  // would advertise itself as the homepage.
+  if (/<link\s+rel="canonical"/.test(out)) {
+    out = out.replace(
+      /(<link\s+rel="canonical"\s+href=")[^"]*(")/,
+      `$1${SITE}${seo.path}$2`,
+    );
+  } else {
+    out = out.replace(
+      '</head>',
+      `  <link rel="canonical" href="${SITE}${seo.path}" />\n  </head>`,
+    );
+  }
+  return out;
+}
+
 /* --- sitemap.xml --- */
 function buildSitemap(paths) {
   const urls = paths
@@ -180,4 +301,16 @@ const sitemapPaths = [
 await writeFile(path.join(out, 'sitemap.xml'), buildSitemap(sitemapPaths));
 await writeFile(path.join(out, 'sw.js'), buildSw(hash));
 
-console.log(`gen-static: sw cache jjdev-v7-${hash}, feed=${c.devlog.length} entries`);
+/* Write the per-route shells. */
+const indexHtml = await readFile(path.join(out, 'index.html'), 'utf8');
+let prerendered = 0;
+for (const route of sitemapPaths) {
+  const dir = route === '/' ? out : path.join(out, route.replace(/^\/+/, ''));
+  await mkdir(dir, { recursive: true });
+  await writeFile(path.join(dir, 'index.html'), applySeo(indexHtml, seoFor(c, route)));
+  prerendered += 1;
+}
+
+console.log(
+  `gen-static: sw cache jjdev-v7-${hash}, feed=${c.devlog.length} entries, prerendered ${prerendered} routes`,
+);

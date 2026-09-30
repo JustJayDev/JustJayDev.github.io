@@ -208,6 +208,24 @@
   gap: var(--s-1);
 }
 
+/* Oversized monogram, watermark-style. It reads as a designed plate rather
+   than a missing image, and stays in the game's own accent so the neutral
+   casual tier gains no new colour. Purely decorative, so it is aria-hidden
+   with the rest of the plate. */
+.artframe__mono {
+  position: absolute;
+  top: var(--plate-lift, 24%);
+  right: var(--plate-shift, 18%);
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 2rem + 6.4vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.045em;
+  color: color-mix(in srgb, var(--frame-accent) 26%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
 .artframe__mark {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 1.1rem + 2vw, 2.5rem);
@@ -332,6 +350,30 @@
   transition: color var(--d-state) var(--ease-out);
 }
 .link-quiet:hover { color: var(--accent); }
+
+/* Footer link rows: the text is 0.9rem, so the box is only ~18px tall and
+ * falls under the WCAG 2.2 AA 24x24 target minimum. min-height plus flex
+ * centring grows the hit area without changing the visual weight or the
+ * surrounding rhythm. */
+.link-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.link-row > li > a,
+.link-row > li > button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+/* Any standalone inline link whose text is smaller than the 24px minimum
+   target -- section-head "view all" links, the footer wordmark. */
+.link-target {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
 
 /* ---- prose ---- */
 .prose p + p { margin-top: var(--s-3); }

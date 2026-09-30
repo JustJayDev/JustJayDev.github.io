@@ -35,7 +35,11 @@ export default function NotFound() {
 
         {guess && guess.score > 1 ? (
           <p className="mono-xs mute mt-[--s-5]">
-            Looking for <Link to={guess.item.to} className="link">{guess.item.label}</Link>?
+            Looking for{' '}
+            <Link to={guess.item.to} className="link link-target">
+              {guess.item.label}
+            </Link>
+            ?
           </p>
         ) : null}
       </div>

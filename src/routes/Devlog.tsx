@@ -65,7 +65,7 @@ export default function Devlog() {
           ))}
         </div>
 
-        <a href="./feed.xml" className="btn btn--sm btn--ghost">
+        <a href="/feed.xml" className="btn btn--sm btn--ghost">
           <Rss size={14} aria-hidden="true" /> RSS
         </a>
       </div>
@@ -86,7 +86,7 @@ export default function Devlog() {
               <button
                 type="button"
                 onClick={() => copy(e.slug)}
-                className="mono-xs mute ml-auto transition-colors hover:text-[var(--accent)]"
+                className="mono-xs mute link-target ml-auto transition-colors hover:text-[var(--accent)]"
               >
                 {copied === e.slug ? 'Copied' : 'Copy link'}
               </button>

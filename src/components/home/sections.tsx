@@ -5,7 +5,7 @@ import { mainGames, nowPlaying } from '@/content/games';
 import { projects } from '@/content/projects';
 import { devlog, projectLabels } from '@/content/devlog';
 import { stats } from '@/content/site';
-import { CountUp, Reveal, SectionHead } from '@/components/ui/primitives';
+import { CountUp, Reveal, SectionHead, assetUrl } from '@/components/ui/primitives';
 
 function StatRow() {
   const items = [
@@ -38,11 +38,10 @@ function NowPlaying() {
           <Link
             to={`/games/${g.id}`}
             className="group block overflow-hidden rounded-[var(--r-md)] border border-[--line] bg-[var(--bg-raise)] transition-transform duration-200 hover:-translate-y-1 hover:border-[var(--line-2)]"
-            style={{ ['--tilt' as string]: '0deg' }}
           >
             <div className="relative aspect-[16/10] overflow-hidden bg-[var(--bg-sunken)]">
               <img
-                src={g.image}
+                src={g.image ? assetUrl(g.image) : undefined}
                 alt={`${g.name} artwork`}
                 loading="lazy"
                 width={480}
@@ -102,8 +101,10 @@ function SurpriseMe() {
         {pick ? (
           <div key={key} className="flipped flex items-center gap-[--s-4]">
             <img
-              src={pick.image}
+              src={pick.image ? assetUrl(pick.image) : undefined}
               alt={`${pick.name} artwork`}
+              loading="lazy"
+              decoding="async"
               width={72}
               height={72}
               className="h-[72px] w-[72px] flex-none rounded-[var(--r-sm)] object-cover ring-1 ring-[--line]"
@@ -203,7 +204,7 @@ export function HomeSections() {
           eyebrow="Live right now"
           title="Now playing"
           aside={
-            <Link to="/games" className="link-quiet text-[0.9rem]">
+            <Link to="/games" className="link-quiet link-target inline-flex min-h-[24px] items-center text-[0.9rem]">
               All {stats.gamesPlayed} games →
             </Link>
           }

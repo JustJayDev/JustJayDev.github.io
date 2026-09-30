@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { motion as M, usePrefersReducedMotion } from '@/lib/motion';
 
@@ -123,6 +123,31 @@ export function assetUrl(src: string): string {
   return `${base}/${rel}`;
 }
 
+/** Up to two initials from a game name: "Subway Surfers" -> "SS",
+ *  "8 Ball Pool" -> "8B", "Chess" -> "C". Words that are already short keep
+ *  themselves, so a one-word title does not become a misleading pair. */
+function initialsOf(name: string): string {
+  const words = name.replace(/[^a-z0-9\s]/gi, ' ').split(/\s+/).filter(Boolean);
+  if (!words.length) return '·';
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return words
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
+}
+
+/** A tiny deterministic offset from the name, so two casual tiles that share
+ *  the neutral accent are not pixel-identical. Four fixed positions, no
+ *  randomness, no new colours -- the same game always renders the same way. */
+function variantOf(name: string): { x: number; y: number } {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % 997;
+  const xs = [10, 22, 34, 46];
+  const ys = [16, 30, 44, 58];
+  return { x: xs[h % xs.length], y: ys[Math.floor(h / xs.length) % ys.length] };
+}
+
 /** Game artwork banner, shared by the Games grid and the profile hero.
  *
  *  Games with real artwork get the image. The casual classics have none, so
@@ -149,8 +174,26 @@ export function GameArt({
   const showImage = Boolean(image) && !failed;
   const src = showImage ? assetUrl(image as string) : undefined;
 
+  /* The no-artwork plate. Ten casual games share one neutral accent, so without
+   * a per-game signal the tiles read as "missing artwork" rather than as a
+   * deliberate second tier. Two restrained, deterministic signals fix that: an
+   * oversized monogram derived from the game's own name, and a small positional
+   * offset hashed from its id. Both are derived from real content, neither
+   * invents a colour, and the same game always looks the same. */
+  const monogram = useMemo(() => initialsOf(name), [name]);
+  const variant = useMemo(() => variantOf(name), [name]);
+
   return (
-    <div className="artframe" style={{ '--frame-accent': accent } as React.CSSProperties}>
+    <div
+      className="artframe"
+      style={
+        {
+          '--frame-accent': accent,
+          '--plate-shift': `${variant.x}%`,
+          '--plate-lift': `${variant.y}%`,
+        } as React.CSSProperties
+      }
+    >
       {showImage ? (
         <img
           className="artframe__img"
@@ -166,6 +209,7 @@ export function GameArt({
         />
       ) : (
         <div className="artframe__plate" aria-hidden="true">
+          <span className="artframe__mono">{monogram}</span>
           <span className="artframe__mark">{name}</span>
           <span className="artframe__kind">{kind}</span>
         </div>

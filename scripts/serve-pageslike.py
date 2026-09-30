@@ -39,7 +39,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         target = self._resolve()
         with open(target, 'rb') as f:
             data = f.read()
-        self.send_response(200)
+        # Pages answers 404 when nothing matches. Returning 200 for the shim
+        # would hide exactly the class of bug this server exists to catch.
+        is_shim = target == SHIM
+        self.send_response(404 if is_shim else 200)
         self.send_header('Content-Type', self.guess_type(target))
         self.send_header('Content-Length', str(len(data)))
         self.end_headers()

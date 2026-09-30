@@ -10,27 +10,15 @@ import './styles/keyframes.css';
 import './styles/base.css';
 import './styles/components.css';
 
-/* On a static host with no SPA rewrites, a request for /games/dragon-city is
- * served 404.html, which bounces to "/" and stashes the original path. This runs
- * BEFORE React Router mounts so the router reads the real path. */
-(function restoreSpaPath() {
-  try {
-    const key = 'jj-spa-path';
-    const real = window.sessionStorage.getItem(key);
-    if (!real) return;
-    window.sessionStorage.removeItem(key);
-    if (real === window.location.pathname) return;
-    window.history.replaceState(null, '', real);
-  } catch (e) {
-    /* private mode / storage disabled — the site still works, just at "/" */
-  }
-})();
+/* Every real route ships its own index.html (scripts/gen-static.mjs), so Pages
+ * serves /games/dragon-city directly with HTTP 200 and no redirect is involved.
+ * The old sessionStorage hand-off from 404.html is gone because 404.html is now
+ * reached only by paths that genuinely do not exist. */
 
-/* GitHub Pages serves directories with a trailing slash: a request for /games
- * is 301-redirected to /games/, which has no file and returns 404.html. React
- * Router matches "/games/" against none of the exact routes, so the visitor got
- * the NotFound page for a URL that is perfectly valid. Normalise the trailing
- * slash away before the router reads the URL. Only one slash, never the root. */
+/* GitHub Pages 301-redirects a directory request to its trailing-slash form,
+ * so /games arrives as /games/ . React Router's <Route path="/games"> does not
+ * match "/games/", which would hand a valid URL to the NotFound view. Strip the
+ * trailing slash before the router reads the URL. Only one slash, never root. */
 (function normalizeTrailingSlash() {
   const p = window.location.pathname;
   if (p.length > 1 && p.endsWith('/')) {

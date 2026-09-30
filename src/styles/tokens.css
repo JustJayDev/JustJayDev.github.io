@@ -88,12 +88,16 @@
   --text-dim: #4a5b67;
   --text-mute: #5c6d79;
 
-  --accent: #0f7a56;
+  /* Measured: --warn on --bg-sunken was 4.37 (fails AA 4.5) and --accent on
+   * its own --accent-soft chip was 4.41. Both are nudged one step darker, the
+   * minimum that clears AA on every surface; all other tokens were already
+   * 4.5+ and are untouched. */
+  --accent: #0d6f4d;
   --accent-soft: rgba(15, 122, 86, 0.10);
   --accent-line: rgba(15, 122, 86, 0.28);
 
-  --ok: #0f7a56;
-  --warn: #a16207;
+  --ok: #0d6f4d;
+  --warn: #96590a;
   --live: #c2410c;
 
   --shadow-1: 0 1px 2px rgba(11, 18, 24, 0.06);
