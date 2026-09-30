@@ -15,8 +15,6 @@ export default {
         mute: 'var(--text-mute)',
         accent: 'var(--accent)',
         'accent-soft': 'var(--accent-soft)',
-        ok: 'var(--ok)',
-        warn: 'var(--warn)',
         live: 'var(--live)',
       },
       fontFamily: {
@@ -27,7 +25,6 @@ export default {
       borderRadius: {
         sm: 'var(--r-sm)',
         md: 'var(--r-md)',
-        lg: 'var(--r-lg)',
         pill: 'var(--r-pill)',
       },
       maxWidth: {

@@ -99,17 +99,27 @@ export function PageHead({ eyebrow, title, lede }: { eyebrow: string; title: str
   );
 }
 
-/** Key/value spec table. Used for device setup and game profiles. */
-export function SpecTable({ rows }: { rows: { label: string; value: string }[] }) {
+/** Key/value spec table. Used for device setup and game profiles.
+ *  Renders its OWN <dl> rather than assuming the caller wrapped it in one:
+ *  On /about this was previously emitted straight into a <div>, so every
+ *  dt/ddd pair was orphaned from any description list. The grid still applies
+ *  because .spec is the element that carries display:grid. */
+export function SpecTable({
+  rows,
+  className,
+}: {
+  rows: { label: string; value: string }[];
+  className?: string;
+}) {
   return (
-    <div className="spec">
+    <dl className={`spec ${className ?? ''}`}>
       {rows.map((r) => (
         <div className="spec__row" key={r.label}>
           <dt className="spec__key">{r.label}</dt>
           <dd className="spec__val">{r.value}</dd>
         </div>
       ))}
-    </div>
+    </dl>
   );
 }
 
@@ -221,4 +231,3 @@ export function GameArt({
   );
 }
 
-export { motion };

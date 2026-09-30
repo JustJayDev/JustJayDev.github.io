@@ -42,7 +42,13 @@ createRoot(root).render(
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {
+    /* An absolute path, not './sw.js'. A relative URL resolves against the
+     * CURRENT document, so on /games/dragon-city it requested
+     * /games/dragon-city/sw.js, got a 404, and the catch below swallowed it --
+     * meaning any visitor whose FIRST page was a deep link never got a service
+     * worker at all. '/' also pins the scope to the whole site root, which a
+     * deeper script path could never do. */
+    navigator.serviceWorker.register('/sw.js').catch(() => {
       /* offline support is optional; never break the page over it */
     });
   });

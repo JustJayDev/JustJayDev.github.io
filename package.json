@@ -8,7 +8,7 @@
     "typecheck": "tsc --noEmit",
     "gen:static": "node scripts/gen-static.mjs",
     "validate:content": "node scripts/validate-content.mjs",
-    "build": "tsc --noEmit && node scripts/validate-content.mjs && vite build && node scripts/gen-static.mjs",
+    "build": "tsc --noEmit && node scripts/validate-content.mjs && vite build && node scripts/gen-static.mjs && node scripts/check-build.mjs",
     "preview": "vite preview",
     "deploy": "npm run build && npx gh-pages -d dist"
   },

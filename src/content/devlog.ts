@@ -248,9 +248,6 @@ export const devlog: DevlogEntry[] = [
   },
 ];
 
-export const devlogBySlug = (slug: string): DevlogEntry | undefined =>
-  devlog.find((e) => e.slug === slug);
-
 export const projectLabels: Record<DevlogEntry['project'], string> = {
   site: 'This site',
   titleforge: 'TitleForge',

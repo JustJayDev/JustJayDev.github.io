@@ -1,0 +1,4 @@
+# GitHub Pages serves every file from this directory through Jekyll by default.
+# This marker disables that processing so files are copied byte-for-byte.
+# Nothing here is currently at risk (no _underscore directories exist), but it
+# removes a whole class of silent "asset vanished after deploy" failures.

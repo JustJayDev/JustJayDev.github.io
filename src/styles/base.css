@@ -208,15 +208,9 @@ input, select, textarea {
   animation: field-drift calc(var(--d-ambient) * 1.3) var(--ease-in-out) infinite alternate-reverse;
 }
 
-@keyframes field-drift {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to   { transform: translate3d(4%, -3%, 0) scale(1.12); }
-}
-
-/* Data-reactive state: a game card is hovered/active */
-[data-field-hue] .field__blob--a {
-  opacity: calc(var(--field-opacity) * 1.6);
-}
+/* field-drift is defined once, in styles/keyframes.css, alongside the rest of
+ * the animation inventory. It used to be duplicated here, which meant the two
+ * copies could silently drift apart. */
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

@@ -80,9 +80,7 @@ export default function GameProfile() {
                 </span>
               ) : null}
             </div>
-            <dl className="mt-[--s-4]">
-              <SpecTable rows={rows} />
-            </dl>
+            <SpecTable rows={rows} className="mt-[--s-4]" />
           </div>
 
           <div className="panel panel--pad mt-[--s-4]">

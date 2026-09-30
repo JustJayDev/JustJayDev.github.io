@@ -329,10 +329,8 @@
   animation: live-pulse 2.4s var(--ease-in-out) infinite;
   flex: none;
 }
-@keyframes live-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.35; transform: scale(0.82); }
-}
+/* live-pulse is defined once, in styles/keyframes.css. It used to be declared
+ * a second time right here, so the two copies could drift apart. */
 
 /* ---- links ---- */
 .link {
