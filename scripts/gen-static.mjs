@@ -147,10 +147,18 @@ function applySeo(html, seo) {
     /(<meta\s+property="og:title"\s+content=")[^"]*(")/,
     `$1${esc(seo.title)}$2`,
   );
-  out = out.replace(
-    /(<meta\s+property="og:description"\s+content=")[^"]*(")/,
-    `$1${esc(seo.desc)}$2`,
-  );
+  /* og:description was REPLACED unconditionally, but index.html never
+   * ships the tag -- so the regex never matched and every prerendered page
+   * shipped with no og:description. seo.ts injected it at runtime, which a
+   * link-preview bot never runs. Insert it if absent, replace if present. */
+  if (/<meta\s+property="og:description"/.test(out)) {
+    out = out.replace(
+      /(<meta\s+property="og:description"\s+content=")[^"]*(")/,
+      `$1${esc(seo.desc)}$2`,
+    );
+  } else {
+    out = out.replace('</head>', `  <meta property="og:description" content="${esc(seo.desc)}" />\n  </head>`);
+  }
   if (/<meta\s+property="og:url"/.test(out)) {
     out = out.replace(
       /(<meta\s+property="og:url"\s+content=")[^"]*(")/,

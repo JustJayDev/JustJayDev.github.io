@@ -251,6 +251,39 @@ for (const m of content.matchAll(/image:\s*'([^']+)'/g)) {
     } else if (m[1].indexOf(SITE + '/') !== 0) {
       fail(p + ': og:image "' + m[1] + '" is not an absolute URL on ' + SITE);
     }
+    /* og:description and twitter:description must both be present AND must
+     * agree with the route's own <meta name="description">. The generator
+     * once did an unconditional .replace() on an og:description tag that
+     * index.html never shipped, so the regex silently never matched and no
+     * prerendered page carried the tag. A missing social description is
+     * invisible to a browser and invisible to the eye -- only dist can see
+     * it, so that is where it is checked. */
+    const desc = (html.match(/<meta\s+name="description"\s+content="([^"]*)"/) || [])[1];
+    if (!desc || !desc.trim()) fail(p + ': no meta description');
+    for (const [attr, label] of [
+      ['og:description', 'og:description'],
+      ['twitter:description', 'twitter:description'],
+    ]) {
+      const m2 = html.match(
+        new RegExp('<meta\\s+(?:property|name)="' + attr + '"\\s+content="([^"]*)"'),
+      );
+      if (!m2) {
+        fail(p + ': no ' + label + ' -- social previews fall back to the page title alone');
+      } else if (desc && m2[1] !== desc) {
+        fail(p + ': ' + label + ' disagrees with the meta description');
+      }
+    }
+    /* Same trap for og:title / twitter:title vs <title>. */
+    const ttl = (html.match(/<title>([\s\S]*?)<\/title>/) || [])[1];
+    for (const [attr, label] of [
+      ['og:title', 'og:title'],
+      ['twitter:title', 'twitter:title'],
+    ]) {
+      const m3 = html.match(
+        new RegExp('<meta\\s+(?:property|name)="' + attr + '"\\s+content="([^"]*)"'),
+      );
+      if (m3 && ttl && m3[1] !== ttl) fail(p + ': ' + label + ' (' + m3[1] + ') disagrees with <title> (' + ttl + ')');
+    }
     const tw = html.match(/<meta name="twitter:image" content="([^"]+)"/);
     if (!tw) {
       fail(p + ': no twitter:image');
