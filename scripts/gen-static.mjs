@@ -76,7 +76,7 @@ ${items}
 function buildSitemap(paths) {
   const urls = paths
     .map((p) => {
-      const loc = p === '/' ? `${SITE}/` : `${SITE}/${p}`;
+      const loc = `${SITE}/${p.replace(/^\/+/, '')}`;
       const pri = p === '/' ? '1.0' : p === '/devlog' || p === '/games' ? '0.9' : '0.7';
       return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>${pri}</priority>\n  </url>`;
     })
@@ -167,7 +167,17 @@ await mkdir(out, { recursive: true });
 // are generated so they can never disagree with the content layer.
 const c = await loadContent();
 await writeFile(path.join(out, 'feed.xml'), buildFeed(c.devlog, c.site));
-await writeFile(path.join(out, 'sitemap.xml'), buildSitemap(['/', '/games', '/projects', '/devlog', '/about']));
+// Derived from the content layer, not hand-listed, so a new game profile can
+// never ship without being discoverable.
+const sitemapPaths = [
+  '/',
+  '/games',
+  '/projects',
+  '/devlog',
+  '/about',
+  ...c.mainGames.filter((g) => g.hasProfile).map((g) => `/games/${g.id}`),
+];
+await writeFile(path.join(out, 'sitemap.xml'), buildSitemap(sitemapPaths));
 await writeFile(path.join(out, 'sw.js'), buildSw(hash));
 
 console.log(`gen-static: sw cache jjdev-v7-${hash}, feed=${c.devlog.length} entries`);

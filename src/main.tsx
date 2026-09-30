@@ -10,6 +10,22 @@ import './styles/keyframes.css';
 import './styles/base.css';
 import './styles/components.css';
 
+/* On a static host with no SPA rewrites, a request for /games/dragon-city is
+ * served 404.html, which bounces to "/" and stashes the original path. This runs
+ * BEFORE React Router mounts so the router reads the real path. */
+(function restoreSpaPath() {
+  try {
+    const key = 'jj-spa-path';
+    const real = window.sessionStorage.getItem(key);
+    if (!real) return;
+    window.sessionStorage.removeItem(key);
+    if (real === window.location.pathname) return;
+    window.history.replaceState(null, '', real);
+  } catch (e) {
+    /* private mode / storage disabled — the site still works, just at "/" */
+  }
+})();
+
 const root = document.getElementById('root');
 if (!root) throw new Error('Root element #root not found');
 
@@ -22,18 +38,6 @@ createRoot(root).render(
     </ThemeProvider>
   </StrictMode>,
 );
-
-// Restore the real path before React Router reads location, so deep links work
-// on a static host that serves index.html for every path.
-(function restoreSpaPath() {
-  const key = 'jj-spa-path';
-  if (window.location.pathname === '/' || window.location.pathname.endsWith('.html')) return;
-  const real = window.sessionStorage.getItem(key);
-  if (real && real !== window.location.pathname) {
-    window.history.replaceState(null, '', real + window.location.search + window.location.hash);
-    window.sessionStorage.removeItem(key);
-  }
-})();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

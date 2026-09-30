@@ -31,8 +31,8 @@
     <p>Taking you back to the homepage.</p>
     <p><a href="/">justjaydev.github.io</a></p>
     <script>
-      // Preserve the requested path so the SPA can show its own NotFound view
-      // after the redirect, rather than silently landing on Home.
+      // The SPA reads this back before React Router mounts and restores the
+      // original path, so a deep link lands on its real page instead of "/".
       try {
         sessionStorage.setItem('jj-spa-path', location.pathname + location.search + location.hash);
       } catch (e) {}
