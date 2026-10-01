@@ -28,6 +28,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Zero-dep content-derivation tests. Deliberately NOT part of the local
+      # `build` script: the production gate stays exactly as it is, and the
+      # tests guard the content that gate only shallowly checks.
+      - name: Test (content derivations)
+        run: npm test
+
       # `build` runs tsc --noEmit first, so a type error fails the deploy
       # rather than shipping. That is the whole point of v7's pipeline.
       - name: Build (type-check gates the bundle)

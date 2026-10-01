@@ -20,6 +20,8 @@ npm run build      # tsc --noEmit && validate-content && vite build && gen-stati
 npm run preview    # serve the production build
 ```
 
+CI runs the test suite before the deploy build; the local `npm run build` gate deliberately excludes it, so a test failure never changes what a local production build does.
+
 ## Architecture
 
 ```
