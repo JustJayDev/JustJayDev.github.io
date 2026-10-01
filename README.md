@@ -44,6 +44,7 @@ scripts/
   gen-static.mjs  ← feed.xml, sitemap.xml, sw.js
 docs/
   SECURITY.md     ← why ALT's secret area was not carried forward
+  fonts.md        ← which self-hosted fonts ship, and under what licence
 ```
 
 ### Three decisions worth knowing
