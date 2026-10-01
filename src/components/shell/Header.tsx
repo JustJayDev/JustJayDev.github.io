@@ -41,11 +41,7 @@ export function Header() {
                 <NavLink
                   to={item.to}
                   end={item.to === '/'}
-                  className={({ isActive }) =>
-                    `inline-flex h-9 items-center rounded-[var(--r-sm)] px-[--s-3] text-[0.88rem] font-medium transition-colors duration-200 ${
-                      isActive ? 'bg-[var(--accent-soft)] text-[var(--accent)]' : 'text-[var(--text-dim)] hover:text-[var(--text)]'
-                    }`
-                  }
+                  className={({ isActive }) => `nav-link ${isActive ? 'is-current' : ''}`}
                 >
                   {item.label}
                 </NavLink>
@@ -88,9 +84,7 @@ export function Header() {
                     to={item.to}
                     end={item.to === '/'}
                     className={({ isActive }) =>
-                      `flex h-12 items-center rounded-[var(--r-sm)] px-[--s-3] text-[0.95rem] font-medium transition-colors ${
-                        isActive ? 'bg-[var(--accent-soft)] text-[var(--accent)]' : 'text-[var(--text-dim)]'
-                      }`
+                      `nav-link !h-12 !px-[--s-3] !text-[0.95rem] ${isActive ? 'is-current' : ''}`
                     }
                   >
                     {item.label}

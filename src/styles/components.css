@@ -68,10 +68,112 @@
     gap: var(--s-5);
   }
 }
+/* The rule under a section title used to be a flat 1px hairline identical to
+   every border on the page, so the eye read it as part of the grid rather
+   than as a heading. It now starts at the accent and fades out over a
+   short run, which makes it an accent detail instead of more structure --
+   and it draws itself in with a transform, so it costs no layout. */
 .section-head__rule {
   height: 1px;
-  background: var(--line);
+  background: linear-gradient(90deg, var(--accent-line), var(--line) 42%, transparent);
   margin-top: var(--s-2);
+  transform-origin: 0 50%;
+  animation: rule-draw 620ms var(--ease-glide) 80ms both;
+}
+/* The drawing is decorative; under reduced motion the element is simply
+   present, which the global duration override in base.css already handles. */
+
+/* ============================================================
+   HERO — the one screen allowed to be dramatic.
+   ============================================================ */
+.hero {
+  padding: var(--s-7) 0 var(--s-6);
+}
+@media (min-width: 768px) {
+  .hero { padding: var(--s-8) 0 var(--s-6); }
+}
+
+/* The name is the single largest object on the site, so it gets a soft
+   accent bloom behind it. A fixed radial wash, not an animation -- it
+   costs nothing to paint and it is what makes the name read as the focal
+   point rather than as the biggest line of text. */
+.hero-name {
+  text-shadow: 0 0 44px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.hero-glyph {
+  display: inline-block;
+  /* Every glyph gets its own compositing layer during the cascade, so the
+     name assembles without any of it repainting its neighbours. Dropped
+     once the animation is over by way of the same media query below. */
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-glyph { will-change: auto; }
+}
+
+.hero-avatar {
+  box-shadow: 0 0 0 1px var(--line), 0 10px 30px -14px color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: box-shadow var(--d-state) var(--ease-out);
+}
+.hero-avatar:hover {
+  box-shadow: 0 0 0 1px var(--accent-line), 0 14px 36px -14px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* ============================================================
+   PAGE HEAD — shared by every non-home route.
+   ============================================================ */
+.page-head {
+  padding: var(--s-8) 0 var(--s-6);
+}
+@media (min-width: 768px) {
+  .page-head { padding: var(--s-8) 0 var(--s-7); }
+}
+
+/* The accent rule that draws itself out beneath the lede. scaleX from the
+   left edge, so it reads as a pen stroke rather than a fade. */
+.page-head__rule {
+  display: block;
+  height: 2px;
+  width: 88px;
+  margin-top: var(--s-5);
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transform-origin: 0 50%;
+}
+
+/* ============================================================
+   CARDS — hover and focus as one state.
+   Previously the card lifted on hover and did nothing on focus, so a
+   keyboard user got a bare outline and no elevation. One rule now drives
+   both, and :focus-visible is included deliberately: a card is a link on
+   most pages and a plain div on the rest, and the weight should not
+   depend on which.
+   ============================================================ */
+.card,
+.cardlink {
+  transition: transform var(--d-state) var(--ease-out),
+              box-shadow var(--d-state) var(--ease-out),
+              border-color var(--d-state) var(--ease-out);
+}
+@media (hover: hover) {
+  .card:hover,
+  .cardlink:hover {
+    transform: translateY(-3px);
+    border-color: var(--line-2);
+    box-shadow: var(--shadow-3);
+  }
+}
+.cardlink:focus-visible,
+.card:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--accent-line);
+  box-shadow: var(--shadow-3);
+}
+/* The card never animates its own size, so the press can be a scale. */
+.card:active,
+.cardlink:active {
+  transform: translateY(-1px) scale(0.995);
 }
 
 /* ---- buttons ---- */
@@ -90,17 +192,26 @@
   transition: transform var(--d-micro) var(--ease-out),
               background-color var(--d-state) var(--ease-out),
               border-color var(--d-state) var(--ease-out),
-              color var(--d-state) var(--ease-out);
+              color var(--d-state) var(--ease-out),
+              box-shadow var(--d-state) var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* Primary buttons carry the one real call to action on the page, so they
+   get the one place the accent is allowed to glow. Fades in rather than
+   popping, and the shadow token moves to --shadow-3, the same ramp the
+   cards use, so elevation is consistent across the whole site. */
 .btn--primary {
   background: var(--accent);
   color: var(--bg);
+  box-shadow: 0 0 0 0 transparent;
 }
-.btn--primary:hover:not(:disabled) {
-  filter: brightness(1.08);
+@media (hover: hover) {
+  .btn--primary:hover:not(:disabled) {
+    filter: brightness(1.08);
+    box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--accent) 70%, transparent);
+  }
 }
 
 .btn--ghost {
@@ -146,6 +257,17 @@
   border: 1px solid var(--line);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-1);
+  transition: border-color var(--d-state) var(--ease-out),
+              box-shadow var(--d-state) var(--ease-out);
+}
+/* Panels are static content, not targets, so they only acknowledge the
+   pointer. No lift: a panel that moves on hover but contains no link just
+   looks like it is broken. */
+@media (hover: hover) {
+  .panel:hover {
+    border-color: var(--line-2);
+    box-shadow: var(--shadow-2);
+  }
 }
 .panel--pad { padding: var(--s-5); }
 
@@ -401,3 +523,92 @@ summary {
   transform-origin: 0 50%;
   will-change: transform;
 }
+
+/* ---- stat figures ----
+   Four big numbers in a row were the flattest thing on the page: same
+   size, same weight, same colour, so nothing told the eye where to land.
+   Each cell now has its own accent hairline that grows out of the top on
+   hover, and the figure itself picks up a whisper of the accent glow.
+   Both are transform/opacity work; the hairline animates scaleX only. */
+.stat {
+  position: relative;
+  transition: transform var(--d-state) var(--ease-out);
+}
+.stat::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: 50% 0%;
+  transition: transform var(--d-state) var(--ease-out);
+}
+@media (hover: hover) {
+  .stat:hover { transform: translateY(-2px); }
+  .stat:hover::before { transform: scaleY(1); }
+}
+.stat dd {
+  transition: text-shadow var(--d-state) var(--ease-out);
+}
+.stat:hover dd {
+  text-shadow: 0 0 22px color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+/* ============================================================
+   NAV — the active-page marker.
+   The desktop nav previously signalled "you are here" by switching the
+   text colour to accent and adding a bottom border, and both appeared
+   instantly. It now uses the same pattern as the section rules: a short
+   accent bar under the item that draws itself out from the centre with
+   scaleX. scaleX is a transform, so the marker never reflows the nav and
+   never nudges the label sideways.
+   ============================================================ */
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 var(--s-3);
+  border-radius: var(--r-sm);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  transition: color var(--d-state) var(--ease-out),
+              background-color var(--d-state) var(--ease-out);
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 18px;
+  height: 2px;
+  margin-left: -9px;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+  transition: transform var(--d-state) var(--ease-out),
+              opacity var(--d-micro) var(--ease-out);
+}
+@media (hover: hover) {
+  .nav-link:hover {
+    color: var(--text);
+    background: color-mix(in srgb, var(--text) 5%, transparent);
+  }
+  /* A hint of the marker on hover tells you the nav is live before you
+     click it. At 40% it reads as "available", not "selected". */
+  .nav-link:hover::after { transform: scaleX(1); opacity: 0.4; }
+}
+.nav-link[aria-current='page'],
+.nav-link.is-current {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.nav-link[aria-current='page']::after,
+.nav-link.is-current::after { transform: scaleX(1); opacity: 1; }

@@ -1,21 +1,44 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { motion as M, usePrefersReducedMotion } from '@/lib/motion';
+import { usePrefersReducedMotion, enter as V } from '@/lib/motion';
 
-/** Reveal once on scroll into view. */
-export function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
+/** Reveal once on scroll into view.
+ *
+ *  Distance now comes from the shared entrance ramp in lib/motion rather than
+ *  a literal 16px, so scroll entrances and hero entrances share one
+ *  vocabulary. The `as` prop lets a caller keep the same entrance on an
+ *  element that must stay a <section> or <li> for landmark and heading
+ *  reasons -- a wrapper <div> there would break the document outline. */
+export function Reveal({
+  children,
+  delay = 0,
+  className,
+  distance = 'mid',
+  as = 'div',
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+  distance?: 'near' | 'mid' | 'far';
+  as?: 'div' | 'section' | 'li' | 'article' | 'header' | 'span';
+}) {
   const reduced = usePrefersReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+  if (reduced) {
+    const Plain = as;
+    return <Plain className={className}>{children}</Plain>;
+  }
+  const Tag = motion[as];
   return (
-    <motion.div
+    <Tag
       className={className}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={V[distance]}
+      initial="hidden"
+      whileInView="show"
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ ...M.enter, delay }}
+      transition={{ delay }}
     >
       {children}
-    </motion.div>
+    </Tag>
   );
 }
 
@@ -84,17 +107,40 @@ export function SectionHead({
   );
 }
 
-/** Page-level header used by every non-home route. */
+/** Page-level header used by every non-home route.
+ *  Same three-stage entrance as the hero: eyebrow, title, lede -- each one
+ *  later and one step lighter than the last, so the page opens rather than
+ *  appearing all at once. */
 export function PageHead({ eyebrow, title, lede }: { eyebrow: string; title: string; lede?: string }) {
   const reduced = usePrefersReducedMotion();
-  const anim = reduced
-    ? {}
-    : { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: M.enter };
+  const stage = (distance: 'near' | 'mid' | 'far', delay: number) =>
+    reduced ? {} : { variants: V[distance], initial: 'hidden' as const, animate: 'show' as const, transition: { delay } };
   return (
-    <header className="pt-[--s-8] pb-[--s-6] md:pt-[--s-8] md:pb-[--s-7]" {...anim}>
-      <p className="eyebrow">{eyebrow}</p>
-      <h1 className="mt-[10px] text-[length:var(--t-h1)]">{title}</h1>
-      {lede ? <p className="lede mt-[--s-4]">{lede}</p> : null}
+    <header className="page-head">
+      <motion.p className="eyebrow" {...stage('near', 0)}>
+        {eyebrow}
+      </motion.p>
+      <motion.h1 className="mt-[10px] text-[length:var(--t-h1)]" {...stage('far', 0.08)}>
+        {title}
+      </motion.h1>
+      {lede ? (
+        <motion.p className="lede mt-[--s-4]" {...stage('mid', 0.18)}>
+          {lede}
+        </motion.p>
+      ) : null}
+      {/* An accent rule that draws itself out from the left under the lede.
+          scaleX on a transform only, so it never triggers layout. */}
+      <motion.span
+        className="page-head__rule"
+        aria-hidden="true"
+        {...(reduced
+          ? {}
+          : {
+              initial: { scaleX: 0, opacity: 0 },
+              animate: { scaleX: 1, opacity: 1 },
+              transition: { duration: 0.7, ease: [0.16, 0.84, 0.28, 1] as const, delay: 0.3 },
+            })}
+      />
     </header>
   );
 }

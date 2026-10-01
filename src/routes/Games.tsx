@@ -4,6 +4,7 @@ import { Search, X, BadgeCheck } from 'lucide-react';
 import { games, mainGames, casualGames } from '@/content/games';
 import { stats } from '@/content/site';
 import { PageHead, Reveal, GameArt } from '@/components/ui/primitives';
+import { motion } from '@/lib/motion';
 import { useSeo } from '@/lib/seo';
 
 type Filter = 'all' | 'main' | 'casual';
@@ -145,11 +146,11 @@ export default function Games() {
             );
 
             return (
-              <Reveal key={g.id} delay={Math.min(i, 8) * 0.04}>
+              <Reveal key={g.id} delay={Math.min(i, 8) * motion.stagger}>
                 {g.hasProfile ? (
                   <Link
                     to={`/games/${g.id}`}
-                    className="group block h-full overflow-hidden rounded-[var(--r-md)] border border-[--line] bg-[var(--bg-raise)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--line-2)] hover:shadow-[var(--shadow-2)]"
+                    className="cardlink group block h-full overflow-hidden rounded-[var(--r-md)] border border-[--line] bg-[var(--bg-raise)]"
                   >
                     {inner}
                   </Link>

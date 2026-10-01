@@ -59,6 +59,21 @@
   will-change: transform;
 }
 
+/* Entrance rise — the CSS twin of the framer-motion `reveal` variant below.
+ * Only ever used where there is no React state to drive: the hero eyebrow,
+ * the shell chrome. transform + opacity, nothing layout-animating. */
+@keyframes rise-in {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Rules that draw themselves in under a heading. scaleX on a transform, so
+ * it composites on the GPU and never triggers layout. */
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
 .flipped {
   animation: flip-in 420ms var(--ease-spring) both;
   transform-style: preserve-3d;

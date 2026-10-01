@@ -5,6 +5,7 @@ import { mainGames, nowPlaying } from '@/content/games';
 import { projects } from '@/content/projects';
 import { devlog, projectLabels } from '@/content/devlog';
 import { stats } from '@/content/site';
+import { motion } from '@/lib/motion';
 import { CountUp, Reveal, SectionHead, assetUrl } from '@/components/ui/primitives';
 
 function StatRow() {
@@ -17,8 +18,8 @@ function StatRow() {
   return (
     <dl className="grid grid-cols-2 gap-[--s-4] sm:grid-cols-4">
       {items.map((s, i) => (
-        <Reveal key={s.label} delay={i * 0.05}>
-          <div className="border-l border-[--line] pl-[--s-3]">
+        <Reveal key={s.label} delay={i * motion.stagger} distance="near">
+          <div className="stat border-l border-[--line] pl-[--s-3]">
             <dd className="font-display text-[1.7rem] font-bold leading-none tracking-tight">
               <CountUp value={s.value} suffix={s.suffix} />
             </dd>
@@ -34,10 +35,10 @@ function NowPlaying() {
   return (
     <div className="grid gap-[--s-4] sm:grid-cols-2 lg:grid-cols-3">
       {nowPlaying.map((g, i) => (
-        <Reveal key={g.id} delay={i * 0.06}>
+        <Reveal key={g.id} delay={Math.min(i, 6) * motion.stagger}>
           <Link
             to={`/games/${g.id}`}
-            className="group block overflow-hidden rounded-[var(--r-md)] border border-[--line] bg-[var(--bg-raise)] transition-transform duration-200 hover:-translate-y-1 hover:border-[var(--line-2)]"
+            className="cardlink group block overflow-hidden rounded-[var(--r-md)] border border-[--line] bg-[var(--bg-raise)]"
           >
             <div className="relative aspect-[16/10] overflow-hidden bg-[var(--bg-sunken)]">
               <img
