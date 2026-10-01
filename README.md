@@ -17,6 +17,7 @@ npm run dev        # dev server
 npm run typecheck  # tsc --noEmit
 npm test           # content-derivation tests (node --test, no extra deps; not part of build)
 npm run check:a11y # static a11y check on dist/ (run after build; not part of build)
+npm run check:perf # size budgets on dist/ (run after build; not part of build)
 npm run build      # tsc --noEmit && validate-content && vite build && gen-static && check-build
 npm run preview    # serve the production build
 ```
@@ -85,6 +86,16 @@ form labels. The prerenderer ships `<div id="root"></div>`, so that markup only
 exists in the browser — a check for it would either pass vacuously or fail on
 every page, and a green run that proves nothing is worse than an honest gap.
 Rendering-level coverage needs a DOM and remains open.
+
+`npm run check:perf` enforces size budgets on the emitted artifacts. The
+baseline was measured from a real `npm run build` at the time of introduction
+(total JS 356,235 B raw / 120,862 B gzip, largest chunk 163,305 B, CSS 28,032 B,
+HTML 37,408 B over 11 pages); every limit is that measured value plus headroom,
+so intentional growth passes and a real regression does not. The HTML budget
+scales with prerendered page count so a legitimately added route is not
+punished. The check is deliberately not part of the local production build
+gate, and it is not a performance measurement — there is no timing, network or
+render here, so a site inside every budget can still be slow.
 
 ## Deployment
 

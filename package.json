@@ -9,6 +9,7 @@
     "gen:static": "node scripts/gen-static.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "check:a11y": "node scripts/check-a11y.mjs",
+    "check:perf": "node scripts/check-perf.mjs",
     "test": "node --test scripts/test-content.mjs",
     "build": "tsc --noEmit && node scripts/validate-content.mjs && vite build && node scripts/gen-static.mjs && node scripts/check-build.mjs",
     "preview": "vite preview",
