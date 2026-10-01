@@ -15,7 +15,8 @@ React 18 · TypeScript (strict) · Vite 5 · Tailwind 3 · Framer Motion
 npm install
 npm run dev        # dev server
 npm run typecheck  # tsc --noEmit
-npm run build      # tsc --noEmit && vite build && gen-static
+npm test           # content-derivation tests (node --test, no extra deps; not part of build)
+npm run build      # tsc --noEmit && validate-content && vite build && gen-static && check-build
 npm run preview    # serve the production build
 ```
 
