@@ -1,0 +1,5 @@
+# All user-agent crawling allowed — this is a public portfolio site.
+User-agent: *
+Allow: /
+
+Sitemap: https://justjaydev.github.io/sitemap.xml
