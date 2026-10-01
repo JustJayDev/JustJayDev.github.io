@@ -16,6 +16,7 @@ npm install
 npm run dev        # dev server
 npm run typecheck  # tsc --noEmit
 npm test           # content-derivation tests (node --test, no extra deps; not part of build)
+npm run check:a11y # static a11y check on dist/ (run after build; not part of build)
 npm run build      # tsc --noEmit && validate-content && vite build && gen-static && check-build
 npm run preview    # serve the production build
 ```
@@ -73,6 +74,17 @@ Dark-first with a peer light mode, both verified to WCAG AA on every text
 token. `prefers-reduced-motion` is honoured globally in `base.css` and again
 in JS via `usePrefersReducedMotion`. Skip link, one `h1` per route, per-route
 titles and JSON-LD, live-region result counts, focus-visible rings throughout.
+
+`npm run check:a11y` enforces the parts that exist in the emitted bytes: document
+language, one non-empty unique title per route, a zoom-permitting viewport, and
+no-JS content on every prerendered page. It also checks at source level that the
+skip link's target and the `<main>` landmark still agree.
+
+It deliberately does not claim to check `<main>`, heading order, `alt` text or
+form labels. The prerenderer ships `<div id="root"></div>`, so that markup only
+exists in the browser — a check for it would either pass vacuously or fail on
+every page, and a green run that proves nothing is worse than an honest gap.
+Rendering-level coverage needs a DOM and remains open.
 
 ## Deployment
 
