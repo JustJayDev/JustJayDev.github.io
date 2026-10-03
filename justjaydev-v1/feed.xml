@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JustJayDev — Devlog</title>
+    <link>https://justjaydev.github.io/justjaydev-v1/devlog</link>
+    <atom:link href="https://justjaydev.github.io/justjaydev-v1/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Build notes for JustJayDev: the site, TitleForge, PixVault and the Developer Vault.</description>
+    <language>en</language>
+    <lastBuildDate>Sun, 04 Oct 2026 09:00:00 GMT</lastBuildDate>
+    <item>
+      <title>v7 — the site rebuilt from scratch</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#v7-rebuild</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#v7-rebuild</guid>
+      <pubDate>Sun, 04 Oct 2026 09:00:00 GMT</pubDate>
+      <description>A ground-up rebuild on a new architecture and visual identity. New token system, a real content layer, and type-checking that actually blocks the build.</description>
+    </item>
+    <item>
+      <title>Authenticated password-rotate route added to the Vault</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#vault-password-rotate</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#vault-password-rotate</guid>
+      <pubDate>Wed, 30 Sep 2026 09:00:00 GMT</pubDate>
+      <description>The Vault can now rotate its own admin password through an authenticated route instead of a redeploy.</description>
+    </item>
+    <item>
+      <title>PixVault admin rebuilt as a dashboard</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#pixvault-admin-dashboard</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#pixvault-admin-dashboard</guid>
+      <pubDate>Mon, 28 Sep 2026 09:00:00 GMT</pubDate>
+      <description>Upload management, health checks and orphaned-wallpaper recovery in one place instead of a raw admin form.</description>
+    </item>
+    <item>
+      <title>TitleForge forge proxy + title:forge policy live in the Vault</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#titleforge-forge-policy</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#titleforge-forge-policy</guid>
+      <pubDate>Sat, 26 Sep 2026 09:00:00 GMT</pubDate>
+      <description>The AI key now decrypts inside the Vault under a scoped policy. It has never been in the repo or the browser bundle.</description>
+    </item>
+    <item>
+      <title>The Roblox banner finally loaded</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#v5-cinematic-motion</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#v5-cinematic-motion</guid>
+      <pubDate>Sun, 20 Sep 2026 09:00:00 GMT</pubDate>
+      <description>The file was SVG content saved with a .png extension, so GitHub served it as image/png and every browser refused to render it.</description>
+    </item>
+    <item>
+      <title>Command palette, achievements, and a 404 that behaves</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-v4-command-palette</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-v4-command-palette</guid>
+      <pubDate>Sat, 19 Sep 2026 09:00:00 GMT</pubDate>
+      <description>Cmd/Ctrl+K to jump anywhere, a visitor achievement system, and dead URLs that land on a real 404 instead of a blank screen.</description>
+    </item>
+    <item>
+      <title>The revamp: command palette, achievements, cinematic hero</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-v4-revamp</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-v4-revamp</guid>
+      <pubDate>Fri, 18 Sep 2026 09:00:00 GMT</pubDate>
+      <description>A big visual pass. Animated mesh-gradient backdrop, a character-by-character title reveal, and a proper 404.</description>
+    </item>
+    <item>
+      <title>Developer Vault — the credential control plane</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#vault-console</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#vault-console</guid>
+      <pubDate>Mon, 14 Sep 2026 09:00:00 GMT</pubDate>
+      <description>One secure backend holding every project secret, so no API key ever has to live in a browser bundle.</description>
+    </item>
+    <item>
+      <title>TitleForge skeleton shipped</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#titleforge-skeleton</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#titleforge-skeleton</guid>
+      <pubDate>Thu, 10 Sep 2026 09:00:00 GMT</pubDate>
+      <description>The four-step flow works end to end: connect your channel, load videos, forge titles, review and apply.</description>
+    </item>
+    <item>
+      <title>Dead code cleanup + verified stats</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-v39-cleanup</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-v39-cleanup</guid>
+      <pubDate>Tue, 08 Sep 2026 09:00:00 GMT</pubDate>
+      <description>Removed an unused guestbook component and five dead CSS classes, and re-verified every number on the site.</description>
+    </item>
+    <item>
+      <title>The overnight polish sprint</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-v33-polish</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-v33-polish</guid>
+      <pubDate>Fri, 04 Sep 2026 09:00:00 GMT</pubDate>
+      <description>Scroll progress, back-to-top, typewriter taglines, a stats strip, live search, copy-link buttons and per-page titles.</description>
+    </item>
+    <item>
+      <title>The lean rebuild — 16 pages down to 3</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-v3-lean</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-v3-lean</guid>
+      <pubDate>Mon, 31 Aug 2026 09:00:00 GMT</pubDate>
+      <description>Home, Games and About. Every page lazy-loaded, Firebase and thirteen unused pages removed.</description>
+    </item>
+    <item>
+      <title>The site moved to the domain root</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-root-migration</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-root-migration</guid>
+      <pubDate>Wed, 26 Aug 2026 09:00:00 GMT</pubDate>
+      <description>Four old repositories deleted, one repo renamed to JustJayDev.github.io, and every path config migrated in a single pass.</description>
+    </item>
+    <item>
+      <title>New hero: the motto wall</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-motto-hero</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-motto-hero</guid>
+      <pubDate>Sat, 22 Aug 2026 09:00:00 GMT</pubDate>
+      <description>The homepage hero became the motto wallpaper — &#34;A King Never Wavers&#34; — with a new OG share image and PWA icon.</description>
+    </item>
+    <item>
+      <title>PixVault — a wallpaper library with no signup wall</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#pixvault-launch</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#pixvault-launch</guid>
+      <pubDate>Tue, 18 Aug 2026 09:00:00 GMT</pubDate>
+      <description>Original-resolution HD and 4K wallpapers, free, no watermark, and no account required to download.</description>
+    </item>
+    <item>
+      <title>Every page made lazy</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-lazy-pages</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-lazy-pages</guid>
+      <pubDate>Fri, 14 Aug 2026 09:00:00 GMT</pubDate>
+      <description>All sixteen pages were loading in one bundle. Now every page is code-split with React.lazy.</description>
+    </item>
+    <item>
+      <title>Site v2 is live — and the QR code works</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-v2-launch</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-v2-launch</guid>
+      <pubDate>Sun, 09 Aug 2026 09:00:00 GMT</pubDate>
+      <description>PWA offline support, animated stats, glare-tilt cards, magnetic buttons, a glitch 404 and a real scannable QR in the footer.</description>
+    </item>
+    <item>
+      <title>justjaydev.github.io — this site is now my main home</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#site-first-post</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#site-first-post</guid>
+      <pubDate>Tue, 04 Aug 2026 09:00:00 GMT</pubDate>
+      <description>Promoted to the main GitHub Pages home. The URL is now just the bare domain, with no subfolder.</description>
+    </item>
+    <item>
+      <title>Next phase: autonomous build and polish</title>
+      <link>https://justjaydev.github.io/justjaydev-v1/devlog#autonomous-phase</link>
+      <guid isPermaLink="true">https://justjaydev.github.io/justjaydev-v1/devlog#autonomous-phase</guid>
+      <pubDate>Tue, 28 Jul 2026 09:00:00 GMT</pubDate>
+      <description>A working plan for keeping the projects shipping without each one needing a fresh decision.</description>
+    </item>
+  </channel>
+</rss>

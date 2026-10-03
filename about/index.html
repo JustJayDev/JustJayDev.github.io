@@ -1,77 +1,42 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#070b10" />
-    <meta name="color-scheme" content="dark light" />
-
-    <title>About — JustJayDev</title>
-    <meta
-      name="description"
-      content="Jay Kumar — The definition of victory. Mobile gamer, AI builder, and the developer behind TitleForge and PixVault."
-    />
-
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="/jj-mark.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="JustJayDev" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <script type="module" crossorigin src="/assets/index-WiUpUUd0.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DyA663O2.css">
+      <title>About - JustJayDev</title>
+    <meta name="description" content="@JustJayDev. Mobile gamer who builds on his phone." />
+    <meta name="author" content="@JustJayDev" />
+    <meta name="theme-color" content="#070b10" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="JustJayDev" />
-    <meta property="og:title" content="About — JustJayDev" />
-    <meta property="og:image" content="https://justjaydev.github.io/og-image.jpg" />
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <!-- Fonts: self-hosted latin variable woff2 (all OFL). Preloading the two
-         families used above the fold lets the text paint in the right face on
-         the first pass instead of swapping after a third-party round trip. -->
-    <link
-      rel="preload"
-      href="/fonts/space-grotesk-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/inter-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-
-    <script>
-      // Apply the stored theme before first paint so there is no flash.
-      (function () {
-        try {
-          var t = localStorage.getItem('jj-theme');
-          if (t !== 'light' && t !== 'dark') {
-            t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-          }
-          document.documentElement.setAttribute('data-theme', t);
-        } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
-      })();
-    </script>
-    <script type="module" crossorigin src="/assets/index-D1NVIhOY.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/react-BbPptj3W.js">
-    <link rel="modulepreload" crossorigin href="/assets/motion-1k6Z4rCJ.js">
-    <link rel="stylesheet" crossorigin href="/assets/style-CFmJGjjA.css">
-    <meta property="og:description" content="Jay Kumar — The definition of victory. Mobile gamer, AI builder, and the developer behind TitleForge and PixVault." />
+    <meta property="og:title" content="About - JustJayDev" />
+    <meta property="og:description" content="@JustJayDev. Mobile gamer who builds on his phone." />
     <meta property="og:url" content="https://justjaydev.github.io/about" />
-    <meta name="twitter:title" content="About — JustJayDev" />
-  <meta name="twitter:description" content="Jay Kumar — The definition of victory. Mobile gamer, AI builder, and the developer behind TitleForge and PixVault." />
-    <meta name="twitter:image" content="https://justjaydev.github.io/og-image.jpg" />
+    <meta property="og:image" content="https://justjaydev.github.io/og-image.png" />
+    <meta property="og:image:alt" content="JustJayDev" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="About - JustJayDev" />
+    <meta name="twitter:description" content="@JustJayDev. Mobile gamer who builds on his phone." />
+    <meta name="twitter:image" content="https://justjaydev.github.io/og-image.png" />
     <link rel="canonical" href="https://justjaydev.github.io/about" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://justjaydev.github.io/#website","name":"JustJayDev","url":"https://justjaydev.github.io/","description":"Jay Kumar — mobile gamer, AI builder and future trader. Free Fire Max Grandmaster, Dragon City collector, and the developer behind TitleForge and PixVault.","inLanguage":"en"},{"@type":"WebPage","@id":"https://justjaydev.github.io/about#webpage","url":"https://justjaydev.github.io/about","name":"About — JustJayDev","description":"Jay Kumar — The definition of victory. Mobile gamer, AI builder, and the developer behind TitleForge and PixVault.","isPartOf":{"@id":"https://justjaydev.github.io/#website"},"inLanguage":"en"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"JustJayDev","url":"https://justjaydev.github.io/about","description":"@JustJayDev. Mobile gamer who builds on his phone.","author":{"@type":"Person","name":"@JustJayDev","alternateName":"JustJayDev"}}</script>
   </head>
   <body>
-    <div id="root"></div>
-    <noscript>
-      <p style="padding: 2rem; font-family: system-ui">
-        JustJayDev — mobile gamer, AI builder, future trader. This site needs JavaScript enabled.
-      </p>
-    </noscript>
+    <div id="root"><div class="flex min-h-screen flex-col bp-grid"><a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:border focus:border-accent focus:bg-bg focus:px-3 focus:py-2 focus:font-mono focus:text-xs focus:text-accent">Skip to content</a><header class="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur"><div class="mx-auto flex max-w-3xl items-center justify-between px-4 py-3"><span class="inline-flex items-center gap-2" aria-label="JustJayDev"><svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="10" fill="#0d141d"></rect><rect x="1.5" y="1.5" width="61" height="61" rx="8.5" fill="none" stroke="#1a2432" stroke-width="3"></rect><text x="14" y="42" font-family="JetBrains Mono, monospace" font-weight="600" font-size="28" fill="#22d3ee">JJ</text><rect x="14" y="48" width="10" height="4" fill="#22d3ee"></rect></svg><span class="font-mono text-sm tracking-widest text-txt">JUSTJAYDEV</span></span><nav aria-label="Main" class="hidden gap-4 sm:flex"><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-[11px] text-dim hover:text-txt" href="/" data-discover="true">Home</a><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-[11px] text-dim hover:text-txt" href="/projects" data-discover="true">Projects</a><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-[11px] text-dim hover:text-txt" href="/games" data-discover="true">Games</a><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-[11px] text-dim hover:text-txt" href="/devlog" data-discover="true">Devlog</a><a aria-current="page" class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-[11px] text-accent" href="/about" data-discover="true">About</a><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent text-[11px] text-dim hover:text-txt" href="/links" data-discover="true">Links</a></nav><button type="button" class="font-mono text-xs text-accent sm:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" aria-expanded="false" aria-controls="mnav">[ <!-- -->MENU<!-- --> ]</button></div><div id="mnav" hidden="" class="border-t border-line sm:hidden"><nav aria-label="Mobile" class="mx-auto grid max-w-3xl grid-cols-2 gap-1 px-4 py-3"><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent px-2 py-2 text-xs text-dim" href="/" data-discover="true">&gt; <!-- -->Home</a><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent px-2 py-2 text-xs text-dim" href="/projects" data-discover="true">&gt; <!-- -->Projects</a><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent px-2 py-2 text-xs text-dim" href="/games" data-discover="true">&gt; <!-- -->Games</a><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent px-2 py-2 text-xs text-dim" href="/devlog" data-discover="true">&gt; <!-- -->Devlog</a><a aria-current="page" class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent px-2 py-2 text-xs text-accent" href="/about" data-discover="true">&gt; <!-- -->About</a><a class="font-mono uppercase tracking-widest rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent px-2 py-2 text-xs text-dim" href="/links" data-discover="true">&gt; <!-- -->Links</a></nav></div></header><main id="main" class="mx-auto w-full max-w-3xl flex-1 px-4 py-8 lg:max-w-4xl"><div class="page-enter"><div><div style="opacity:0;transform:translateY(12px)"><p class="mono-label">// operator</p><h1 class="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl">About</h1></div><div style="opacity:0;transform:translateY(12px)"><div class="panel mt-6 flex flex-col items-start gap-4 p-5 sm:flex-row sm:items-center"><span class="mono-avatar shrink-0" style="width:72px;height:72px;font-size:26px" role="img" aria-label="Profile photo of @JustJayDev - initials placeholder, no photo uploaded yet">JJ</span><div class="min-w-0"><p class="font-display text-lg font-bold leading-snug">@JustJayDev</p><p class="font-mono text-xs text-accent">@<!-- -->JustJayDev</p><p class="mt-3 text-sm leading-relaxed text-dim">@JustJayDev<!-- --> is <!-- -->JustJayDev<!-- -->, a mobile gamer who builds on his<!-- --> <!-- -->phone<!-- -->. He plays <!-- -->Free Fire Max<!-- -->.</p></div></div></div><div style="opacity:0;transform:translateY(12px)"><section class="mt-8" aria-labelledby="avatar-h"><h2 id="avatar-h" class="mono-label">// avatar</h2><div class="mt-3 grid gap-3 lg:grid-cols-2 lg:items-start"><div class="avatar3d-shell"><div class="avatar3d-frame" data-3d="off"><div class="avatar3d-poster" aria-hidden="true"><div class="bp-grid avatar3d-poster-grid"></div><svg class="avatar3d-poster-svg" viewBox="0 0 200 200" fill="none" role="presentation"><defs><linearGradient id="jjp" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22d3ee" stop-opacity="0.9"></stop><stop offset="100%" stop-color="#22d3ee" stop-opacity="0.35"></stop></linearGradient></defs><path d="M100 44c19 0 32 13 32 32 0 20-13 36-32 36s-32-16-32-36c0-19 13-32 32-32Z" stroke="url(#jjp)" stroke-width="2"></path><path d="M52 168c4-26 24-40 48-40s44 14 48 40" stroke="url(#jjp)" stroke-width="2"></path><path d="M76 88h48" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"></path><path d="M100 44v68M68 78h64M74 100h52" stroke="#22d3ee" stroke-width="0.75" stroke-opacity="0.5" stroke-dasharray="3 4"></path></svg><div class="avatar3d-poster-mark tl"></div><div class="avatar3d-poster-mark tr"></div><div class="avatar3d-poster-mark bl"></div><div class="avatar3d-poster-mark br"></div><p class="avatar3d-poster-label">avatar.glb<span class="avatar3d-poster-sub">under <!-- -->2<!-- --> MB</span></p></div></div><p class="avatar3d-hint">No 3D model yet. Drop a .glb under 2 MB at public/models/avatar.glb and it appears here automatically.</p></div><section class="gamer-card" aria-labelledby="gamer-card-h"><header class="gamer-card-head"><p class="mono-label">// player card</p><h2 id="gamer-card-h" class="gamer-card-name">@JustJayDev</h2></header><dl class="gamer-card-rows"><div class="gamer-row"><dt class="gamer-row-label">DEVICE</dt><dd class="gamer-row-value">Phone</dd></div><div class="gamer-row"><dt class="gamer-row-label">MAIN GAME</dt><dd class="gamer-row-value">Free Fire Max</dd></div><div class="gamer-row"><dt class="gamer-row-label">GAME NOTE</dt><dd class="gamer-row-value">Main game. Grinder.</dd></div><div class="gamer-row"><dt class="gamer-row-label">ROLE</dt><dd class="gamer-row-value is-empty" title="not added yet">not added yet</dd></div><div class="gamer-row"><dt class="gamer-row-label">RANK</dt><dd class="gamer-row-value is-empty" title="rank not added yet">rank not added yet</dd></div><div class="gamer-row"><dt class="gamer-row-label">ACHIEVEMENTS</dt><dd class="gamer-row-value is-empty" title="no achievements added yet">no achievements added yet</dd></div><div class="gamer-row"><dt class="gamer-row-label">BUILDING</dt><dd class="gamer-row-value">justjaydev-v1</dd></div></dl><p class="gamer-card-foot"><span class="gamer-card-foot-label">NOW BUILDING</span>This site. Built from scratch, on a phone.</p></section></div></section></div><div style="opacity:0;transform:translateY(12px)"><dl class="panel mt-3 divide-y divide-line"><div class="flex items-center justify-between gap-4 px-4 py-3"><dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">HANDLE</dt><dd class="text-right font-mono text-sm text-txt">@JustJayDev</dd></div><div class="flex items-center justify-between gap-4 px-4 py-3"><dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">PLAYS</dt><dd class="text-right font-mono text-sm text-txt">Free Fire Max</dd></div><div class="flex items-center justify-between gap-4 px-4 py-3"><dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">BUILDS ON</dt><dd class="text-right font-mono text-sm text-txt">Phone</dd></div></dl></div><div style="opacity:0;transform:translateY(12px)"><section class="mt-8" aria-labelledby="contact-h"><h2 id="contact-h" class="mono-label">// contact</h2><div class="panel mt-3 divide-y divide-line"><div class="flex items-center justify-between gap-4 px-4 py-3"><span class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">EMAIL</span><span class="text-right font-mono text-sm italic text-dim">not added yet</span></div><div class="flex items-center justify-between gap-4 px-4 py-3"><span class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">GITHUB</span><a href="https://github.com/JustJayDev" target="_blank" rel="noopener noreferrer me" class="truncate text-right font-mono text-sm text-accent underline underline-offset-4 hover:text-txt focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">JustJayDev</a></div><div class="flex items-center justify-between gap-4 px-4 py-3"><span class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">X / TWITTER</span><span class="text-right font-mono text-sm italic text-dim">empty</span></div><div class="flex items-center justify-between gap-4 px-4 py-3"><span class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">INSTAGRAM</span><span class="text-right font-mono text-sm italic text-dim">empty</span></div><div class="flex items-center justify-between gap-4 px-4 py-3"><span class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">YOUTUBE</span><span class="text-right font-mono text-sm italic text-dim">empty</span></div><div class="flex items-center justify-between gap-4 px-4 py-3"><span class="font-mono text-[10px] uppercase tracking-[0.2em] text-dim">DISCORD</span><span class="text-right font-mono text-sm italic text-dim">empty</span></div></div></section></div><div style="opacity:0;transform:translateY(12px)"><div class="mt-8 space-y-3"><p class="panel corner-brackets p-5 text-center font-display text-lg font-bold leading-snug text-accent">A King Never Wavers</p><p class="panel corner-brackets p-5 text-center font-display text-base text-dim">The definition of victory.</p></div></div></div></div></main><footer class="border-t border-line"><div class="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-2 px-4 py-4 lg:max-w-4xl"><span class="font-mono text-[10px] uppercase tracking-widest text-dim">A King Never Wavers</span><span class="font-mono text-[10px] uppercase tracking-widest text-dim">v1.0</span></div></footer><button type="button" class="to-top" data-show="false" tabindex="-1" aria-hidden="true" aria-label="Back to top"><span aria-hidden="true">↑</span></button><div class="assist-fab" aria-hidden="true"><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>Ask the site assistant</div></div></div>
   </body>
 </html>

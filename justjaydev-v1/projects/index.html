@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#070b10" />
+    <meta name="color-scheme" content="dark light" />
+
+    <title>Projects — JustJayDev</title>
+    <meta
+      name="description"
+      content="TitleForge and PixVault — the apps Jay builds and ships. Plus the Developer Vault that keeps their secrets out of the browser."
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/justjaydev-v1/favicon.svg" />
+    <link rel="apple-touch-icon" href="/justjaydev-v1/icons/icon-192.png" />
+    <link rel="manifest" href="/justjaydev-v1/manifest.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="JustJayDev" />
+    <meta property="og:title" content="Projects — JustJayDev" />
+    <meta property="og:image" content="https://justjaydev.github.io/justjaydev-v1/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fonts: self-hosted latin variable woff2 (all OFL). Preloading the two
+         families used above the fold lets the text paint in the right face on
+         the first pass instead of swapping after a third-party round trip. -->
+    <link
+      rel="preload"
+      href="/justjaydev-v1/fonts/space-grotesk-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/justjaydev-v1/fonts/inter-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <script>
+      // Apply the stored theme before first paint so there is no flash.
+      (function () {
+        try {
+          var t = localStorage.getItem('jj-theme');
+          if (t !== 'light' && t !== 'dark') {
+            t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/justjaydev-v1/assets/index-DljtIY-r.js"></script>
+    <link rel="modulepreload" crossorigin href="/justjaydev-v1/assets/react-BbPptj3W.js">
+    <link rel="modulepreload" crossorigin href="/justjaydev-v1/assets/motion-1k6Z4rCJ.js">
+    <link rel="stylesheet" crossorigin href="/justjaydev-v1/assets/style-C_yefaXm.css">
+    <meta property="og:description" content="TitleForge and PixVault — the apps Jay builds and ships. Plus the Developer Vault that keeps their secrets out of the browser." />
+    <meta property="og:url" content="https://justjaydev.github.io/justjaydev-v1/projects" />
+    <meta name="twitter:title" content="Projects — JustJayDev" />
+  <meta name="twitter:description" content="TitleForge and PixVault — the apps Jay builds and ships. Plus the Developer Vault that keeps their secrets out of the browser." />
+    <meta name="twitter:image" content="https://justjaydev.github.io/justjaydev-v1/og-image.jpg" />
+    <link rel="canonical" href="https://justjaydev.github.io/justjaydev-v1/projects" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://justjaydev.github.io/justjaydev-v1/#website","name":"JustJayDev","url":"https://justjaydev.github.io/justjaydev-v1/","description":"@JustJayDev — mobile gamer, AI builder and future trader. Free Fire Max Grandmaster, Dragon City collector, and the developer behind TitleForge and PixVault.","inLanguage":"en"},{"@type":"WebPage","@id":"https://justjaydev.github.io/justjaydev-v1/projects#webpage","url":"https://justjaydev.github.io/justjaydev-v1/projects","name":"Projects — JustJayDev","description":"TitleForge and PixVault — the apps Jay builds and ships. Plus the Developer Vault that keeps their secrets out of the browser.","isPartOf":{"@id":"https://justjaydev.github.io/justjaydev-v1/#website"},"inLanguage":"en"}]}</script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="padding: 2rem; font-family: system-ui">
+        JustJayDev — mobile gamer, AI builder, future trader. This site needs JavaScript enabled.
+      </p>
+    </noscript>
+  </body>
+</html>
